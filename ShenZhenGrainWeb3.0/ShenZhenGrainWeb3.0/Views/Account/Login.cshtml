@@ -1,0 +1,62 @@
+﻿@using ShenZhenGrainWeb3._0.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "登录";
+}
+
+<h2>@ViewBag.Title。</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("confirmLogin", "Grain", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <h4>使用本地帐户登录。</h4>
+                <hr />
+                <div class="form-group">
+                    <p class="col-md-2 ">用户名：</p>
+                    <div class="col-md-10">
+                        <input type="text" id="userName" name="userName" class="form-control" />
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <p class="col-md-2 ">密码：</p>
+                        <div class="col-md-10">
+                            <input type="password" id="userPassword" name="userPassword" class="form-control" />
+                            @*@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="登录" class="btn btn-default" />
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    @Html.LabelFor(m => m.RememberMe)
+                                </div>
+                            </div>
+                        </div>*@
+
+                    @*<p>
+                            @Html.ActionLink("注册为新用户", "Register")
+                        </p>*@
+                    @* 在为密码重置功能启用帐户确认后启用此项
+                        <p>
+                            @Html.ActionLink("忘记了密码?", "ForgotPassword")
+                        </p>*@
+            }
+        </section>
+    </div>
+    @*<div class="col-md-4">
+            <section id="socialLoginForm">
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </section>
+        </div>*@
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
