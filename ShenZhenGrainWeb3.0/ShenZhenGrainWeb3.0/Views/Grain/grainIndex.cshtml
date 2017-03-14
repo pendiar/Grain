@@ -26,10 +26,35 @@
     </style>
 </head>
 <body>
-    <div class="views tabs toolbar-through">
+    <!-- First, we need to add Panel's overlay that will overlays app while panel is opened -->
+    <div class="panel-overlay"></div>
+
+    <!-- Left panel -->
+    <div class="panel panel-left panel-reveal">
+        ... panel content goes here ...
+    </div>
+
+    <!-- Right panel -->
+    <div class="panel panel-right panel-cover">
+        ... panel content goes here ...
+    </div>
+
+    <div class="views tabs">
         <input type="hidden" id="testid" value="" />
-        <!--页面一-->
         <div id="view-1" class="view view-main tab active">
+          <!-- Top Navbar-->
+          <div class="navbar">
+            <div class="navbar-inner">
+              <!-- We have home navbar without left link-->
+              <div class="center sliding">粮仓</div>
+              <div class="right">
+                <!-- Right link contains only icon - additional "icon-only" class-->
+                <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="pages navbar-through toolbar-through">
+            <!--页面一-->
             <div data-page="index-1" class="page">
                 <div class="page-content">
                     <p style="text-align:center ;font-size:20px;">仓库选择</p>
@@ -72,10 +97,21 @@
                     </div>
                 </div>
             </div>
+          </div>
+          <!-- 底部导航标签-->
+          <div class="toolbar tabbar tabbar-labels">
+              <div class="toolbar-inner">
+                  <a href="#view-1"><img src="~/Scripts/dist/img/warehouse_40px_573203_easyicon.net.png" /><span class="tabbar-label">仓库</span></a>
+                  <a href="/Scripts/dist/pages/page2.html"><img src="~/Scripts/dist/img/thermometer48_编辑.png" /><span class="tabbar-label">测温</span></a>
+                  <a href="#view-3"><img src="~/Scripts/dist/img/风扇.png" /><span class="tabbar-label">通风</span></a>
+                  <a href="#view-4"><img src="~/Scripts/dist/img/QQ截图20161029153455.png" /><span class="tabbar-label">记录</span></a>
+                  <!-- <a href="#view-5" class="tab-link" ><img src="~/Scripts/dist/img/返回.png" /><span class="tabbar-label">记录</span></a> -->
+              </div>
+          </div>
         </div>
         <!--页面二-->
-        <div id="view-2" class="view tab" style="text-align:center">
-
+        <div id="view-2" class="view tab">
+          <div class="pages">
             <div data-page="index-3" class="page">
                 <div class="row">
                     <div class="col-md-12">
@@ -86,7 +122,7 @@
                     </div>
                 </div>
 
-                @*<div id="container" style="max-width:600px;max-height: 500px;margin:0 auto"></div>*@
+                <!-- <div id="container" style="max-width:600px;max-height: 500px;margin:0 auto"></div> -->
                 <div id="container2" style="width: 100%;height: 400px; min-width: 310px; max-width: 800px; margin: 0 auto">
                 </div>
                 <div class="col-xs-3 " style="float:right;">
@@ -94,6 +130,7 @@
                 </div>
 
             </div>
+          </div>
         </div>
         <!--页面三-->
         <div id="view-3" class="view tab">
@@ -771,16 +808,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- 底部导航标签-->
-        <div class="toolbar tabbar tabbar-labels">
-            <div class="toolbar-inner">
-                <a href="#view-1" class="tab-link active"><img src="~/Scripts/dist/img/warehouse_40px_573203_easyicon.net.png" /><span class="tabbar-label">仓库</span></a>
-                <a href="#view-2" class="tab-link"><img src="~/Scripts/dist/img/thermometer48_编辑.png" /><span class="tabbar-label">测温</span></a>
-                <a href="#view-3" class="tab-link"><img src="~/Scripts/dist/img/风扇.png" /><span class="tabbar-label">通风</span></a>
-                <a href="#view-4" class="tab-link"><img src="~/Scripts/dist/img/QQ截图20161029153455.png" /><span class="tabbar-label">记录</span></a>
-                @*<a href="#view-5" class="tab-link" ><img src="~/Scripts/dist/img/返回.png" /><span class="tabbar-label">记录</span></a>*@
             </div>
         </div>
     </div>
