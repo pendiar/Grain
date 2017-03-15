@@ -1,6 +1,11 @@
+// 服务器api接口
+var serverApi = 'http://200.200.3.230:8012/api';
+
 // Initialize your app
 var myApp = new Framework7({
     swipePanel: 'left',
+    pushState: true,
+    dynamicNavbar: true,
 });
 
 // Export selectors engine
@@ -48,3 +53,21 @@ function createContentPage() {
     );
 	return;
 }
+
+
+$(function(){
+  $.post(serverApi + '/Grain/GetList', {
+    data: {
+      DicList: ['Type^0', 'UserId^0'],
+      OrderType: 0,
+      PageCount: 20,
+      PageIndex: 1,
+      UpdateTime: '',
+      EndDate: '2017-12-11',
+      StartDate: '2016-11-11',
+    },
+    success: function (data) {
+      console.log(data);
+    }
+  });
+});
