@@ -2,11 +2,7 @@
 var serverApi = 'http://200.200.3.230:8012/api';
 
 // Initialize your app
-var myApp = new Framework7({
-    swipePanel: 'left',
-    pushState: true,
-    dynamicNavbar: true,
-});
+var myApp = new Framework7();
 
 // Export selectors engine
 var $$ = Dom7;

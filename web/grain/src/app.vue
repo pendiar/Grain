@@ -83,38 +83,18 @@
             </f7-navbar>
 
             <!-- Page Content -->
-            <p class="home-title">仓库选择</p>
-            <!--平方仓-->
-            <div class="col-sm-6 col-md-3" id="click1">
-                <div class="widget widget-stats bg-grey">
-                    <div class="stats-icon stats-icon-lg"><i class="fa fa-book fa-fw"></i></div>
-                    <div class="stats-title">平方仓</div>
-                    <div class="stats-number" id="temp1" name="temp1"></div>
-                </div>
+            <div class="col-sm-12">
+                <p>
+                    <button type="button" class="btn btn-default btn-lg" id="pf1Temp">平方仓1温度展示</button>
+                    <button type="button" class="btn btn-default btn-lg" id="pf2Temp">平方仓2温度展示</button>
+                </p>
             </div>
-            <!--筒仓-->
-            <div class="col-sm-6 col-md-3" id="click2">
-                <div class="widget widget-stats bg-grey  yj">
-                    <div class="stats-icon stats-icon-lg"><i class="fa fa-book fa-fw"></i></div>
-                    <div class="stats-title">筒仓</div>
-                    <div class="stats-number" id="temp2" name="temp2"></div>
-                </div>
+
+            <!-- <div id="container" style="max-width:600px;max-height: 500px;margin:0 auto"></div> -->
+            <div v-for="$bus.status.grainList" ref="grainList" style="width: 100%;height: 400px; min-width: 310px; max-width: 800px; margin: 0 auto">
             </div>
-            <!--平房仓-->
-            <div class="col-sm-6 col-md-3" id="click3">
-                <div class="widget widget-stats bg-grey">
-                    <div class="stats-icon stats-icon-lg"><i class="fa fa-book fa-fw"></i></div>
-                    <div class="stats-title">平房仓</div>
-                    <div class="stats-number" id="temp3" name="temp3"></div>
-                </div>
-            </div>
-            <!--气膜仓-->
-            <div class="col-sm-6 col-md-3" id="click4">
-                <div class="widget widget-stats bg-grey">
-                    <div class="stats-icon stats-icon-lg"><i class="fa fa-book fa-fw"></i></div>
-                    <div class="stats-title">气膜仓</div>
-                    <div class="stats-number" id="temp4" name="temp4"></div>
-                </div>
+            <div class="col-xs-3 " style="float:right;">
+                <a class="btn btn-block btn-lg btn-info" id="detail" onclick="ajaxT();">详细数据</a>
             </div>
           </f7-page>
         </f7-pages>
@@ -170,13 +150,56 @@
 <script>
 // import home from './pages/home.vue';
 
+
+const options = {
+  chart: {
+    type: 'heatmap',
+    marginTop: 40,
+    marginBottom: 80,
+  },
+  title: {
+    text: null,
+  },
+  xAxis: {
+    categories: ['Alexander'],
+    labels: {
+      enabled: false,
+    },
+  },
+  yAxis: {
+    categories: ['1', '2', '3', '4', '5'],
+    title: null,
+    labels: {
+      enabled: false,
+    },
+  },
+  colorAxis: {
+    min: 0,
+    minColor: '#CCCCCC',
+    maxColor: '#BFEFFF',
+  },
+  legend: {
+    enabled: false,
+    align: 'right',
+    layout: 'vertical',
+    margin: 0,
+    verticalAlign: 'top',
+    y: 25,
+    symbolHeight: 280,
+  },
+  tooltip: {
+    enabled: false,
+  },
+};
+
 export default {
   // components: {
   //   home,
   // },
   created() {
-    this.$$.ajax({
-      url: '/api/Grain/GetList',
+    const vm = this;
+    vm.$$.ajax({
+      url: `${this.$serverApi}/Grain/GetList`,
       method: 'POST',
       data: {
         DicList: ['Type^0', 'UserId^0'],
@@ -190,10 +213,66 @@ export default {
       dataType: 'json',
       success(data) {
         if (data.Code === 1000) {
+          vm.$bus.setStatus('grainList', JSON.parse(data.JsonValue));
+          vm.$nextTick(() => {
+
+          });
+        }
+      },
+    });
+    vm.$$.ajax({
+      url: `${this.$serverApi}/Grain/Add`,
+      method: 'POST',
+      data: {
+        Number: 'L5',
+        Name: 'E楼房仓',
+        Location: '深证市宝安区',
+        Type: 1,
+        UserId: '0',
+        IsActive: 1,
+      },
+      dataType: 'json',
+      success(data) {
+        if (data.Code === 1000) {
+          console.log('成功');
           console.log(JSON.parse(data.JsonValue));
         }
       },
     });
+  },
+  mounted() {
+    const series2 = {
+      name: 'Sales per employee',
+      borderWidth: 1,
+      data: [
+        { x: 0, y: 1, value: 50, color: '#BFEFFF' },
+        { x: 1, y: 1, z: 0, color: '#BFEFFF' },
+        { x: 0, y: 2, z: 0, color: '#CCCCCC' },
+        { x: 1, y: 2, z: 0, color: '#CCCCCC' },
+        { x: 0, y: 3, z: 0, color: '#CCCCCC' },
+        { x: 1, y: 3, z: 0, color: '#CCCCCC' },
+        { x: 0, y: 4, z: 0, color: '#CCCCCC' },
+        { x: 1, y: 4, z: 0, color: '#CCCCCC' },
+        { x: 0, y: 5, z: 0, color: '#CCCCCC' },
+        { x: 1, y: 5, z: 0, color: '#CCCCCC' },
+      ],
+      dataLabels: {
+        enabled: true,
+        color: '#000000',
+        formatter() {
+          return `第${this.point.y}层`;  // 重新设置节点显示数据
+        },
+      },
+      events: {
+        click(event) {
+          // query2_1(event.point.y);
+          // alert(event.point.y);
+        },
+      },
+    };
+    const chart2 = new this.Highcharts.Chart(options);
+    chart2.addSeries(series2);
+    options.chart.renderTo = 'divs';
   },
 };
 </script>

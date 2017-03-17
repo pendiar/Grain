@@ -4,6 +4,9 @@ import Vue from 'vue'
 // Import bootstrap Style
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+// Import ty Style
+import './css/ty.css'
+
 // Import F7
 import Framework7 from 'framework7'
 
@@ -18,6 +21,9 @@ import Framework7Theme from 'framework7/dist/css/framework7.material.min.css'
 import Framework7ThemeColors from 'framework7/dist/css/framework7.material.colors.min.css'
 */
 
+// 导入heightcharts
+import Highcharts from 'highcharts';
+
 // Import App Custom Styles
 import AppStyles from './css/app.css'
 
@@ -28,9 +34,30 @@ import Routes from './routes.js'
 import App from './app'
 
 // Init F7 Vue Plugin
-Vue.use(Framework7Vue)
+Vue.use(Framework7Vue);
 
+// 加载模块
+require('highcharts/modules/heatmap')(Highcharts);
+
+// 注入组件
+Vue.prototype.Highcharts = Highcharts;
 Vue.prototype.$serverApi = '/api';
+Vue.prototype.$bus = new Vue({
+  data() {
+    return {
+      status: {},
+    };
+  },
+  methods: {
+    setStatus(name, value) {
+      if (this.status[name] === undefined) {
+        this.$set(this.status, name, value);
+      } else {
+        this.status[name] = value;
+      }
+    }
+  }
+});
 
 // Init App
 new Vue({
