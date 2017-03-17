@@ -91,8 +91,9 @@
             </div>
 
             <!-- <div id="container" style="max-width:600px;max-height: 500px;margin:0 auto"></div> -->
-            <div v-for="$bus.status.grainList" ref="grainList" style="width: 100%;height: 400px; min-width: 310px; max-width: 800px; margin: 0 auto">
+            <div v-for="item in $bus.status.grainList" ref="grainList" style="width: 100%;height: 400px; min-width: 310px; max-width: 800px; margin: 0 auto">
             </div>
+            <grain-list></grain-list>
             <div class="col-xs-3 " style="float:right;">
                 <a class="btn btn-block btn-lg btn-info" id="detail" onclick="ajaxT();">详细数据</a>
             </div>
@@ -149,6 +150,7 @@
 
 <script>
 // import home from './pages/home.vue';
+import GrainList from './pages/home.vue';
 
 
 const options = {
