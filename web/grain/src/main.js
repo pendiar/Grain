@@ -1,9 +1,6 @@
 // Import Vue
 import Vue from 'vue'
 
-// Import bootstrap Style
-import 'bootstrap/dist/css/bootstrap.min.css'
-
 // Import ty Style
 import './css/ty.css'
 

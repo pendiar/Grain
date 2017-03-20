@@ -83,20 +83,7 @@
             </f7-navbar>
 
             <!-- Page Content -->
-            <div class="col-sm-12">
-                <p>
-                    <button type="button" class="btn btn-default btn-lg" id="pf1Temp">平方仓1温度展示</button>
-                    <button type="button" class="btn btn-default btn-lg" id="pf2Temp">平方仓2温度展示</button>
-                </p>
-            </div>
-
-            <!-- <div id="container" style="max-width:600px;max-height: 500px;margin:0 auto"></div> -->
-            <div v-for="item in $bus.status.grainList" ref="grainList" style="width: 100%;height: 400px; min-width: 310px; max-width: 800px; margin: 0 auto">
-            </div>
             <grain-list></grain-list>
-            <div class="col-xs-3 " style="float:right;">
-                <a class="btn btn-block btn-lg btn-info" id="detail" onclick="ajaxT();">详细数据</a>
-            </div>
           </f7-page>
         </f7-pages>
       </f7-view>
@@ -150,7 +137,7 @@
 
 <script>
 // import home from './pages/home.vue';
-import GrainList from './pages/home.vue';
+import GrainList from './pages/app/GrainList.vue';
 
 
 const options = {
@@ -195,9 +182,9 @@ const options = {
 };
 
 export default {
-  // components: {
-  //   home,
-  // },
+  components: {
+    GrainList,
+  },
   created() {
     const vm = this;
     vm.$$.ajax({
@@ -222,25 +209,25 @@ export default {
         }
       },
     });
-    vm.$$.ajax({
-      url: `${this.$serverApi}/Grain/Add`,
-      method: 'POST',
-      data: {
-        Number: 'L5',
-        Name: 'E楼房仓',
-        Location: '深证市宝安区',
-        Type: 1,
-        UserId: '0',
-        IsActive: 1,
-      },
-      dataType: 'json',
-      success(data) {
-        if (data.Code === 1000) {
-          console.log('成功');
-          console.log(JSON.parse(data.JsonValue));
-        }
-      },
-    });
+    // vm.$$.ajax({
+    //   url: `${this.$serverApi}/Grain/Add`,
+    //   method: 'POST',
+    //   data: {
+    //     Number: 'L5',
+    //     Name: 'E楼房仓',
+    //     Location: '深证市宝安区',
+    //     Type: 1,
+    //     UserId: '0',
+    //     IsActive: 1,
+    //   },
+    //   dataType: 'json',
+    //   success(data) {
+    //     if (data.Code === 1000) {
+    //       console.log('成功');
+    //       console.log(JSON.parse(data.JsonValue));
+    //     }
+    //   },
+    // });
   },
   mounted() {
     const series2 = {
@@ -272,9 +259,9 @@ export default {
         },
       },
     };
-    const chart2 = new this.Highcharts.Chart(options);
-    chart2.addSeries(series2);
-    options.chart.renderTo = 'divs';
+    // const chart2 = new this.Highcharts.Chart(options);
+    // chart2.addSeries(series2);
+    // options.chart.renderTo = 'divs';
   },
 };
 </script>
