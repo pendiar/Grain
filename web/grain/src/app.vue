@@ -57,7 +57,7 @@
 
     <!-- Main Views -->
     <f7-views>
-      <f7-view id="main-view" navbar-through :dynamic-navbar="true" main>
+      <f7-view id="main-view" :dynamic-navbar="true" main>
         <!-- iOS Theme Navbar -->
         <f7-navbar v-if="$theme.ios">
           <!-- <f7-nav-left>
@@ -69,7 +69,7 @@
           </f7-nav-right>
         </f7-navbar>
         <!-- Pages -->
-        <f7-pages>
+        <f7-pages navbar-through>
           <f7-page>
             <!-- Material Theme Navbar -->
             <f7-navbar v-if="$theme.material">

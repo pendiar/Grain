@@ -1,7 +1,7 @@
 ﻿/* === HTML ELEMENTS === */
 * {
-    outline: none !important;
-    border-radius: 0 !important;
+    outline: none;
+    border-radius: 0;
 }
 body {
     background: #F5F5F5;
