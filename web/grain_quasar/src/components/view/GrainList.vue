@@ -14,7 +14,7 @@
           <div class="grain-top"><i class="top-icon top-icon-yuan"></i><span class="grain-title">{{grain.Name}}</span></div>
           <div class="grain-content">
             <div class="grain-floor" v-for="floor in grain.Floors" :style="{height:100/grain.Floors.length+'%'}">
-              <div class="grain-granary" v-for="granary in floor.GranaryList">
+              <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.ID}}">
                 {{granary.Number}}
                 <q-tooltip>
                   <p>{{granary.Location}}</p>

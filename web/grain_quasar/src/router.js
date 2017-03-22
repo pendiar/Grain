@@ -26,6 +26,7 @@ export default new VueRouter({
       children: [
         { path: '/', redirect: { name: 'GrainList' } },
         { path: 'GrainList', name: 'GrainList', component: load('view/GrainList') },
+        { path: 'AoJian/:id', name: 'AoJian', component: load('view/AoJian') },
       ],
     }, // 粮仓管理
     { path: '/layout', component: load('layout/Hello') }, // Not found
