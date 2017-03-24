@@ -6,24 +6,32 @@
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="grain in list">
+          <div class="card">
+            <div class="card-title">
+              {{grain.Name}}
+            </div>
+            <div class="card-content">
+              <div class="grain-top"><i class="top-icon top-icon-yuan"></i></div>
+              <div class="grain-content">
+                <div class="grain-floor" v-for="floor in grain.Floors" :style="{height:100/grain.Floors.length+'%'}">
+                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.ID}}">
+                    {{granary.Number}}
+                    <q-tooltip>
+                      <p>{{granary.Location}}</p>
+                      <p>平均温度：{{granary.AverageTemperature}}°C</p>
+                      <p>平均湿度：{{granary.AverageHumidity}}%</p>
+                    </q-tooltip>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!--<div class="widget widget-stats bg-white" v-for="item in list">
             <div class="stats-icon stats-icon-lg"><i class="fa fa-book fa-fw"></i></div>
             <div class="stats-title">平方仓</div>
             <div class="stats-number"></div>
           </div>-->
-          <div class="grain-top"><i class="top-icon top-icon-yuan"></i><span class="grain-title">{{grain.Name}}</span></div>
-          <div class="grain-content">
-            <div class="grain-floor" v-for="floor in grain.Floors" :style="{height:100/grain.Floors.length+'%'}">
-              <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.ID}}">
-                {{granary.Number}}
-                <q-tooltip>
-                  <p>{{granary.Location}}</p>
-                  <p>平均温度：{{granary.AverageTemperature}}°C</p>
-                  <p>平均湿度：{{granary.AverageHumidity}}%</p>
-                </q-tooltip>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
