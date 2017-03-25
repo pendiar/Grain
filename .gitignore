@@ -5,4 +5,8 @@
 /web/grain/config
 /web/grain/.babelrc
 /web/grain/LICENSE
+/web/grain_quasar/package.json
+/web/grain_quasar/.gitignore
 /.gitignore
+/web/grain_quasar/node_modules
+/web/grain_quasar/dist
