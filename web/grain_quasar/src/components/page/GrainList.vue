@@ -7,11 +7,11 @@
       <div class="row wrap gutter">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="grain in list">
           <div class="card">
-            <div class="card-title bg-primary text-white">
+            <div class="card-title">
               {{grain.Name}}
             </div>
             <div class="card-content">
-              <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"></i></div>
+              <div class="grain-top"><i class="top-icon top-icon-yuan"></i></div>
               <div class="grain-content">
                 <div class="grain-floor" v-for="floor in grain.Floors" :style="{height:100/grain.Floors.length+'%'}">
                   <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.ID}}">
@@ -44,40 +44,6 @@ export default {
     return {
       list: [
         {
-          "ID": 9,
-          "Number": "T2",
-          "Name": "平房仓2",
-          "Location": "深证市宝安区",
-          "Type": 2,
-          "UserId": "0",
-          "AverageTemperature": 24,
-          "Maximumemperature": 29,
-          "MinimumTemperature": 20,
-          "InSideTemperature": 24,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-25T10:53:46.367",
-          "IsActive": 1,
-          "Floors": [],
-          "BadPoints": 0
-        },
-        {
-          "ID": 8,
-          "Number": "Q1",
-          "Name": "立筒仓1",
-          "Location": "深证市宝安区",
-          "Type": 3,
-          "UserId": "0",
-          "AverageTemperature": 25,
-          "Maximumemperature": 30,
-          "MinimumTemperature": 21,
-          "InSideTemperature": 25,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-25T10:52:49.147",
-          "IsActive": 1,
-          "Floors": [],
-          "BadPoints": 0
-        },
-        {
           "ID": 7,
           "Number": "L5",
           "Name": "E楼房仓",
@@ -87,9 +53,35 @@ export default {
           "AverageTemperature": 0,
           "Maximumemperature": 0,
           "MinimumTemperature": 0,
-          "InSideTemperature": 25,
-          "OutSideTemperature": 26,
           "StampTime": "2017-03-16T17:24:46",
+          "IsActive": 1,
+          "Floors": [],
+        },
+        {
+          "ID": 6,
+          "Number": "L6",
+          "Name": "F楼房仓",
+          "Location": "深证市宝安区",
+          "Type": 1,
+          "UserId": "0",
+          "AverageTemperature": 0,
+          "Maximumemperature": 0,
+          "MinimumTemperature": 0,
+          "StampTime": "2017-03-13T19:55:32",
+          "IsActive": 1,
+          "Floors": []
+        },
+        {
+          "ID": 1,
+          "Number": "L1",
+          "Name": "A楼房仓",
+          "Location": "深圳市粮食局",
+          "Type": 1,
+          "UserId": "0",
+          "AverageTemperature": 25,
+          "Maximumemperature": 30,
+          "MinimumTemperature": 10,
+          "StampTime": "2017-03-12T18:40:04.977",
           "IsActive": 1,
           "Floors": [
             {
@@ -151,24 +143,21 @@ export default {
               "IsActive": 1,
               "GranaryList": [],
             },
-          ],
-          "BadPoints": 0
+          ]
         },
         {
-          "ID": 6,
-          "Number": "L6",
-          "Name": "F楼房仓",
-          "Location": "深证市宝安区",
-          "Type": 1,
-          "UserId": "0",
-          "AverageTemperature": 0,
-          "Maximumemperature": 0,
-          "MinimumTemperature": 0,
-          "InSideTemperature": 25,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-13T19:55:32",
-          "IsActive": 1,
-          "Floors": [
+            "ID": 2,
+            "Number": "L2",
+            "Name": "B楼房仓",
+            "Location": "深圳市粮食局",
+            "Type": 1,
+            "UserId": "0",
+            "AverageTemperature": 20,
+            "Maximumemperature": 25,
+            "MinimumTemperature": 10,
+            "StampTime": "2017-03-12T18:40:04.977",
+            "IsActive": 1,
+            "Floors": [
                 {
                     "ID": 4,
                     "Number": "L2-F1",
@@ -187,16 +176,29 @@ export default {
                     "IsActive": 0,
                     "GranaryList": []
                 }
-            ],
-          "BadPoints": 2
+            ]
         },
+        {
+            "ID": 4,
+            "Number": "L4",
+            "Name": "D2楼房仓",
+            "Location": "深证市宝安区",
+            "Type": 1,
+            "UserId": "0",
+            "AverageTemperature": 24,
+            "Maximumemperature": 32,
+            "MinimumTemperature": 11,
+            "StampTime": "2017-03-12T18:40:04.977",
+            "IsActive": 1,
+            "Floors": []
+        }
       ]
     };
   },
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 .grain-list{
   width: 100%;
   height: 100%;

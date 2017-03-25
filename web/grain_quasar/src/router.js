@@ -21,14 +21,16 @@ export default new VueRouter({
    */
 
   routes: [
-    { path: '/',
+    { path: '/', redirect: { name: 'GrainList' } },
+    { path: '/Grain', // 粮仓管理
       component: load('Grain'),
       children: [
-        { path: '/', redirect: { name: 'GrainList' } },
+        { path: '', redirect: { name: 'GrainList' } },
         { path: 'GrainList', name: 'GrainList', component: load('view/GrainList') },
         { path: 'AoJian/:id', name: 'AoJian', component: load('view/AoJian') },
+        { path: 'ChuanGan/:id', name: 'ChuanGan', component: load('view/ChuanGan') },
       ],
-    }, // 粮仓管理
+    },
     { path: '/layout', component: load('layout/Hello') }, // Not found
     { path: '/view', component: load('view/Hello') }, // Not found
     { path: '*', component: load('Error404') }, // Not found
