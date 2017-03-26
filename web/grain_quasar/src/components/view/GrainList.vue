@@ -4,7 +4,7 @@
     <!-- your content -->
     <div class="layout-padding">
       <!-- if you want automatic padding -->
-      <div class="row wrap gutter">
+      <!-- <div class="row wrap gutter">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="grain in list">
           <div class="card">
             <div class="card-title bg-primary text-white">
@@ -26,14 +26,32 @@
               </div>
             </div>
           </div>
-          <!--<div class="widget widget-stats bg-white" v-for="item in list">
-            <div class="stats-icon stats-icon-lg"><i class="fa fa-book fa-fw"></i></div>
-            <div class="stats-title">平方仓</div>
-            <div class="stats-number"></div>
-          </div>-->
-          
         </div>
-      </div>
+      </div> -->
+      <table class="q-table bordered highlight horizontal-delimiter striped-even text-center">
+        <thead>
+          <tr>
+            <th>仓号</th>
+            <th>最高温度</th>
+            <th>最低温度</th>
+            <th>平均温度</th>
+            <th>坏点数</th>
+            <th>仓内温度</th>
+            <th>仓外温度</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in list">
+            <td>{{item.Number}}</td>
+            <td>{{item.Maximumemperature}}</td>
+            <td>{{item.MinimumTemperature}}</td>
+            <td>{{item.AverageTemperature}}</td>
+            <td>{{item.BadPoints}}</td>
+            <td>{{item.InSideTemperature}}%RH</td>
+            <td>{{item.OutSideTemperature}}%RH</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>

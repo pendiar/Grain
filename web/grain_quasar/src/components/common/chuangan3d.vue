@@ -16,7 +16,7 @@ export default {
       demoData: [],
     };
   },
-  mounted() {
+  created() {
     const getColor = [];
     const getData = this.getData;
     getData.forEach((temp) => {
