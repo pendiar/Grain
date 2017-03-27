@@ -4,7 +4,10 @@
     <!-- your content -->
     <div class="layout-padding">
       <!-- if you want automatic padding -->
-      <!-- <div class="row wrap gutter">
+      <div class="quote">
+        xxxx仓库温度状态
+      </div>
+      <div class="row wrap gutter desktop-only">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="grain in list">
           <div class="card">
             <div class="card-title bg-primary text-white">
@@ -27,8 +30,8 @@
             </div>
           </div>
         </div>
-      </div> -->
-      <table class="q-table bordered highlight horizontal-delimiter striped-even text-center">
+      </div>
+      <table class="q-table bordered highlight horizontal-delimiter striped-even compact text-center mobile-only small-text">
         <thead>
           <tr>
             <th>仓号</th>
@@ -43,11 +46,11 @@
         <tbody>
           <tr v-for="item in list">
             <td>{{item.Number}}</td>
-            <td>{{item.Maximumemperature}}</td>
+            <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
             <td>{{item.MinimumTemperature}}</td>
             <td>{{item.AverageTemperature}}</td>
-            <td>{{item.BadPoints}}</td>
-            <td>{{item.InSideTemperature}}%RH</td>
+            <td :class="{'text-negative':item.BadPoints}">{{item.BadPoints}}</td>
+            <td :class="{'text-negative':item.InSideTemperature>=80}">{{item.InSideTemperature}}%RH</td>
             <td>{{item.OutSideTemperature}}%RH</td>
           </tr>
         </tbody>
@@ -105,7 +108,7 @@ export default {
           "AverageTemperature": 0,
           "Maximumemperature": 0,
           "MinimumTemperature": 0,
-          "InSideTemperature": 25,
+          "InSideTemperature": 81,
           "OutSideTemperature": 26,
           "StampTime": "2017-03-16T17:24:46",
           "IsActive": 1,
@@ -296,5 +299,8 @@ export default {
   &:hover{
     background-color: #6495ed;
   }
+}
+.q-table{
+  font-size: 0.7rem;
 }
 </style>

@@ -4,15 +4,16 @@
     <!--<div class="list bordered">-->
       <div class="item" v-for="(floor, y) in demoData">
           <div class="row item-content">
-            <div class="item-label text-right">
+            <div class="item-label row items-center">
               楼层{{Number(y)+1}}：
             </div>
-            <div class="item-value">
-              <div class="row" v-for="x in floor">
-                  <div class="chuangan-item" v-for="z in x" :style="{backgroundColor:z.color}">
-                    <q-tooltip>
-                      <p>{{z.Number}}</p>
-                      <p>温度：{{z.temp}}°C</p>
+            <div class="item-value auto">
+              <div class="row" v-for="z in floor">
+                  <div class="chuangan-item text-center auto" v-for="x in length" :style="{color:z[x-1]&&z[x-1].color}">
+                    {{z[x-1]&&z[x-1].temp}}
+                    <q-tooltip v-if="z[x-1]">
+                      <p>{{z[x-1].Number}}</p>
+                      <p>温度：{{z[x-1].temp}}°C</p>
                       <p>湿度：50%</p>
                     </q-tooltip>
                   </div>
@@ -33,6 +34,19 @@
 <script>
 export default {
   props: ['code'],
+  computed: {
+    length() {
+      let result = 0;
+      this.demoData.forEach((y) => {
+        y.forEach((z) => {
+          if (z.length > result) {
+            result = z.length;
+          }
+        });
+      });
+      return result;
+    }
+  },
   data() {
     return {
       getData: [17,21,22,25,26,24,19,29,26,25,24,20,23,26,25,30,27,22,21,26,24,21,22,18,27,25,23,26,22,21,24,25,22,28,26,22,21,22,24],
@@ -81,7 +95,7 @@ export default {
     demoData.push({ x: 9, y: 9, z: 3, temp: getData[24], color: getColor[24].color, Number: 'L1-F1-A-1-26' });
     demoData.push({ x: 9, y: 9, z: 6, temp: getData[25], color: getColor[25].color, Number: 'L1-F1-A-1-27' });
     demoData.push({ x: 9, y: 9, z: 9, temp: getData[26], color: getColor[26].color, Number: 'L1-F1-A-1-28' });
-    const data = {};
+    const data = [];
     demoData.forEach((item) => {
       const position = { x: 3 - item.x / 3, y: 3 - item.y / 3, z: 3 - item.z / 3, }
       if (!data[position.y]) {
@@ -108,18 +122,25 @@ export default {
   @padding: 15px;
   .item{
     height: auto;
+    .item-content{
+      padding: 0;
+    }
+    &:last-child .item-value{
+      padding-bottom: 0;
+    }
   }
   .item-value{
     border: 1px solid #636363;
-    padding-top: @padding;
-    padding-left: @padding;
+    border-bottom: 0;
+    padding-bottom: 5px;
   }
   .chuangan-item{
-    width: 40px;
-    height: 40px;
-    border: 1px solid #636363;
-    margin-right: @padding;
-    margin-bottom: @padding;
+    padding: 3px 5px;
+    border-right: 1px solid #636363;
+    border-bottom: 1px solid #636363;
+    &:last-child{
+      border-right: 0;
+    }
   }
 }
 </style>
