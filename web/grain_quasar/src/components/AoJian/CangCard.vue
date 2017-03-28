@@ -1,10 +1,11 @@
 <template>
   <div class="grain-stats gt-md-width-1of2 auto">
-    <div class="card">
+    <div class="card" :class="{worn:cang.AverageTemperature>35,error:cang.AverageTemperature>45}">
       <div class="item">
         <div class="item-content has-secondary">
           {{cang.Location}}
         </div>
+        <span class="cangStatus"></span>
         <span class="item-secondary" @click="toggle">
           <i>autorenew</i>
         </span>
@@ -63,6 +64,34 @@ export default {
 };
 </script>
 
-<style>
-  
+<style lang="less" scoped>
+.cangStatus{
+  width: 20px;
+  height: 20px;
+  margin: 16px;
+  position: absolute;
+  top: 0;
+  right: 30px;
+}
+.card{
+  border: 1px solid rgba(156,202,134,0.48);
+  box-shadow: 0 1px 3px rgba(156,202,134,0.12), 0 1px 2px rgba(156,202,134,24);
+  .cangStatus{
+    background-color: rgba(156,202,134,1);
+  }
+}
+.card.worn{
+  border: 1px solid rgba(237,125,49,0.48);
+  box-shadow: 0 1px 3px rgba(237,125,49,0.12), 0 1px 2px rgba(237,125,49,0.24);
+  .cangStatus{
+    background-color: rgba(237,125,49,1);
+  }
+}
+.card.error{
+  border: 1px solid rgba(156,3,3,0.48);
+  box-shadow: 0 1px 3px rgba(156,3,3,0.12), 0 1px 2px rgba(156,3,3,0.24);
+  .cangStatus{
+    background-color: rgba(156,3,3,1);
+  }
+}
 </style>

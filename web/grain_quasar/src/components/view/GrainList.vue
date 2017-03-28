@@ -4,9 +4,7 @@
     <!-- your content -->
     <div class="layout-padding">
       <!-- if you want automatic padding -->
-      <div class="quote">
-        xxxx仓库温度状态
-      </div>
+      <p class="quote">{{$route.name==='GrainList'?'所有仓库':`${cangNumber}粮仓`}}温度状态</p>
       <div class="row wrap gutter desktop-only">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="grain in list">
           <div class="card">
@@ -31,36 +29,57 @@
           </div>
         </div>
       </div>
-      <table class="q-table bordered highlight horizontal-delimiter striped-even compact text-center mobile-only small-text">
-        <thead>
-          <tr>
-            <th>仓号</th>
-            <th>最高温度</th>
-            <th>最低温度</th>
-            <th>平均温度</th>
-            <th>坏点数</th>
-            <th>仓内温度</th>
-            <th>仓外温度</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in list">
-            <td>{{item.Number}}</td>
-            <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
-            <td>{{item.MinimumTemperature}}</td>
-            <td>{{item.AverageTemperature}}</td>
-            <td :class="{'text-negative':item.BadPoints}">{{item.BadPoints}}</td>
-            <td :class="{'text-negative':item.InSideTemperature>=80}">{{item.InSideTemperature}}%RH</td>
-            <td>{{item.OutSideTemperature}}%RH</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="mobile-only">
+        <table class="q-table bordered highlight horizontal-delimiter striped-even text-center" v-show="$route.name === 'GrainList'">
+          <thead>
+            <tr>
+              <th>仓号</th>
+              <th>最高温度</th>
+              <th>最低温度</th>
+              <th>平均温度</th>
+              <th>坏点数</th>
+              <th>仓内温度</th>
+              <th>仓外温度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="(item, index) in list">
+              <tr v-if="item.Type === 1" v-link="{name: 'DuiWei', params: {id: index}}">
+                <td>{{item.Number}}</td>
+                <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
+                <td>{{item.MinimumTemperature}}</td>
+                <td>{{item.AverageTemperature}}</td>
+                <td :class="{'text-negative':item.BadPoints}">{{item.BadPoints}}</td>
+                <td :class="{'text-negative':item.InSideTemperature>=80}">{{item.InSideTemperature}}%RH</td>
+                <td>{{item.OutSideTemperature}}%RH</td>
+              </tr>
+              <tr v-else>
+                <td>{{item.Number}}</td>
+                <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
+                <td>{{item.MinimumTemperature}}</td>
+                <td>{{item.AverageTemperature}}</td>
+                <td :class="{'text-negative':item.BadPoints}">{{item.BadPoints}}</td>
+                <td :class="{'text-negative':item.InSideTemperature>=80}">{{item.InSideTemperature}}%RH</td>
+                <td>{{item.OutSideTemperature}}%RH</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  computed: {
+    cangNumber() {
+      const cang = this.list[this.$route.params.id];
+      if (cang) return cang.Number;
+      return ''
+    }
+  },
   data() {
     return {
       list: [
@@ -302,5 +321,8 @@ export default {
 }
 .q-table{
   font-size: 0.7rem;
+  th,td{
+    padding:0.5rem 0.3rem;
+  }
 }
 </style>
