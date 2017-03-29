@@ -1,0 +1,258 @@
+{
+    "Code": 1000,
+    "Msg": "³É¹¦",
+    "JsonValue": [
+        {
+            "ID": 11,
+            "Number": "Q2",
+            "Name": "Q2jiantongcang",
+            "Location": "shenzhenshibaoanqu",
+            "Type": 3,
+            "UserId": "0",
+            "AverageTemperature": 0,
+            "Maximumemperature": 0,
+            "MinimumTemperature": 0,
+            "InSideTemperature": null,
+            "OutSideTemperature": null,
+            "StampTime": "2017-03-28T09:13:00",
+            "IsActive": 1,
+            "Floors": [
+                {
+                    "ID": 16,
+                    "Number": "Q2-1",
+                    "Location": null,
+                    "WH_Number": "Q2",
+                    "UserId": null,
+                    "IsActive": 1,
+                    "GranaryList": [
+                        {
+                            "ID": 17,
+                            "Code": "1",
+                            "Number": "Q2-1-1",
+                            "Location": null,
+                            "Type": 2,
+                            "PID": null,
+                            "WH_ID": 11,
+                            "WH_Number": "Q2",
+                            "BadPoints": 0,
+                            "AverageTemperature": null,
+                            "AverageHumidity": null,
+                            "MaxiTemperature": null,
+                            "MinTemperature": null,
+                            "UserId": null,
+                            "IsActive": 1
+                        }
+                    ]
+                }
+            ],
+            "BadPoints": null
+        },
+        {
+            "ID": 10,
+            "Number": "T1",
+            "Name": "t1pingfangcang",
+            "Location": "shenzhenshibaoanqu",
+            "Type": 2,
+            "UserId": "0",
+            "AverageTemperature": 0,
+            "Maximumemperature": 0,
+            "MinimumTemperature": 0,
+            "InSideTemperature": null,
+            "OutSideTemperature": null,
+            "StampTime": "2017-03-28T09:09:44",
+            "IsActive": 1,
+            "Floors": [
+                {
+                    "ID": 13,
+                    "Number": "T1-1",
+                    "Location": null,
+                    "WH_Number": "T1",
+                    "UserId": null,
+                    "IsActive": 1,
+                    "GranaryList": [
+                        {
+                            "ID": 14,
+                            "Code": "1",
+                            "Number": "T1-1-1",
+                            "Location": null,
+                            "Type": 2,
+                            "PID": null,
+                            "WH_ID": 10,
+                            "WH_Number": "T1",
+                            "BadPoints": 0,
+                            "AverageTemperature": null,
+                            "AverageHumidity": null,
+                            "MaxiTemperature": null,
+                            "MinTemperature": null,
+                            "UserId": null,
+                            "IsActive": 1
+                        }
+                    ]
+                }
+            ],
+            "BadPoints": null
+        },
+        {
+            "ID": 1,
+            "Number": "L1",
+            "Name": "AÂ¥·¿²Ö",
+            "Location": "ÉîÛÚÊÐÁ¸Ê³¾Ö",
+            "Type": 1,
+            "UserId": "0",
+            "AverageTemperature": 25,
+            "Maximumemperature": 30,
+            "MinimumTemperature": 10,
+            "InSideTemperature": 25,
+            "OutSideTemperature": 26,
+            "StampTime": "2017-03-12T18:40:04.977",
+            "IsActive": 1,
+            "Floors": [
+                {
+                    "ID": 4,
+                    "Number": "L1-F2",
+                    "Location": "L1Â¥2²ã",
+                    "WH_Number": "L1",
+                    "UserId": 0,
+                    "IsActive": 1,
+                    "GranaryList": [
+                        {
+                            "ID": 3,
+                            "Code": "1",
+                            "Number": "L1-F2-A",
+                            "Location": "L1Â¥2²ãAâÚ¼ä",
+                            "Type": 2,
+                            "PID": 4,
+                            "WH_ID": 1,
+                            "WH_Number": "L1",
+                            "BadPoints": 0,
+                            "AverageTemperature": 22,
+                            "AverageHumidity": 32,
+                            "MaxiTemperature": null,
+                            "MinTemperature": null,
+                            "UserId": 0,
+                            "IsActive": 1
+                        }
+                    ]
+                },
+                {
+                    "ID": 5,
+                    "Number": "L1-F1",
+                    "Location": "L1Â¥1²ã",
+                    "WH_Number": "L1",
+                    "UserId": 0,
+                    "IsActive": 1,
+                    "GranaryList": [
+                        {
+                            "ID": 1,
+                            "Code": "1",
+                            "Number": "L1-F1-A",
+                            "Location": "L1Â¥1²ãAâÚ¼ä",
+                            "Type": 2,
+                            "PID": 5,
+                            "WH_ID": 1,
+                            "WH_Number": "L1",
+                            "BadPoints": 0,
+                            "AverageTemperature": 23,
+                            "AverageHumidity": 22,
+                            "MaxiTemperature": null,
+                            "MinTemperature": null,
+                            "UserId": 0,
+                            "IsActive": 1
+                        },
+                        {
+                            "ID": 2,
+                            "Code": "2",
+                            "Number": "L1-F1-B",
+                            "Location": "L1Â¥1²ãBâÚ¼ä",
+                            "Type": 2,
+                            "PID": 5,
+                            "WH_ID": 1,
+                            "WH_Number": "L1",
+                            "BadPoints": 0,
+                            "AverageTemperature": 42,
+                            "AverageHumidity": 33,
+                            "MaxiTemperature": null,
+                            "MinTemperature": null,
+                            "UserId": 0,
+                            "IsActive": 1
+                        }
+                    ]
+                },
+                {
+                    "ID": 6,
+                    "Number": "L1-F3",
+                    "Location": "L1Â¥3²ã",
+                    "WH_Number": "L1",
+                    "UserId": 0,
+                    "IsActive": 1,
+                    "GranaryList": []
+                }
+            ],
+            "BadPoints": 1
+        },
+        {
+            "ID": 2,
+            "Number": "L2",
+            "Name": "BÂ¥·¿²Ö",
+            "Location": "ÉîÛÚÊÐÁ¸Ê³¾Ö",
+            "Type": 1,
+            "UserId": "0",
+            "AverageTemperature": 20,
+            "Maximumemperature": 25,
+            "MinimumTemperature": 10,
+            "InSideTemperature": 25,
+            "OutSideTemperature": 26,
+            "StampTime": "2017-03-12T18:40:04.977",
+            "IsActive": 1,
+            "Floors": [
+                {
+                    "ID": 7,
+                    "Number": "L2-F1",
+                    "Location": "L2Â¥1²ã",
+                    "WH_Number": "L2",
+                    "UserId": 0,
+                    "IsActive": 1,
+                    "GranaryList": []
+                },
+                {
+                    "ID": 8,
+                    "Number": "L2-F5",
+                    "Location": "L2Â¥µÚ5²ã",
+                    "WH_Number": "L2",
+                    "UserId": 0,
+                    "IsActive": 1,
+                    "GranaryList": []
+                },
+                {
+                    "ID": 12,
+                    "Number": "L2-F2",
+                    "Location": "L2Â¥µÚ2²ã",
+                    "WH_Number": "L2",
+                    "UserId": 0,
+                    "IsActive": 0,
+                    "GranaryList": [
+                        {
+                            "ID": 11,
+                            "Code": "1",
+                            "Number": "L2-F2-A",
+                            "Location": "L2Â¥2²ãAâÚ¼ä",
+                            "Type": 2,
+                            "PID": 12,
+                            "WH_ID": 2,
+                            "WH_Number": "L2",
+                            "BadPoints": 0,
+                            "AverageTemperature": 0,
+                            "AverageHumidity": 0,
+                            "MaxiTemperature": null,
+                            "MinTemperature": null,
+                            "UserId": 0,
+                            "IsActive": 1
+                        }
+                    ]
+                }
+            ],
+            "BadPoints": 0
+        }
+    ],
+    "TextValue": ""
+}
