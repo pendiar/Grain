@@ -41,6 +41,14 @@
             </span>
           </div>
         </div>
+        <router-link tag="div" class="item item-link" :to="{name:'LiangCang',params:{id:cang.ID}}">
+          <div class="item-content has-secondary">
+            <span class="item-label">
+              粮食三温变化图
+            </span>
+          </div>
+          <i class="item-secondary">keyboard_arrow_right</i>
+        </router-link>
         <chuanganpingmian :code="cang.Number" v-if="PM"></chuanganpingmian>
         <chuangan3d :code="cang.Number" v-else></chuangan3d>
       </div>

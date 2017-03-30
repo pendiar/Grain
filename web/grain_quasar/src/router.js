@@ -35,6 +35,7 @@ export default new VueRouter({
         },
         { path: 'AoJian/:id', name: 'AoJian', component: load('view/AoJian') },
         { path: 'ChuanGan/:id', name: 'ChuanGan', component: load('view/ChuanGan') },
+        { path: 'LiangCang/:id', name: 'LiangCang', component: load('view/LiangCang') },
       ],
     },
     { path: '/layout', component: load('layout/Hello') }, // Not found
