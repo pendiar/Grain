@@ -43,8 +43,8 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="(item, index) in list">
-              <tr v-if="item.Type === 1" v-link="{name: 'DuiWei', params: {id: index}}">
+            <template v-for="(item, index) in GrainReport">
+              <tr v-if="item.Number.indexOf('L') === 0" v-link="{name: 'DuiWei', params: {id: index}}">
                 <td>{{item.Number}}</td>
                 <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
                 <td>{{item.MinimumTemperature}}</td>
@@ -230,9 +230,27 @@ export default {
             ],
           "BadPoints": 2
         },
-      ]
+      ],
+      GrainReport: [],
     };
   },
+  beforeRouteEnter: (to, from, next) => {
+    next((vm) => {
+      vm.$http.get(`${vm.serverAddress}/Grain/GetList_GrainReport_ByUserId`).then((response) => {
+        if (response.data.Code === 1000) {
+          try{
+            vm.GrainReport = JSON.parse(response.data.JsonValue);
+          } catch (e) {
+            vm.GrainReport = [];
+          }
+        } else {
+          vm.GrainReport = [];
+        }
+      })
+    }, () => {
+      vm.GrainReport = [];
+    });
+  }
 }
 </script>
 

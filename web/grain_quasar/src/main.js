@@ -22,6 +22,14 @@ Vue.component('chuangan3d', chuangan3d)
 Vue.component('chuanganpingmian', chuanganpingmian) 
 Vue.component('chuanganchart', chuanganchart) 
 
+Vue.mixin({
+  data() {
+    return {
+      serverAddress:'/api',
+    }
+  }
+})
+
 Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({
