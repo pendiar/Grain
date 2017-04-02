@@ -5,7 +5,7 @@
     <div class="layout-padding">
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
-        <cang-card v-for="cang in LDList.Cang" :key="cang.ID" :cang="cang"></cang-card>
+        <cang-card v-for="cang in GrainReport" :key="cang.ID" :cang="cang"></cang-card>
       </div>
     </div>
   </div>
@@ -20,6 +20,7 @@ export default {
   },
   data() {
     return {
+      GrainReport: [],
       LDList: {
         "ID": 1,
         "Number": "L1-F1-A",
@@ -76,6 +77,29 @@ export default {
       },
     };
   },
+  beforeRouteEnter: (to, from, next) => {
+    next((vm) => {
+      if(to.params.id) vm.$http.post(`${vm.serverAddress}/Granary/GetHeapList`, [
+          "PageIndex^1",
+          "PageCount^20",
+          `wCode^${to.query.WH_Number}`,
+          `gCode^${to.query.Number}`,
+          "UserId^0"
+      ]).then((response) => {
+        if (response.data.Code === 1000) {
+          try{
+            vm.GrainReport = JSON.parse(response.data.JsonValue);
+          } catch (e) {
+            vm.GrainReport = [];
+          }
+        } else {
+          vm.GrainReport = [];
+        }
+      }, () => {
+        vm.GrainReport = [];
+      })
+    })
+  }
 };
 </script>
 

@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in list">
+      <tr v-for="item in GetList">
         <td>{{item.Number}}</td>
         <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
         <td>{{item.MinimumTemperature}}</td>
@@ -28,75 +28,25 @@
 export default {
   data() {
     return {
-      list: [
-        {
-          "ID": 9,
-          "Number": "D2",
-          "Name": "堆位2",
-          "Location": "深证市宝安区",
-          "Type": 2,
-          "UserId": "0",
-          "AverageTemperature": 24,
-          "Maximumemperature": 29,
-          "MinimumTemperature": 20,
-          "InSideTemperature": 24,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-25T10:53:46.367",
-          "IsActive": 1,
-          "Floors": [],
-          "BadPoints": 0
-        },
-        {
-          "ID": 8,
-          "Number": "D1",
-          "Name": "堆位1",
-          "Location": "深证市宝安区",
-          "Type": 3,
-          "UserId": "0",
-          "AverageTemperature": 25,
-          "Maximumemperature": 30,
-          "MinimumTemperature": 21,
-          "InSideTemperature": 25,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-25T10:52:49.147",
-          "IsActive": 1,
-          "Floors": [],
-          "BadPoints": 0
-        },
-        {
-          "ID": 7,
-          "Number": "D5",
-          "Name": "堆位3",
-          "Location": "深证市宝安区",
-          "Type": 1,
-          "UserId": "0",
-          "AverageTemperature": 0,
-          "Maximumemperature": 0,
-          "MinimumTemperature": 0,
-          "InSideTemperature": 81,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-16T17:24:46",
-          "IsActive": 1,
-          "BadPoints": 0
-        },
-        {
-          "ID": 6,
-          "Number": "D6",
-          "Name": "堆位6",
-          "Location": "深证市宝安区",
-          "Type": 1,
-          "UserId": "0",
-          "AverageTemperature": 0,
-          "Maximumemperature": 0,
-          "MinimumTemperature": 0,
-          "InSideTemperature": 25,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-13T19:55:32",
-          "IsActive": 1,
-          "BadPoints": 2
-        },
-      ]
+      GetList: []
     };
+  },
+  beforeRouteEnter: (to, from, next) => {
+    next((vm) => {
+      vm.$http.get(`${vm.serverAddress}/Grain/HeapsTemp_GetList/${to.params.id}`).then((response) => {
+        if (response.data.Code === 1000) {
+          try{
+            vm.GetList = JSON.parse(response.data.JsonValue);
+          } catch (e) {
+            vm.GetList = [];
+          }
+        } else {
+          vm.GetList = [];
+        }
+      }, () => {
+        vm.GetList = [];
+      });
+    });
   },
 }
 </script>
@@ -104,8 +54,9 @@ export default {
 <style lang="less" scoped>
 .q-table{
   font-size: 0.7rem;
+  width: 100%;
   th,td{
-    padding:0.5rem 0.3rem;
+    padding:0.5rem 0;
   }
 }
 </style>

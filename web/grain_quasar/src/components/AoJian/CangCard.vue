@@ -3,7 +3,7 @@
     <div class="card" :class="{worn:cang.AverageTemperature>35,error:cang.AverageTemperature>45}">
       <div class="item">
         <div class="item-content has-secondary">
-          {{cang.Location}}
+          {{cang.Number}}
         </div>
         <span class="cangStatus"></span>
         <span class="item-secondary" @click="toggle">
@@ -11,7 +11,7 @@
         </span>
       </div>
       <div class="list bordered inner-delimiter highlight">
-        <div class="item">
+        <!-- <div class="item">
           <div class="item-content">
             <span class="item-label">
               粮堆编号：
@@ -20,7 +20,7 @@
               {{cang.Number}}
             </span>
           </div>
-        </div>
+        </div> -->
         <div class="item">
           <div class="item-content">
             <span class="item-label">
@@ -41,7 +41,7 @@
             </span>
           </div>
         </div>
-        <router-link tag="div" class="item item-link" :to="{name:'LiangCang',params:{id:cang.ID}}">
+        <router-link tag="div" class="item item-link" :to="{name:'LiangCang',params:{id:cang.Number}}">
           <div class="item-content has-secondary">
             <span class="item-label">
               粮食三温变化图
@@ -49,8 +49,8 @@
           </div>
           <i class="item-secondary">keyboard_arrow_right</i>
         </router-link>
-        <chuanganpingmian :code="cang.Number" v-if="PM"></chuanganpingmian>
-        <chuangan3d :code="cang.Number" v-else></chuangan3d>
+        <chuanganpingmian :sensorList="cang.SensorList" v-if="PM"></chuanganpingmian>
+        <chuangan3d :sensorList="cang.SensorList" v-else></chuangan3d>
       </div>
     </div>
   </div>

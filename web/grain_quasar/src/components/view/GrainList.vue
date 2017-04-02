@@ -14,10 +14,10 @@
             <div class="card-content">
               <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"></i></div>
               <div class="grain-content">
-                <div class="grain-floor" v-for="floor in grain.Floors" :style="{height:100/grain.Floors.length+'%'}">
-                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.ID}}">
+                <div class="grain-floor" v-for="floor in grain.Floors.slice().reverse()" :style="{height:100/grain.Floors.length+'%'}">
+                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.Number},query:granary}">
                     {{granary.Number}}
-                    <q-tooltip>
+                    <q-tooltip :ref="granary.Number">
                       <p>{{granary.Location}}</p>
                       <p>平均温度：{{granary.AverageTemperature}}°C</p>
                       <p>平均湿度：{{granary.AverageHumidity}}%</p>
@@ -44,7 +44,7 @@
           </thead>
           <tbody>
             <template v-for="(item, index) in GrainReport">
-              <tr v-if="item.Number.indexOf('L') === 0" v-link="{name: 'DuiWei', params: {id: index}}">
+              <tr v-if="item.Number.indexOf('L') === 0" v-link="{name: 'DuiWei', params: {id: item.Number}}">
                 <td>{{item.Number}}</td>
                 <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
                 <td>{{item.MinimumTemperature}}</td>
@@ -82,160 +82,38 @@ export default {
   },
   data() {
     return {
-      list: [
-        {
-          "ID": 9,
-          "Number": "T2",
-          "Name": "平房仓2",
-          "Location": "深证市宝安区",
-          "Type": 2,
-          "UserId": "0",
-          "AverageTemperature": 24,
-          "Maximumemperature": 29,
-          "MinimumTemperature": 20,
-          "InSideTemperature": 24,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-25T10:53:46.367",
-          "IsActive": 1,
-          "Floors": [],
-          "BadPoints": 0
-        },
-        {
-          "ID": 8,
-          "Number": "Q1",
-          "Name": "立筒仓1",
-          "Location": "深证市宝安区",
-          "Type": 3,
-          "UserId": "0",
-          "AverageTemperature": 25,
-          "Maximumemperature": 30,
-          "MinimumTemperature": 21,
-          "InSideTemperature": 25,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-25T10:52:49.147",
-          "IsActive": 1,
-          "Floors": [],
-          "BadPoints": 0
-        },
-        {
-          "ID": 7,
-          "Number": "L5",
-          "Name": "E楼房仓",
-          "Location": "深证市宝安区",
-          "Type": 1,
-          "UserId": "0",
-          "AverageTemperature": 0,
-          "Maximumemperature": 0,
-          "MinimumTemperature": 0,
-          "InSideTemperature": 81,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-16T17:24:46",
-          "IsActive": 1,
-          "Floors": [
-            {
-              "ID": 1,
-              "Number": "L1-F1",
-              "Location": "L1楼1层",
-              "WH_Number": "L1",
-              "UserId": 0,
-              "IsActive": 1,
-              "GranaryList": [
-                {
-                  "ID": 1,
-                  "Number": "L1-F1-A",
-                  "Location": "L1楼1层A廒间",
-                  "F_Number": "L1-F1",
-                  "AverageTemperature": 23,
-                  "AverageHumidity": 22,
-                  "UserId": 0,
-                  "IsActive": 1
-                },
-                {
-                  "ID": 2,
-                  "Number": "L1-F1-B",
-                  "Location": "L1楼1层B廒间",
-                  "F_Number": "L1-F1",
-                  "AverageTemperature": 42,
-                  "AverageHumidity": 33,
-                  "UserId": 0,
-                  "IsActive": 1
-                },
-              ]
-            },
-            {
-                "ID": 2,
-                "Number": "L1-F2",
-                "Location": "L1楼2层",
-                "WH_Number": "L1",
-                "UserId": 0,
-                "IsActive": 1,
-                "GranaryList": [
-                    {
-                        "ID": 3,
-                        "Number": "L1-F2-A",
-                        "Location": "L1楼2层A廒间",
-                        "F_Number": "L1-F2",
-                        "AverageTemperature": 22,
-                        "AverageHumidity": 32,
-                        "UserId": 0,
-                        "IsActive": 1
-                    }
-                ]
-            },
-            {
-              "ID": 3,
-              "Number": "L1-F3",
-              "Location": "L1楼3层",
-              "WH_Number": "L1",
-              "UserId": 0,
-              "IsActive": 1,
-              "GranaryList": [],
-            },
-          ],
-          "BadPoints": 0
-        },
-        {
-          "ID": 6,
-          "Number": "L6",
-          "Name": "F楼房仓",
-          "Location": "深证市宝安区",
-          "Type": 1,
-          "UserId": "0",
-          "AverageTemperature": 0,
-          "Maximumemperature": 0,
-          "MinimumTemperature": 0,
-          "InSideTemperature": 25,
-          "OutSideTemperature": 26,
-          "StampTime": "2017-03-13T19:55:32",
-          "IsActive": 1,
-          "Floors": [
-                {
-                    "ID": 4,
-                    "Number": "L2-F1",
-                    "Location": "L2楼1层",
-                    "WH_Number": "L2",
-                    "UserId": 0,
-                    "IsActive": 1,
-                    "GranaryList": []
-                },
-                {
-                    "ID": 6,
-                    "Number": "L2-F5",
-                    "Location": "L2楼第5层",
-                    "WH_Number": "L2",
-                    "UserId": 1,
-                    "IsActive": 0,
-                    "GranaryList": []
-                }
-            ],
-          "BadPoints": 2
-        },
-      ],
+      list: [],
       GrainReport: [],
     };
   },
-  beforeRouteEnter: (to, from, next) => {
+  beforeRouteEnter(to, from, next) {
     next((vm) => {
+      // PC端接口
+      vm.$http.post(`${vm.serverAddress}/Grain/GetList`, {
+        "DicList": [
+            "Type^0",
+            "UserId^0"
+        ],
+        "OrderType": 0,
+        "PageCount": 20,
+        "PageIndex": 1,
+        "UpdateTime": "",
+        "EndDate": "2017-12-11",
+        "StartDate": "2016-11-11"
+      }).then((response) => {
+        if (response.data.Code === 1000) {
+          try{
+            vm.list = JSON.parse(response.data.JsonValue);
+          } catch (e) {
+            vm.list = [];
+          }
+        } else {
+          vm.list = [];
+        }
+      }, () => {
+        vm.list = [];
+      });
+      // 移动端接口
       vm.$http.get(`${vm.serverAddress}/Grain/GetList_GrainReport_ByUserId`).then((response) => {
         if (response.data.Code === 1000) {
           try{
@@ -246,10 +124,15 @@ export default {
         } else {
           vm.GrainReport = [];
         }
-      })
-    }, () => {
-      vm.GrainReport = [];
+      }, () => {
+        vm.GrainReport = [];
+      });
     });
+  },
+  beforeRouteLeave(to, from, next) {
+    // console.log(this.$refs[to.params.id]);
+    this.$refs[to.params.id][0].close();
+    next();
   }
 }
 </script>
@@ -339,6 +222,7 @@ export default {
 }
 .q-table{
   font-size: 0.7rem;
+  width: 100%;
   th,td{
     padding:0.5rem 0.3rem;
   }
