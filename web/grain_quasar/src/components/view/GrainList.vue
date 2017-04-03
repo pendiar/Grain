@@ -4,7 +4,10 @@
     <!-- your content -->
     <div class="layout-padding">
       <!-- if you want automatic padding -->
-      <p class="quote">{{$route.name==='GrainList'?'所有仓库':`${cangNumber}粮仓`}}温度状态</p>
+      <p class="quote">
+        {{$route.name==='GrainList'?'所有仓库':`${cangNumber}粮仓`}}温度状态
+        <button class="primary small raised float-right" @click="$refs.add.open()"><i class="on-left">add</i> 添加</button>
+      </p>
       <div class="row wrap gutter desktop-only">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="grain in list">
           <div class="card">
@@ -67,6 +70,123 @@
         </table>
         <router-view></router-view>
       </div>
+      <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+        <q-layout>
+          <div slot="header" class="toolbar">
+            <button @click="$refs.add.close()">
+              <i>keyboard_arrow_left</i>
+            </button>
+            <q-toolbar-title :padding="1">
+              添加粮仓
+            </q-toolbar-title>
+          </div>
+          <!-- <q-tabs :refs="$refs" default-tab="liangcang" slot="navigation">
+            <q-tab name="liangcang">粮仓信息</q-tab>
+            <q-tab :name="'louceng-'+index" v-for="(louCeng, index) in louCengData">楼层{{louCeng.Code}}</q-tab>
+            <button><i class="to-left">add</i>添加楼层</button>
+          </q-tabs> -->
+          <div class="q-tabs row" slot="navigation">
+            <div class="q-tabs-scroller row">
+              <div class="q-tab items-center justify-center" :class="{active:activeTab === 'liangcang'}">
+                <span class="q-tab-label" @click="activeTabs('liangcang')">粮仓信息</span>
+              </div>
+              <div class="q-tab items-center justify-center" :class="{active:activeTab === ('louceng'+index)}" v-for="(louCeng, index) in louCengData">
+                <span class="q-tab-label" @click="activeTabs('louceng'+index)">楼层</span>
+              </div>
+              <div class="q-tab">
+                <button><i class="to-left">add</i>添加楼层</button>
+              </div>
+            </div>
+          </div>
+          <div class="layout-view">
+            <div v-show="activeTab === 'liangcang'">
+              <div class="list no-border inner-delimiter highlight">
+                <div class="item">
+                  <div class="item-content">
+                    粮仓类型：
+                    <q-select
+                      type="radio"
+                      v-model="liangCangData.Type"
+                      :options="TypeOptions"
+                    ></q-select>
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="item-content">
+                    编号：<input v-model="liangCangData.Number" placeholder="粮仓编号" @blur="IsExistNumber">
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="item-content">
+                    名称：<input v-model="liangCangData.Name" placeholder="粮仓名称">
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="item-content">
+                    位置：<input v-model="liangCangData.Location" placeholder="粮仓位置">
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="item-content">
+                    <div class="row">
+                      <div class="auto">宽：<input v-model="liangCangData.Width" placeholder="粮仓宽"></div>
+                      <div class="auto">高：<input v-model="liangCangData.Height" placeholder="粮仓高"></div>
+                      <div class="auto">长：<input v-model="liangCangData.depth" placeholder="粮仓长"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-show="activeTab === ('louceng'+index)" v-for="(louCeng, index) in louCengData">
+              <div class="list no-border inner-delimiter highlight">
+                <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">编号：</div>
+                    <input class="auto" v-model="louCeng.Code" placeholder="楼层编号">
+                  </div>
+                </div>
+                <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">Number：</div>
+                    <input class="auto" v-model="louCeng.Number" placeholder="楼层编号（全）">
+                  </div>
+                </div>
+                <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">地址：</div>
+                    <input class="auto" v-model="louCeng.Location" placeholder="楼层地址">
+                  </div>
+                </div>
+              </div>
+              <div class="list inner-delimiter highlight" v-for="aoJian in aoJianData[index]">
+                <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">编号：</div>
+                    <input class="auto" v-model="aoJian.Code" placeholder="厫间编号">
+                  </div>
+                </div>
+                <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">Number：</div>
+                    <input class="auto" v-model="aoJian.Number" placeholder="厫间编号（全）">
+                  </div>
+                </div>
+                <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">地址：</div>
+                    <input class="auto" v-model="aoJian.Location" placeholder="厫间地址">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div slot="footer" class="toolbar">
+            <button @click="submitLiangCang">
+              保存
+            </button>
+          </div>
+        </q-layout>
+      </q-modal>
     </div>
   </div>
 </template>
@@ -84,7 +204,60 @@ export default {
     return {
       list: [],
       GrainReport: [],
+      liangCangData: {
+        Type: 1,
+        Number: '',
+        Name: '',
+        Location: '',
+        Width: '',
+        Height: '',
+        depth: '',
+      },
+      louCengData: [
+        { Code: '', Number: '', Location: '' }
+      ],
+      aoJianData: [[{ Code: '', Number: '', Location: '' }]],
+      TypeOptions: [
+        {
+          label: '楼房仓',
+          value: '1'
+        },
+        {
+          label: '平方仓',
+          value: '2'
+        },
+        {
+          label: '立筒仓',
+          value: '3'
+        },
+      ],
+      activeTab: 'liangcang',
+      liangcangNumber: false
     };
+  },
+  methods: {
+    activeTabs(name) {
+      this.activeTab = name;
+    },
+    IsExistNumber() {
+      if (this.liangCangData.Number) this.$http.get(`${this.serverAddress}/Grain/IsExist/${this.liangCangData.Number}`).then((response) => {
+        // if (response.data.Code === 1011) {
+          this.liangcangNumber = response.data.Code === 1011;
+        // }
+      },() => {
+        this.liangcangNumber = false;
+      });
+    },
+    submitLiangCang() {
+      this.$http.post(`${this.serverAddress}/Grain/Add`, this.liangCangData).then((response) => {
+        if (response.data.Code === 1000) {
+          console.log(response.data.JsonValue)
+        }
+      })
+    }
+  },
+  mounted() {
+    console.log(this)
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -131,7 +304,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     // console.log(this.$refs[to.params.id]);
-    this.$refs[to.params.id][0].close();
+    this.$refs[to.params.id] && this.$refs[to.params.id][0] && this.$refs[to.params.id][0].close();
     next();
   }
 }
