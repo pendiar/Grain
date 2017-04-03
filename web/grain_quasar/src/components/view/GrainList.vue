@@ -6,17 +6,18 @@
       <!-- if you want automatic padding -->
       <p class="quote">
         {{$route.name==='GrainList'?'XXX粮库':`${cangNumber}粮仓`}}温度状态
-        <button class="primary small raised float-right" @click="$refs.add.open()"><i class="on-left">add</i> 添加</button>
+        <button class="primary small raised float-right" @click="edit(null)"><i class="on-left">add</i> 添加</button>
       </p>
       <div class="row wrap gutter desktop-only">
-        <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="grain in list">
+        <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="(grain, index) in list">
           <div class="card">
             <div class="card-title bg-primary text-white">
               {{grain.Name}}
+              <button class="primary small float-right" @click="edit(index)"><i class="on-left">edit</i> 编辑</button>
             </div>
             <div class="card-content">
-              <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"></i></div>
-              <div class="grain-content">
+              <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
+              <div class="grain-content" :class="[grain.Type===3?'bottom-icon-yuan':'']">
                 <div class="grain-floor" v-for="floor in grain.Floors.slice().reverse()" :style="{height:100/grain.Floors.length+'%'}">
                   <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.Number},query:granary}">
                     {{granary.Number}}
@@ -27,6 +28,7 @@
                     </q-tooltip>
                   </div>
                 </div>
+                <span></span>
               </div>
             </div>
           </div>
@@ -70,191 +72,43 @@
         </table>
         <router-view></router-view>
       </div>
-      <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-        <q-layout>
-          <div slot="header" class="toolbar">
-            <button @click="$refs.add.close()">
-              <i>keyboard_arrow_left</i>
-            </button>
-            <q-toolbar-title :padding="1">
-              添加粮仓
-            </q-toolbar-title>
-          </div>
-          <!-- <q-tabs :refs="$refs" default-tab="liangcang" slot="navigation">
-            <q-tab name="liangcang">粮仓信息</q-tab>
-            <q-tab :name="'louceng-'+index" v-for="(louCeng, index) in louCengData">楼层{{louCeng.Code}}</q-tab>
-            <button><i class="to-left">add</i>添加楼层</button>
-          </q-tabs> -->
-          <div class="q-tabs row" slot="navigation">
-            <div class="q-tabs-scroller row">
-              <div class="q-tab items-center justify-center" :class="{active:activeTab === 'liangcang'}">
-                <span class="q-tab-label" @click="activeTabs('liangcang')">粮仓信息</span>
-              </div>
-              <div class="q-tab items-center justify-center" :class="{active:activeTab === ('louceng'+index)}" v-for="(louCeng, index) in louCengData">
-                <span class="q-tab-label" @click="activeTabs('louceng'+index)">楼层</span>
-              </div>
-              <div class="q-tab">
-                <button><i class="to-left">add</i>添加楼层</button>
-              </div>
-            </div>
-          </div>
-          <div class="layout-view">
-            <div v-show="activeTab === 'liangcang'">
-              <div class="list no-border inner-delimiter highlight">
-                <div class="item">
-                  <div class="item-content">
-                    粮仓类型：
-                    <q-select
-                      type="radio"
-                      v-model="liangCangData.Type"
-                      :options="TypeOptions"
-                    ></q-select>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="item-content">
-                    编号：<input v-model="liangCangData.Number" placeholder="粮仓编号" @blur="IsExistNumber">
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="item-content">
-                    名称：<input v-model="liangCangData.Name" placeholder="粮仓名称">
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="item-content">
-                    位置：<input v-model="liangCangData.Location" placeholder="粮仓位置">
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="item-content">
-                    <div class="row">
-                      <div class="auto">宽：<input v-model="liangCangData.Width" placeholder="粮仓宽"></div>
-                      <div class="auto">高：<input v-model="liangCangData.Height" placeholder="粮仓高"></div>
-                      <div class="auto">长：<input v-model="liangCangData.depth" placeholder="粮仓长"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-show="activeTab === ('louceng'+index)" v-for="(louCeng, index) in louCengData">
-              <div class="list no-border inner-delimiter highlight">
-                <div class="item multiple-lines">
-                  <div class="item-content row items-center wrap">
-                    <div style="margin-right: 10px;" class="item-label">编号：</div>
-                    <input class="auto" v-model="louCeng.Code" placeholder="楼层编号">
-                  </div>
-                </div>
-                <div class="item multiple-lines">
-                  <div class="item-content row items-center wrap">
-                    <div style="margin-right: 10px;" class="item-label">Number：</div>
-                    <input class="auto" v-model="louCeng.Number" placeholder="楼层编号（全）">
-                  </div>
-                </div>
-                <div class="item multiple-lines">
-                  <div class="item-content row items-center wrap">
-                    <div style="margin-right: 10px;" class="item-label">地址：</div>
-                    <input class="auto" v-model="louCeng.Location" placeholder="楼层地址">
-                  </div>
-                </div>
-              </div>
-              <div class="list inner-delimiter highlight" v-for="aoJian in aoJianData[index]">
-                <div class="item multiple-lines">
-                  <div class="item-content row items-center wrap">
-                    <div style="margin-right: 10px;" class="item-label">编号：</div>
-                    <input class="auto" v-model="aoJian.Code" placeholder="厫间编号">
-                  </div>
-                </div>
-                <div class="item multiple-lines">
-                  <div class="item-content row items-center wrap">
-                    <div style="margin-right: 10px;" class="item-label">Number：</div>
-                    <input class="auto" v-model="aoJian.Number" placeholder="厫间编号（全）">
-                  </div>
-                </div>
-                <div class="item multiple-lines">
-                  <div class="item-content row items-center wrap">
-                    <div style="margin-right: 10px;" class="item-label">地址：</div>
-                    <input class="auto" v-model="aoJian.Location" placeholder="厫间地址">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div slot="footer" class="toolbar">
-            <button @click="submitLiangCang">
-              保存
-            </button>
-          </div>
-        </q-layout>
+      <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @open="modalEvent('open')" @close="modalEvent('close')">
+        <edit-grain :grain-data="list[EditIndex]" v-if="showModal" @hide="$refs.edit.close()"></edit-grain>
       </q-modal>
     </div>
   </div>
 </template>
 
 <script>
+import EditGrain from 'components/GrainList/EditGrain';
+
 export default {
+  components: {
+    EditGrain,
+  },
   computed: {
     cangNumber() {
       const cang = this.list[this.$route.params.id];
       if (cang) return cang.Number;
-      return ''
-    }
+      return '';
+    },
   },
   data() {
     return {
       list: [],
       GrainReport: [],
-      liangCangData: {
-        Type: 1,
-        Number: '',
-        Name: '',
-        Location: '',
-        Width: '',
-        Height: '',
-        depth: '',
-      },
-      louCengData: [
-        { Code: '', Number: '', Location: '' }
-      ],
-      aoJianData: [[{ Code: '', Number: '', Location: '' }]],
-      TypeOptions: [
-        {
-          label: '楼房仓',
-          value: '1'
-        },
-        {
-          label: '平方仓',
-          value: '2'
-        },
-        {
-          label: '立筒仓',
-          value: '3'
-        },
-      ],
-      activeTab: 'liangcang',
-      liangcangNumber: false
+      showModal: false,
+      EditIndex: null,
     };
   },
   methods: {
-    activeTabs(name) {
-      this.activeTab = name;
+    edit(index) {
+      this.EditIndex = index;
+      this.$refs.edit.open();
     },
-    IsExistNumber() {
-      if (this.liangCangData.Number) this.$http.get(`${this.serverAddress}/Grain/IsExist/${this.liangCangData.Number}`).then((response) => {
-        // if (response.data.Code === 1011) {
-          this.liangcangNumber = response.data.Code === 1011;
-        // }
-      },() => {
-        this.liangcangNumber = false;
-      });
+    modalEvent(e) {
+      this.showModal = e === 'open';
     },
-    submitLiangCang() {
-      this.$http.post(`${this.serverAddress}/Grain/Add`, this.liangCangData).then((response) => {
-        if (response.data.Code === 1000) {
-          console.log(response.data.JsonValue)
-        }
-      })
-    }
   },
   mounted() {
     console.log(this)
@@ -311,6 +165,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+@floorColor: #00b6ff;
+
 .grain-list{
   width: 100%;
   height: 100%;
@@ -331,26 +187,65 @@ export default {
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: 0 90px 50px;
+      border-width: 0 72px 50px;
       border-color: transparent transparent #000;
       &:after{
         content: "";
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: 0 86px 48px;
+        border-width: 0 68px 48px;
         border-color: transparent transparent #fff;
         position: absolute;
         top: 1px;
-        left: -86px;
+        left: -68px;
       }
     }
     &.top-icon-yuan{
-      width: 180px;
-      height: 55px;
-      border: 1px solid #000;
-      border-radius: 50% ~"/" 37px 37px 18px 18px;
-      background-color: #fff;
+      &:before{
+        content: "";
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 72px 50px;
+        border-color: transparent transparent #000;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -72px;
+      }
+      &:after{
+        content: "";
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 70px 48px;
+        border-color: transparent transparent #fff;
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        margin-left: -70px;
+      }
+      span{
+        position: absolute;
+        bottom: -68px;
+        width: 100%;
+        height: 18px;
+        overflow: hidden;
+        &:after{
+          content: "";
+          display:block;
+          width: 144px;
+          height: 50px;
+          border: 1px solid #000;
+          border-radius: 50% ~"/" 37px 37px 18px 18px;
+          background-color: #fff;
+          position: absolute;
+          top: -40px;
+          left: 50%;
+          margin-left: -72px;
+        }
+      }
     }
   }
 }
@@ -370,10 +265,36 @@ export default {
   /*min-height: 160px;*/
   border: 1px solid #000;
   margin: 0 auto;
+  &.bottom-icon-yuan{
+    height: 140px;
+    margin-bottom: 20px;
+    >span{
+      position: absolute;
+      left: 0;
+      bottom: 20px;
+      width: 100%;
+      height: 15px;
+      overflow: hidden;
+      &:after{
+        content: "";
+        display:block;
+        width: 142px;
+        height: 50px;
+        border: 1px solid #000;
+        border-radius: 50% ~"/" 37px 37px 18px 18px;
+        background-color: #fff;
+        position: absolute;
+        top: -36px;
+        left: 50%;
+        margin-left: -71px;
+        background-color: @floorColor;
+      }
+    }
+  }
 }
 .grain-floor{
   border-bottom: 1px solid;
-  background-color: #00b6ff;
+  background-color: @floorColor;
   display: flex;
   &:last-child{
     border-bottom: none;

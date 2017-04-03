@@ -4,20 +4,20 @@
       <q-toolbar-title :padding="1">
         粮仓信息
       </q-toolbar-title>
-      <!-- opens drawer below -->
+      <!-- opens drawer below
       <button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
         <i>menu</i>
-      </button>
+      </button> -->
     </div>
 
     <!-- Navigation Tabs -->
     <q-tabs slot="navigation">
-      <q-tab icon="mail" route="/Grain/GrainList" exact replace>粮仓</q-tab>
-      <q-tab icon="alarm" route="/Grain/AoJian/0" exact replace>粮堆</q-tab>
-      <q-tab icon="help" route="/Grain/ChuanGan/0" exact replace>传感器</q-tab>
+      <q-tab icon="mail" route="/Grain/GrainList" exact replace>粮仓监控</q-tab>
+      <q-tab icon="alarm" route="/error" exact>粮食信息</q-tab>
+      <q-tab icon="help" route="/error" exact>其他管理</q-tab>
     </q-tabs>
 
-    <!-- Drawer -->
+    <!-- Drawer
     <q-drawer ref="drawer">
       <div class="toolbar">
         <q-toolbar-title>
@@ -36,7 +36,7 @@
           粮仓管理
         </q-drawer-link>
       </div>
-    </q-drawer>
+    </q-drawer> -->
 
     <keep-alive>
       <router-view class="layout-view"></router-view>
