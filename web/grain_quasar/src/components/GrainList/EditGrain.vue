@@ -1,0 +1,287 @@
+<template>
+    <q-layout>
+        <div slot="header" class="toolbar">
+        <button @click="$refs.add.close()">
+            <i>keyboard_arrow_left</i>
+        </button>
+        <q-toolbar-title :padding="1">
+            添加粮仓
+        </q-toolbar-title>
+        </div>
+        <!-- <q-tabs :refs="$refs" default-tab="liangcang" slot="navigation">
+        <q-tab name="liangcang">粮仓信息</q-tab>
+        <q-tab :name="'louceng-'+index" v-for="(louCeng, index) in louCengData">楼层{{louCeng.Code}}</q-tab>
+        <button><i class="to-left">add</i>添加楼层</button>
+        </q-tabs> -->
+        <div class="q-tabs row" slot="navigation">
+        <div class="q-tabs-scroller row">
+            <div class="q-tab items-center justify-center" :class="{active:activeTab === 'liangcang'}">
+            <span class="q-tab-label" @click="activeTabs('liangcang')">粮仓信息</span>
+            </div>
+            <template v-if="submited.liangcang">
+            <div class="q-tab items-center justify-center" :class="{active:activeTab === ('louceng-'+index)}" v-for="(louCeng, index) in louCengData">
+                <span class="q-tab-label" @click="activeTabs('louceng-'+index)">楼层{{louCeng.Code}}</span>
+            </div>
+            <div class="q-tab" v-if="liangCangData.Type === 1">
+                <button @click="addLouCeng"><i class="to-left">add</i>添加楼层</button>
+            </div>
+            </template>
+        </div>
+        </div>
+        <div class="layout-view">
+        <div v-show="activeTab === 'liangcang'">
+            <div class="list no-border inner-delimiter highlight">
+            <div class="item">
+                <div class="item-content">
+                粮仓类型：
+                <q-select
+                    type="radio"
+                    v-model="liangCangData.Type"
+                    :options="TypeOptions"
+                    :disable="!!GrainData"
+                ></q-select>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                编号：<input v-model="liangCangData.Number" placeholder="粮仓编号" @blur="IsExistNumber('Grain', liangCangData.Number)"><span v-if="this.number.Grain===false" class="text-red">该编号已存在</span>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                名称：<input v-model="liangCangData.Name" placeholder="粮仓名称">
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                位置：<input v-model="liangCangData.Location" placeholder="粮仓位置">
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-content">
+                <div class="row">
+                    <div class="auto">宽：<input v-model="liangCangData.Width" placeholder="粮仓宽"></div>
+                    <div class="auto">高：<input v-model="liangCangData.Height" placeholder="粮仓高"></div>
+                    <div class="auto">长：<input v-model="liangCangData.depth" placeholder="粮仓长"></div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div v-show="activeTab === ('louceng-'+index)" v-for="(louCeng, index) in louCengData" v-if="submited.liangcang">
+            <div class="list no-border inner-delimiter highlight">
+              <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">编号：</div>
+                    <input class="auto" v-model="louCeng.Code" placeholder="楼层编号" @blur="IsExistNumber('Granary', liangCangData.Number + '-' + louCeng.Code, 1, louCeng)">
+                  </div>
+              </div>
+              <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">Number：</div>
+                    {{liangCangData.Number + '-' + louCeng.Code}}
+                  </div>
+              </div>
+              <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">地址：</div>
+                    <input class="auto" v-model="louCeng.Location" placeholder="楼层地址">
+                  </div>
+              </div>
+              <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">最大正常温度：</div>
+                    <input class="auto" v-model="louCeng.MaxiTemperature" placeholder="最大正常温度">
+                  </div>
+              </div>
+              <div class="item multiple-lines">
+                  <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">最小正常温度：</div>
+                    <input class="auto" v-model="louCeng.MinTemperature" placeholder="最小正常温度">
+                  </div>
+              </div>
+            </div>
+            <div class="card">
+            <div class="card-title">
+                厫间列表
+                <button @click="addAoJian(index)" class="primary small raised float-right"><i class="to-left">add</i>添加厫间</button>
+            </div>
+            <div class="list bordered inner-delimiter highlight" v-for="aoJian in aoJianData[index]">
+                <div class="item multiple-lines">
+                <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">编号：</div>
+                    <input class="auto" v-model="aoJian.Code" placeholder="厫间编号" @blur="IsExistNumber('Granary', liangCangData.Number + '-' + aoJian.Code + '-' + louCeng.Code, 2)">
+                </div>
+                </div>
+                <div class="item multiple-lines">
+                <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">Number：</div>
+                    {{liangCangData.Number + '-' + louCeng.Code + '-' + aoJian.Code}}
+                </div>
+                </div>
+                <div class="item multiple-lines">
+                <div class="item-content row items-center wrap">
+                    <div style="margin-right: 10px;" class="item-label">地址：</div>
+                    <input class="auto" v-model="aoJian.Location" placeholder="厫间地址">
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div slot="footer" class="toolbar">
+        <button @click="submit">
+            保存
+        </button>
+        </div>
+    </q-layout>
+</template>
+
+<script>
+  export default {
+    props: ['GrainData'],
+    computed: {
+      postLouCeng() {
+        const index = this.activeTab.slice(this.activeTab.indexOf('-') + 1);
+        return [this.louCengData[index]].concat(this.aoJianData[index]);
+      },
+      postLouCengAll() {
+        const index = this.activeTab.slice(this.activeTab.indexOf('-') + 1);
+        return this.louCengData.concat(...this.aoJianData);
+      },
+    },
+    data() {
+      return {
+        liangCangData: {
+          ID: null,
+          Type: 1,
+          Number: '',
+          Name: '',
+          Location: '',
+          Width: '',
+          Height: '',
+          depth: '',
+        },
+        louCengData: [{ Code: '', Number: '', Location: '', MaxiTemperature: '', MinTemperature: '', Type: 1 }],
+        aoJianData: [[{ Code: '', Number: '', Location: '', Type: 2 }]],
+        TypeOptions: [
+          {
+            label: '楼房仓',
+            value: 1
+          },
+          {
+            label: '平方仓',
+            value: 2
+          },
+          {
+            label: '立筒仓',
+            value: 3
+          },
+        ],
+        // 已验证
+        number: {
+          Grain: null,
+          Granary: false,
+        },
+        // 已提交
+        submited: {
+          liangcang: false,
+          'louceng-0': false,
+        },
+        activeTab: 'liangcang',
+      };
+    },
+    methods:{
+      addAoJian(index) {
+        this.aoJianData[index].push({ Code: '', Number: '', Location: '', Type: 1 });
+      },
+      addLouCeng() {
+        this.$set(this.submited, `louceng-${this.louCengData.length}`, false);
+        this.louCengData.push({ Code: '', Number: '', Location: '', MaxiTemperature: '', MinTemperature: '', Type: 1 });
+        this.aoJianData.push([{ Code: '', Number: '', Location: '', Type: 1 }]);
+      },
+      activeTabs(name) {
+        this.activeTab = name;
+      },
+      IsExistNumber(name, number, type, item) {
+        if (number) {
+          if (name === 'Grain') {
+            this.$http.get(`${this.serverAddress}/${name}/IsExist/${number}`).then((response) => {
+              // if (response.data.Code === 1011) {
+                this.number[name] = response.data.Code === 1011;
+              // }
+            },() => {
+              this.number[name] = false;
+            });
+          } else {
+            this.$http.post(`${this.serverAddress}/${name}/IsExist2`, [
+              `type^${type}`,
+              `number^${number}`,
+            ]).then((response) => {
+              // if (response.data.Code === 1011) {
+                this.number[name] = response.data.Code === 1011;
+                item.Number = number;
+              // }
+            },() => {
+              this.number[name] = false;
+            });
+          }
+        } else {
+          this.number[name] = false;
+        }
+      },
+      submit() {
+        if (this.GrainData) {
+          this.$http.post(`${this.serverAddress}/Grain/Modify`, this.liangCangData).then((response) => {
+            if (response.data.Code === 1000) {
+              console.log(JSON.parse(JSON.stringify(this.postLouCengAll)));
+              this.louCengData.forEach((item, index) => {
+                this.$http.post(`${this.serverAddress}/Granary/Modify`, [item].concat(this.aoJianData[index])).then()
+              })
+              // this.$http.post(`${this.serverAddress}/Granary/Modify`, this.postLouCengAll).then()
+            }
+          });
+        } else if (this.activeTab === 'liangcang' && this.number['Grain']) {
+          this.$http.post(`${this.serverAddress}/Grain/Add`, this.liangCangData).then((response) => {
+            if (response.data.Code === 1000) {
+              // 楼房仓留在界面
+              console.log(this.liangCangData.Type)
+              if (this.liangCangData.Type === '1') {
+                this.submited.liangcang = true;
+              } else {
+                this.$emit('hide');
+              }
+            }
+          })
+        } else if (this.activeTab.indexOf('louceng') !== -1 && this.number['Granary']) {
+          this.$http.post(`${this.serverAddress}/Granary/AddList2`, this.postLouCeng).then((response) => {
+            if (response.data.Code === 1000) {
+              this.submited[this.activeTab] = true;
+            }
+          })
+        }
+      },
+    },
+    created() {
+      console.log(JSON.parse(JSON.stringify(this.GrainData)));
+      if (this.GrainData) {
+        this.submited.liangcang = true;
+        Object.keys(this.liangCangData).forEach((key) => {
+          this.liangCangData[key] = this.GrainData[key];
+        });
+        this.aoJianData = [];
+        this.louCengData = this.GrainData.Floors.map((item) => {
+          this.aoJianData.push(item.GranaryList.map(granary => ({
+            Code: granary.Code,
+            Number: granary.Number,
+            Location: granary.Location,
+            MaxiTemperature: granary.MaxiTemperature,
+            MinTemperature: granary.MinTemperature,
+            Type: 2
+          })));
+          return { Code: item.Number.split('-')[1], Number: item.Number, Location: item.Location, Type: 1 };
+        });
+      }
+    }
+  };
+</script>
