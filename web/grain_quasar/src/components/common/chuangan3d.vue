@@ -72,9 +72,9 @@ export default {
             },
             plotOptions: {
                 scatter: {
-                    width: 10,
-                    height: 10,
-                    depth: 0
+                    width: 60,
+                    height: 60,
+                    depth: 50
                 },
                 series: {
                     marker: {
@@ -92,29 +92,31 @@ export default {
             },
             yAxis: {
                 title: {
-                    text: "Y"
+                    text: "Z"
                 },
-                min: 0,
-                step: 1,
-                // max: 11,
+                min: 0.5,
+                step: 0.5,
+                max: 3.5
             },
             xAxis: {
                 title: {
                     text: "X"
                 },
-                min: 0,
-                step: 1,
-                // max: 11,
-                gridLineWidth: 1
+                min: 0.5,
+                step: 0.5,
+                max: 3.5,
+                // gridLineWidth: 1
             },
             zAxis: {
-                title: {
-                    text: "Z"
-                },
+
                 min: 0,
-                step: 1,
-                // max: 3,
-                showFirstLabel: false
+                lineColor:'#FFFFFF',
+                // // title: {
+                // //     text: "Z"
+                // // },               
+                step: 0.5,
+                max: 4,
+                // showFirstLabel: false
             },
             //图例
             legend: {
@@ -122,7 +124,7 @@ export default {
             },
             tooltip: {
                 formatter: function () {
-                    return `ID: <b>${this.point.SensorId}</b><br>x坐标位置: <b>${this.point.x}</b><br/>y坐标位置: <b>${this.point.y}</b><br/>z坐标位置: <b>${this.point.z}</b><br/>温度:<b> ${this.point.temp}</b>`;
+                    return `ID: <b>${this.point.SensorId}</b><br>x坐标: <b>${this.point.x}</b><br/>y坐标: <b>${this.point.y}</b><br/>z坐标: <b>${this.point.z}</b><br/>温度:<b> ${this.point.temp}</b>`;
                     // return '<br>温度是: <b>' + this.point.temp + '℃';
                 }
             },

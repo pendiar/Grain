@@ -5,7 +5,7 @@
     <div class="layout-padding">
       <!-- if you want automatic padding -->
       <p class="quote">
-        {{$route.name==='GrainList'?'所有仓库':`${cangNumber}粮仓`}}温度状态
+        {{$route.name==='GrainList'?'XXX粮库':`${cangNumber}粮仓`}}温度状态
         <button class="primary small raised float-right" @click="$refs.add.open()"><i class="on-left">add</i> 添加</button>
       </p>
       <div class="row wrap gutter desktop-only">
