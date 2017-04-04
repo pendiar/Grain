@@ -96,7 +96,7 @@ export default {
                 },
                 min: 0,
                 step: 1,
-                // max: 11,
+                max: 4,
             },
             xAxis: {
                 title: {
@@ -104,16 +104,16 @@ export default {
                 },
                 min: 0,
                 step: 1,
-                // max: 11,
+                max: 4,
                 gridLineWidth: 1
             },
             zAxis: {
-                title: {
-                    text: "Z"
-                },
+                // title: {
+                //     text: "Z"
+                // },
                 min: 0,
                 step: 1,
-                // max: 3,
+                max: 4,
                 showFirstLabel: false
             },
             //图例

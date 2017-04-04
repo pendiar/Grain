@@ -9,7 +9,7 @@
             </div>
             <div class="item-value auto">
               <div class="row" v-for="z in floor.slice(1)">
-                  <div class="chuangan-item text-center auto" v-for="x in length-1" :style="{color:z&&z[x]&&z[x].color}">
+                  <div class="chuangan-item text-center width-1of1" v-for="x in length-1" :style="{color:z&&z[x]&&z[x].color}">
                     {{z&&z[x]&&z[x].temp}}
                     <q-tooltip v-if="z&&z[x]">
                       <p>{{z&&z[x].Number}}</p>
