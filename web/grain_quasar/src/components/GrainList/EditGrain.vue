@@ -1,11 +1,11 @@
 <template>
     <q-layout>
         <div slot="header" class="toolbar">
-        <button @click="$refs.add.close()">
+        <button @click="$emit('hide')">
             <i>keyboard_arrow_left</i>
         </button>
         <q-toolbar-title :padding="1">
-            添加粮仓
+            {{GrainData?'编辑':'添加'}}粮仓
         </q-toolbar-title>
         </div>
         <!-- <q-tabs :refs="$refs" default-tab="liangcang" slot="navigation">
@@ -44,7 +44,7 @@
             </div>
             <div class="item">
                 <div class="item-content">
-                编号：<input v-model="liangCangData.Number" placeholder="粮仓编号" @blur="IsExistNumber('Grain', liangCangData.Number)"><span v-if="this.number.Grain===false" class="text-red">该编号已存在</span>
+                编号：<input v-model="liangCangData.Number" placeholder="粮仓编号" @blur="IsExistNumber('Grain', liangCangData.Number)" :disabled="!!GrainData"><span v-if="this.number.Grain===false" class="text-red">该编号已存在</span>
                 </div>
             </div>
             <div class="item">
@@ -91,13 +91,13 @@
               <div class="item multiple-lines">
                   <div class="item-content row items-center wrap">
                     <div style="margin-right: 10px;" class="item-label">最大正常温度：</div>
-                    <input class="auto" v-model="louCeng.MaxiTemperature" placeholder="最大正常温度">
+                    <input class="auto" v-model.number="louCeng.MaxiTemperature" placeholder="最大正常温度">
                   </div>
               </div>
               <div class="item multiple-lines">
                   <div class="item-content row items-center wrap">
                     <div style="margin-right: 10px;" class="item-label">最小正常温度：</div>
-                    <input class="auto" v-model="louCeng.MinTemperature" placeholder="最小正常温度">
+                    <input class="auto" v-model.number="louCeng.MinTemperature" placeholder="最小正常温度">
                   </div>
               </div>
             </div>
@@ -110,7 +110,7 @@
                 <div class="item multiple-lines">
                 <div class="item-content row items-center wrap">
                     <div style="margin-right: 10px;" class="item-label">编号：</div>
-                    <input class="auto" v-model="aoJian.Code" placeholder="厫间编号" @blur="IsExistNumber('Granary', liangCangData.Number + '-' + aoJian.Code + '-' + louCeng.Code, 2)">
+                    <input class="auto" v-model="aoJian.Code" placeholder="厫间编号" @blur="IsExistNumber('Granary', liangCangData.Number + '-' + louCeng.Code + '-' + aoJian.Code, 2, aoJian)">
                 </div>
                 </div>
                 <div class="item multiple-lines">
@@ -130,7 +130,7 @@
         </div>
         </div>
         <div slot="footer" class="toolbar">
-        <button @click="submit">
+        <button @click="submit" class="primary raised">
             保存
         </button>
         </div>
@@ -138,16 +138,29 @@
 </template>
 
 <script>
+  import { Loading, Toast } from 'quasar';
+
   export default {
     props: ['GrainData'],
     computed: {
       postLouCeng() {
         const index = this.activeTab.slice(this.activeTab.indexOf('-') + 1);
-        return [this.louCengData[index]].concat(this.aoJianData[index]);
+        return [this.louCengData.map((louCeng) => {
+          louCeng.WH_Number = liangCangData.Number;
+          return louCeng;
+        })[index]].concat(this.aoJianData.map((louCeng) => {
+          louCeng.WH_Number = liangCangData.Number;
+          return louCeng;
+        })[index]);
       },
       postLouCengAll() {
-        const index = this.activeTab.slice(this.activeTab.indexOf('-') + 1);
-        return this.louCengData.concat(...this.aoJianData);
+        return this.louCengData.map((louCeng) => {
+          louCeng.WH_Number = liangCangData.Number;
+          return louCeng;
+        }).concat(...this.aoJianData.map(arr => arr.map((louCeng) => {
+          louCeng.WH_Number = liangCangData.Number;
+          return louCeng;
+        })));
       },
     },
     data() {
@@ -161,9 +174,18 @@
           Width: '',
           Height: '',
           depth: '',
+          UserId: '',
+          AverageTemperature: 0,
+          Maximumemperature: 0,
+          MinimumTemperature: 0,
+          InSideTemperature: 0,
+          OutSideTemperature: 0,
+          StampTime: '',
+          IsActive: 1,
+          BadPoints: 0,
         },
-        louCengData: [{ Code: '', Number: '', Location: '', MaxiTemperature: '', MinTemperature: '', Type: 1 }],
-        aoJianData: [[{ Code: '', Number: '', Location: '', Type: 2 }]],
+        louCengData: [{ Code: '', Number: '', Location: '', MaxiTemperature: 0, MinTemperature: 0, Type: 1, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' }],
+        aoJianData: [[{ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' }]],
         TypeOptions: [
           {
             label: '楼房仓',
@@ -193,12 +215,12 @@
     },
     methods:{
       addAoJian(index) {
-        this.aoJianData[index].push({ Code: '', Number: '', Location: '', Type: 1 });
+        this.aoJianData[index].push({ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' });
       },
       addLouCeng() {
         this.$set(this.submited, `louceng-${this.louCengData.length}`, false);
-        this.louCengData.push({ Code: '', Number: '', Location: '', MaxiTemperature: '', MinTemperature: '', Type: 1 });
-        this.aoJianData.push([{ Code: '', Number: '', Location: '', Type: 1 }]);
+        this.louCengData.push({ Code: '', Number: '', Location: '', MaxiTemperature: '', MinTemperature: '', Type: 1, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' });
+        this.aoJianData.push([{ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' }]);
       },
       activeTabs(name) {
         this.activeTab = name;
@@ -220,7 +242,7 @@
             ]).then((response) => {
               // if (response.data.Code === 1011) {
                 this.number[name] = response.data.Code === 1011;
-                item.Number = number;
+                if (item) item.Number = number;
               // }
             },() => {
               this.number[name] = false;
@@ -231,39 +253,73 @@
         }
       },
       submit() {
+        Loading.show();
         if (this.GrainData) {
           this.$http.post(`${this.serverAddress}/Grain/Modify`, this.liangCangData).then((response) => {
             if (response.data.Code === 1000) {
-              console.log(JSON.parse(JSON.stringify(this.postLouCengAll)));
+              let count = this.louCengData.length;
+              if (!count) {
+                Loading.hide();
+                Toast.create.positive('编辑成功');
+                this.$emit('hide');
+                return;
+              }
               this.louCengData.forEach((item, index) => {
-                this.$http.post(`${this.serverAddress}/Granary/Modify`, [item].concat(this.aoJianData[index])).then()
-              })
+                item.WH_Number = this.liangCangData.Number;
+                this.$http.post(`${this.serverAddress}/Granary/UpdateList`, [item].concat(this.aoJianData[index]).map((aoJian) => {
+                  aoJian.WH_Number = this.liangCangData.Number;
+                  return aoJian;
+                })).then((response) => {
+                  count--;
+                  if (count <= 0) {
+                    Loading.hide();
+                    if (response.data.Code === 1000) {
+                      Toast.create.positive('编辑成功');
+                      this.$emit('hide');
+                    } else {
+                      Toast.create.warning('粮仓编辑成功，楼层编辑失败');
+                    }
+                  }
+                }, () => {
+                  count--;
+                  if (count <= 0) {
+                    Loading.hide();
+                    Toast.create.warning('粮仓编辑成功，楼层编辑失败');
+                  }
+                });
+              });
               // this.$http.post(`${this.serverAddress}/Granary/Modify`, this.postLouCengAll).then()
             }
-          });
+          }, () => { Loading.hide(); });
         } else if (this.activeTab === 'liangcang' && this.number['Grain']) {
           this.$http.post(`${this.serverAddress}/Grain/Add`, this.liangCangData).then((response) => {
+            Loading.hide();
             if (response.data.Code === 1000) {
+              Toast.create.positive('添加粮仓成功');
               // 楼房仓留在界面
-              console.log(this.liangCangData.Type)
               if (this.liangCangData.Type === '1') {
                 this.submited.liangcang = true;
               } else {
                 this.$emit('hide');
               }
+            } else {
+              Toast.create.warning('添加粮仓失败');
             }
-          })
+          }, () => { Loading.hide();Toast.create.warning('添加粮仓失败'); });
         } else if (this.activeTab.indexOf('louceng') !== -1 && this.number['Granary']) {
           this.$http.post(`${this.serverAddress}/Granary/AddList2`, this.postLouCeng).then((response) => {
+            Loading.hide();
             if (response.data.Code === 1000) {
+              Toast.create.positive('添加楼层成功');
               this.submited[this.activeTab] = true;
+            } else {
+              Toast.create.warning('添加楼层失败');
             }
-          })
+          }, () => { Loading.hide();Toast.create.warning('添加楼层失败'); });
         }
       },
     },
     created() {
-      console.log(JSON.parse(JSON.stringify(this.GrainData)));
       if (this.GrainData) {
         this.submited.liangcang = true;
         Object.keys(this.liangCangData).forEach((key) => {
@@ -277,9 +333,9 @@
             Location: granary.Location,
             MaxiTemperature: granary.MaxiTemperature,
             MinTemperature: granary.MinTemperature,
-            Type: 2
+            Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: ''
           })));
-          return { Code: item.Number.split('-')[1], Number: item.Number, Location: item.Location, Type: 1 };
+          return { Code: item.Number.split('-')[1], Number: item.Number, Location: item.Location, Type: 1, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' };
         });
       }
     }

@@ -4,16 +4,20 @@
     <!-- your content -->
     <div class="layout-padding">
       <!-- if you want automatic padding -->
+      <ul class="breadcrumb">
+        <li><a><i>home</i></a></li>
+        <li><a>楼房监控</a></li>
+      </ul>
       <p class="quote">
-        {{$route.name==='GrainList'?'所有仓库':`${cangNumber}粮仓`}}温度状态
+        {{$route.name==='GrainList'?'xxx粮库':`${cangNumber}粮仓`}}温度状态
         <button class="primary small raised float-right" @click="edit(null)"><i class="on-left">add</i> 添加</button>
       </p>
       <div class="row wrap gutter desktop-only">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="(grain, index) in list">
           <div class="card">
-            <div class="card-title bg-primary text-white">
+            <div class="card-title bg-primary text-white relative-position">
               {{grain.Name}}
-              <button class="primary small float-right" @click="edit(index)"><i class="on-left">edit</i> 编辑</button>
+              <button class="primary small absolute-right" @click="edit(index)"><i class="on-left">edit</i> 编辑</button>
             </div>
             <div class="card-content">
               <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
@@ -73,7 +77,7 @@
         <router-view></router-view>
       </div>
       <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @open="modalEvent('open')" @close="modalEvent('close')">
-        <edit-grain :grain-data="list[EditIndex]" v-if="showModal" @hide="$refs.edit.close()"></edit-grain>
+        <edit-grain :grain-data="list[EditIndex]" v-if="showModal" @hide="closeModal"></edit-grain>
       </q-modal>
     </div>
   </div>
@@ -102,21 +106,22 @@ export default {
     };
   },
   methods: {
+    closeModal() {
+      setTimeout(() => {
+        this.$refs.edit.close();
+      }, 0);
+    },
     edit(index) {
       this.EditIndex = index;
       this.$refs.edit.open();
     },
     modalEvent(e) {
       this.showModal = e === 'open';
+      this.fetchData();
     },
-  },
-  mounted() {
-    console.log(this)
-  },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
+    fetchData() {
       // PC端接口
-      vm.$http.post(`${vm.serverAddress}/Grain/GetList`, {
+      this.$http.post(`${this.serverAddress}/Grain/GetList`, {
         "DicList": [
             "Type^0",
             "UserId^0"
@@ -130,30 +135,38 @@ export default {
       }).then((response) => {
         if (response.data.Code === 1000) {
           try{
-            vm.list = JSON.parse(response.data.JsonValue);
+            this.list = JSON.parse(response.data.JsonValue);
           } catch (e) {
-            vm.list = [];
+            this.list = [];
           }
         } else {
-          vm.list = [];
+          this.list = [];
         }
       }, () => {
-        vm.list = [];
+        this.list = [];
       });
       // 移动端接口
-      vm.$http.get(`${vm.serverAddress}/Grain/GetList_GrainReport_ByUserId`).then((response) => {
+      this.$http.get(`${this.serverAddress}/Grain/GetList_GrainReport_ByUserId`).then((response) => {
         if (response.data.Code === 1000) {
           try{
-            vm.GrainReport = JSON.parse(response.data.JsonValue);
+            this.GrainReport = JSON.parse(response.data.JsonValue);
           } catch (e) {
-            vm.GrainReport = [];
+            this.GrainReport = [];
           }
         } else {
-          vm.GrainReport = [];
+          this.GrainReport = [];
         }
       }, () => {
-        vm.GrainReport = [];
+        this.GrainReport = [];
       });
+    }
+  },
+  mounted() {
+    console.log(this)
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.fetchData();
     });
   },
   beforeRouteLeave(to, from, next) {
@@ -287,8 +300,10 @@ export default {
         top: -36px;
         left: 50%;
         margin-left: -71px;
-        background-color: @floorColor;
       }
+    }
+    .grain-floor+span:after{
+      background-color: @floorColor;
     }
   }
 }
