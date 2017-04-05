@@ -95,7 +95,7 @@ export default {
                     text: "Z"
                 },
                 min: 0.5,
-                step: 0.5,
+                tickInterval: 1,
                 max: 3.5
             },
             xAxis: {
@@ -103,18 +103,17 @@ export default {
                     text: "X"
                 },
                 min: 0.5,
-                step: 0.5,
+                tickInterval: 1,
                 max: 3.5,
                 // gridLineWidth: 1
             },
             zAxis: {
-
+                tickInterval: 1,
                 min: 0,
                 lineColor:'#FFFFFF',
-                // // title: {
-                // //     text: "Z"
-                // // },               
-                step: 0.5,
+                title: {
+                    text: "Z"
+                },       
                 max: 4,
                 // showFirstLabel: false
             },
