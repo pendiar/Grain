@@ -11,6 +11,8 @@ import Quasar from 'quasar'
 import router from './router'
 import resource from 'vue-resource'
 
+import store from './config/store'
+
 // 公共组件
 import chuangan3d from 'components/common/chuangan3d'
 import chuanganpingmian from 'components/common/chuanganpingmian'

@@ -53,7 +53,7 @@
           </thead>
           <tbody>
             <template v-for="(item, index) in GrainReport">
-              <tr v-if="item.Number.indexOf('L') === 0" v-link="{name: 'DuiWei', params: {id: item.Number}}">
+              <tr v-if="item.Number.indexOf('L') === 0" @click="toAoJianList(item)">
                 <td>{{item.Number}}</td>
                 <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
                 <td>{{item.MinimumTemperature}}</td>
@@ -85,6 +85,7 @@
 
 <script>
 import EditGrain from 'components/GrainList/EditGrain';
+import store from 'src/config/store';
 
 export default {
   components: {
@@ -106,6 +107,14 @@ export default {
     };
   },
   methods: {
+    toAoJianList(item) {
+      let list = [];
+      item.Floors.forEach((floor) => {
+        list = list.concat(floor.GranaryList);
+      });
+      store.setAoJianList(list);
+      this.$router.push({name: 'AoJianList'});
+    },
     closeModal() {
       setTimeout(() => {
         this.$refs.edit.close();
