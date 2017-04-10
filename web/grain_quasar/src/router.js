@@ -30,7 +30,13 @@ export default new VueRouter({
           name: 'GrainList',
           component: load('view/GrainList'),
           children: [
-            { path: 'DuiWei/:id', name: 'DuiWei', component: load('GrainList/DuiWei') },
+            { path: 'AoJianList',
+              name: 'AoJianList',
+              component: load('GrainList/AoJianList'),
+              children: [
+                { path: 'DuiWei/:id', name: 'DuiWei', component: load('GrainList/DuiWei') },
+              ],
+            },
           ],
         },
         { path: 'AoJian/:id', name: 'AoJian', component: load('view/AoJian') },
