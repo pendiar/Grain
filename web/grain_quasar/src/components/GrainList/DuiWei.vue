@@ -7,8 +7,6 @@
         <th>最低温度</th>
         <th>平均温度</th>
         <th>坏点数</th>
-        <th>仓内温度</th>
-        <th>仓外温度</th>
       </tr>
     </thead>
     <tbody>
@@ -18,8 +16,6 @@
         <td>{{item.MinimumTemperature}}</td>
         <td>{{item.AverageTemperature}}</td>
         <td :class="{'text-negative':item.BadPoints}">{{item.BadPoints}}</td>
-        <td :class="{'text-negative':item.InSideTemperature>=80}">{{item.InSideTemperature}}%RH</td>
-        <td>{{item.OutSideTemperature}}%RH</td>
       </tr>
     </tbody>
   </table>

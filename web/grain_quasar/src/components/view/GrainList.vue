@@ -4,13 +4,13 @@
     <!-- your content -->
     <div class="layout-padding">
       <!-- if you want automatic padding -->
-      <ul class="breadcrumb">
+      <ul class="breadcrumb desktop-only">
         <li><a><i>home</i></a></li>
         <li><a>楼房监控</a></li>
       </ul>
       <p class="quote">
         {{$route.name==='GrainList'?'XXX粮库':`${cangNumber}粮仓`}}温度状态
-        <button class="primary small raised float-right" @click="edit(null)"><i class="on-left">add</i> 添加</button>
+        <button class="primary small raised float-right desktop-only" @click="edit(null)"><i class="on-left">add</i> 添加</button>
       </p>
       <div class="row wrap gutter desktop-only">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="(grain, index) in list">
