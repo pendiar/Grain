@@ -13,8 +13,8 @@
     <!-- Navigation Tabs -->
     <q-tabs slot="navigation">
       <q-tab icon="home" route="/Grain/GrainList" exact replace>粮仓监控</q-tab>
-      <q-tab icon="cloud" route="/error" exact>粮食信息</q-tab>
-      <q-tab icon="help" route="/error" exact>其他管理</q-tab>
+      <!--<q-tab icon="cloud" route="/error" exact>粮食信息</q-tab>
+      <q-tab icon="help" route="/error" exact>其他管理</q-tab>-->
     </q-tabs>
 
     <!-- Drawer

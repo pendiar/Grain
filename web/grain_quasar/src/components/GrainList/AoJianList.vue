@@ -6,21 +6,19 @@
           <th>厫间</th>
           <th>最高温度</th>
           <th>最低温度</th>
-          <th>平均温度</th>
           <th>坏点数</th>
           <th>仓内温度</th>
           <th>仓外温度</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in sharedState.AoJianList" v-link="{name: 'DuiWei', params: {id: item.Number}}">
+        <tr v-for="item in GetList" v-link="{name: 'DuiWei', params: {id: item.Number}}">
           <td>{{item.Number}}</td>
-          <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
-          <td>{{item.MinimumTemperature}}</td>
-          <td>{{item.AverageTemperature}}</td>
-          <td :class="{'text-negative':item.BadPoints}">{{item.BadPoints}}</td>
-          <td :class="{'text-negative':item.InSideTemperature>=80}">{{item.InSideTemperature}}%RH</td>
-          <td>{{item.OutSideTemperature}}%RH</td>
+          <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+          <td>{{item.MinimumTemperature}}°C</td>
+          <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
+          <td :class="{'bg-worn':item.InSideHumidity>=80}">{{item.InSideHumidity}}%RH</td>
+          <td :class="{'bg-worn':item.OutSideHumidity>=80||item.OutSideTemperature>=30}">{{item.OutSideHumidity}}%RH/{{item.OutSideTemperature}}°C</td>
         </tr>
       </tbody>
     </table>
@@ -39,6 +37,19 @@ export default {
   },
   beforeRouteEnter: (to, from, next) => {
     next((vm) => {
+      vm.$http.get(`${vm.serverAddress}/Grain/GranaryTemp_GetList/${to.params.id}`).then((response) => {
+        if (response.data.Code === 1000) {
+          try{
+            vm.GetList = JSON.parse(response.data.JsonValue);
+          } catch (e) {
+            vm.GetList = [];
+          }
+        } else {
+          vm.GetList = [];
+        }
+      }, () => {
+        vm.GetList = [];
+      });
     });
   },
 }
@@ -49,6 +60,7 @@ export default {
   font-size: 0.7rem;
   width: 100%;
   th,td{
+    text-align: center;
     padding:0.5rem 0;
   }
 }

@@ -30,7 +30,7 @@ export default new VueRouter({
           name: 'GrainList',
           component: load('view/GrainList'),
           children: [
-            { path: 'AoJianList',
+            { path: 'AoJianList/:id',
               name: 'AoJianList',
               component: load('GrainList/AoJianList'),
               children: [
@@ -39,6 +39,7 @@ export default new VueRouter({
             },
           ],
         },
+        { path: 'DuiWeiMo', name: 'DuiWeiMo', component: load('view/DuiWeiMo') },
         { path: 'AoJian/:id', name: 'AoJian', component: load('view/AoJian') },
         { path: 'ChuanGan/:id', name: 'ChuanGan', component: load('view/ChuanGan') },
         { path: 'LiangCang/:id', name: 'LiangCang', component: load('view/LiangCang') },

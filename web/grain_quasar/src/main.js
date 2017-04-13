@@ -12,6 +12,7 @@ import router from './router'
 import resource from 'vue-resource'
 
 import store from './config/store'
+import 'assets/css/common.css'
 
 // 公共组件
 import chuangan3d from 'components/common/chuangan3d'

@@ -9,7 +9,7 @@ import Highcharts from 'highcharts';
 require('highcharts/highcharts-3d')(Highcharts);
 
 export default {
-  props: ['sensorList'],
+  props: ['sensorList', 'update'],
   computed: {
     getData() {
         return this.sensorList.map((sensor) => {
@@ -168,12 +168,11 @@ export default {
   },
   mounted() {
     //   console.log(1111)
-      this.setChart();
+    this.setChart();
   },
-//   updated(){
-//       console.log(22222)
-//       this.setChart();
-//   }
+  watch: {
+    update: 'setChart',
+  },
 };
 </script>
 

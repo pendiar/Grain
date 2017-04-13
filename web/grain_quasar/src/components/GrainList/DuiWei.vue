@@ -5,17 +5,19 @@
         <th>堆位</th>
         <th>最高温度</th>
         <th>最低温度</th>
-        <th>平均温度</th>
         <th>坏点数</th>
+        <th>仓内温度</th>
+        <th>仓外温度</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in GetList">
+      <tr v-for="item in GetList" v-link="{name:'DuiWeiMo',query:{wNumber:number.split('-')[0],gNumber:number,Number:item.Number}}">
         <td>{{item.Number}}</td>
-        <td :class="{'text-negative':item.Maximumemperature>=30}">{{item.Maximumemperature}}</td>
-        <td>{{item.MinimumTemperature}}</td>
-        <td>{{item.AverageTemperature}}</td>
-        <td :class="{'text-negative':item.BadPoints}">{{item.BadPoints}}</td>
+        <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+        <td>{{item.MinimumTemperature}}°C</td>
+        <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
+        <td :class="{'bg-worn':item.InSideTemperature>=30}">{{item.InSideTemperature}}°C</td>
+        <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
       </tr>
     </tbody>
   </table>
@@ -24,11 +26,13 @@
 export default {
   data() {
     return {
-      GetList: []
+      number:'',
+      GetList: [],
     };
   },
   beforeRouteEnter: (to, from, next) => {
     next((vm) => {
+      vm.number = to.params.id;
       vm.$http.get(`${vm.serverAddress}/Grain/HeapsTemp_GetList/${to.params.id}`).then((response) => {
         if (response.data.Code === 1000) {
           try{
@@ -52,6 +56,7 @@ export default {
   font-size: 0.7rem;
   width: 100%;
   th,td{
+    text-align: center;
     padding:0.5rem 0;
   }
 }
