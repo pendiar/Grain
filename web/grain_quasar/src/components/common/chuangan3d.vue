@@ -92,7 +92,7 @@ export default {
             },
             yAxis: {
                 title: {
-                    text: "Z"
+                    text: "Y"
                 },
                 min: 0.5,
                 tickInterval: 1,
@@ -109,12 +109,12 @@ export default {
             },
             zAxis: {
                 tickInterval: 1,
-                min: 0,
+                min: 0.5,
                 lineColor:'#FFFFFF',
                 title: {
                     text: "Z"
                 },       
-                max: 4,
+                max: 3.5,
                 // showFirstLabel: false
             },
             //图例
