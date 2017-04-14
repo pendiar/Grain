@@ -44,8 +44,8 @@ export default {
         credits:{enabled:false},
         chart: {
           renderTo: this.$el,
-          // margin: 60,
-           margin: 100,
+          margin: 60,
+          //  margin: 100,
           type: 'scatter',
           backgroundColor: '#efeff4',
           options3d: {
@@ -76,7 +76,7 @@ export default {
           scatter: {
             width: 100,
             height: 100,
-            depth: 100
+            depth: 85
           },
           series: {
             marker: {
@@ -93,9 +93,7 @@ export default {
           }
         },
         yAxis: {  
-          //  labels: {
-          //   enabled: false,
-          // },
+
           title: {
             text: "Y"
           },
@@ -105,9 +103,6 @@ export default {
         },
         xAxis: {          
            ceiling: 100,
-          //  labels: {
-          //   enabled: false,
-          // },
           title: {
             text: "X"
           },
@@ -118,16 +113,15 @@ export default {
         },
         zAxis: {
           ceiling: 100,
-          // labels: {
-          //   enabled: false,
-          // },
+          labels: {
+            enabled: false,
+          },
           // tickInterval: 1,
           min: 1,
           // lineColor:'#FFFFFF',
           title: {
               text: null,
               // align:screenLeft,
-               useHTML:true,
           },       
           // max: 5,
           // showFirstLabel: false,
