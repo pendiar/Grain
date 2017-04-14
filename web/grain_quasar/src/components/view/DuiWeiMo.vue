@@ -23,7 +23,7 @@
       next((vm) => {
         vm.$http.post(`${vm.serverAddress}/Granary/GetHeapList`, [
             'PageIndex^1',
-            'PageCount^20',
+            'PageCount^2000',
             `wCode^${to.query.wNumber}`,
             `gCode^${to.query.gNumber}`,
             'UserId^0',
