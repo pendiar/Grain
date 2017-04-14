@@ -81,7 +81,7 @@ export default {
     next((vm) => {
       if(to.params.id) vm.$http.post(`${vm.serverAddress}/Granary/GetHeapList`, [
           "PageIndex^1",
-          "PageCount^20",
+          "PageCount^2000",
           `wCode^${to.query.WH_Number}`,
           `gCode^${to.query.Number}`,
           "UserId^0"
