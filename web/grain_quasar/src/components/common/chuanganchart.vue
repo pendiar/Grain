@@ -45,6 +45,7 @@ export default {
       });
     },
     setChart() {
+       var query=this.$route.query;
       var chart = new Highcharts.Chart({
         credits:{enabled:false},
           chart: {
@@ -52,8 +53,12 @@ export default {
               type: 'spline',
           },
           title: {
-              text: this.code,
-              x: -20
+              style:{"color": "#333333", "fontSize": "12px" },
+              align:screenLeft,
+              text: '传感器:'+query.SensorId+'[x:'+query.x+']<br>'
+              +'传感线:'+query.Label+'[y:'+query.y +']<br>'
+              +'采集分机:'+query.Collector+'[z:'+query.z +']',
+              // x: -20
           },
           xAxis: {
               type: 'datetime',
