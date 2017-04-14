@@ -44,7 +44,8 @@ export default {
         credits:{enabled:false},
         chart: {
           renderTo: this.$el,
-          margin: 60,
+          // margin: 60,
+           margin: 100,
           type: 'scatter',
           backgroundColor: '#efeff4',
           options3d: {
@@ -75,11 +76,11 @@ export default {
           scatter: {
             width: 100,
             height: 100,
-            depth: 80
+            depth: 100
           },
           series: {
             marker: {
-              radius: 10
+              radius: 8
             },
             point: {
               events: {
@@ -91,41 +92,45 @@ export default {
             }
           }
         },
-        yAxis: {
-           labels: {
-            enabled: false,
-          },
+        yAxis: {  
+          //  labels: {
+          //   enabled: false,
+          // },
           title: {
             text: "Y"
           },
-          min: 0.5,
+          min: 0,
           tickInterval: 1,
-          max: 5,
+          // max: 5,
         },
-        xAxis: {
-           labels: {
-            enabled: false,
-          },
+        xAxis: {          
+           ceiling: 100,
+          //  labels: {
+          //   enabled: false,
+          // },
           title: {
             text: "X"
           },
           min: 0,
           tickInterval: 1,
-          max: 5,
-          // gridLineWidth: 1
+          // max: 5,
+          gridLineWidth: 1
         },
         zAxis: {
-          labels: {
-            enabled: false,
-          },
-          tickInterval: 1,
-          min: 0.5,
-          lineColor:'#FFFFFF',
+          ceiling: 100,
+          // labels: {
+          //   enabled: false,
+          // },
+          // tickInterval: 1,
+          min: 1,
+          // lineColor:'#FFFFFF',
           title: {
-              text: "Z"
+              text: null,
+              // align:screenLeft,
+               useHTML:true,
           },       
-          max: 5,
-          showFirstLabel: false
+          // max: 5,
+          // showFirstLabel: false,
         },
         //图例
         legend: {
