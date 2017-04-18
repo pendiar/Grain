@@ -4,11 +4,12 @@
       <thead>
         <tr>
           <th>厫间</th>
-          <th>最高温度</th>
-          <th>最低温度</th>
+          <th>最高温</th>
+          <th>最低温</th>
+          <th>平均温</th>
+          <th>仓外温</th>
+          <th>内湿/外湿</th>
           <th>坏点数</th>
-          <th>仓内温度</th>
-          <th>仓外温度</th>
         </tr>
       </thead>
       <tbody>
@@ -16,9 +17,10 @@
           <td>{{item.Number}}</td>
           <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
           <td>{{item.MinimumTemperature}}°C</td>
+          <td :class="{'bg-bad':item.BadPoints}">{{item.AverageTemperature}}</td>
+          <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+          <td :class="{'bg-worn':item.InSideHumidity>=80||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
           <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-          <td :class="{'bg-worn':item.InSideHumidity>=80}">{{item.InSideHumidity}}%RH</td>
-          <td :class="{'bg-worn':item.OutSideHumidity>=80||item.OutSideTemperature>=30}">{{item.OutSideHumidity}}%RH/{{item.OutSideTemperature}}°C</td>
         </tr>
       </tbody>
     </table>
