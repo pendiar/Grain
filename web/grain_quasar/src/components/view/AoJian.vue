@@ -5,7 +5,7 @@
     <div class="layout-padding">
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
-        <cang-card v-for="cang in GrainReport" :key="cang.ID" :cang="cang"></cang-card>
+        <cang-card v-for="cang in GrainReport" :key="cang.ID" :cang="cang" :update='update3d'></cang-card>
       </div>
     </div>
   </div>
@@ -20,6 +20,7 @@ export default {
   },
   data() {
     return {
+      update3d: 0,
       GrainReport: [],
       LDList: {
         "ID": 1,
@@ -101,8 +102,14 @@ export default {
         } else {
           vm.GrainReport = [];
         }
+        vm.$nextTick(function () {
+          this.update += 1;
+        });
       }, () => {
         vm.GrainReport = [];
+        vm.$nextTick(function () {
+          this.update += 1;
+        });
       });
     });
   },

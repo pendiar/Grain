@@ -50,7 +50,7 @@
           <i class="item-secondary">keyboard_arrow_right</i>
         </router-link>
         <chuanganpingmian :sensorList="cang.SensorList" v-if="PM"></chuanganpingmian>
-        <chuangan3d :sensorList="cang.SensorList" v-else></chuangan3d>
+        <chuangan3d :sensorList="cang.SensorList" :update="update" v-else></chuangan3d>
       </div>
     </div>
   </div>
@@ -58,7 +58,7 @@
 
 <script>
 export default {
-  props: ['cang'],
+  props: ['cang', 'update'],
   data() {
     return {
       PM: false,
