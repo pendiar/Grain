@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in GetList" v-link="{name:'DuiWeiMo',query:{wNumber:number.split('-')[0],gNumber:number,Number:item.Number}}">
+      <tr v-for="item in GetList" v-link="{name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:number.split('-')[0],Number:number}}">
         <td>{{item.Number}}</td>
         <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
         <td>{{item.MinimumTemperature}}°C</td>
