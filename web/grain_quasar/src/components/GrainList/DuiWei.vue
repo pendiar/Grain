@@ -18,6 +18,7 @@
         <td :class="{'bg-worn':item.InSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.InSideTemperature}}°C</td>
         <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
         <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
+        <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
       </tr>
     </tbody>
   </table>

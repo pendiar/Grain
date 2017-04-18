@@ -40,12 +40,14 @@ export default {
   methods:{
     setChart() {
       const vm = this;
+	    vm.clearChart();
       chart = new Highcharts.Chart({
         credits:{enabled:false},
         chart: {
           renderTo: this.$el,
-          // margin: 60,
-           margin: 100,
+          margin: 60,
+          //  margin: 100,
+          //  margin: 100,
           //  margin: 100,
           type: 'scatter',
           backgroundColor: '#efeff4',
@@ -93,29 +95,29 @@ export default {
             }
           }
         },
-        yAxis: {  
+        yAxis: {
           //  labels: {
           //   enabled: false,
           // },
           title: {
-            text: "Y"
+            text: 'Y',
           },
           min: 0,
           tickInterval: 1,
           // max: 5,
         },
-        xAxis: {          
-           ceiling: 100,
+        xAxis: {
+          ceiling: 60,
           //  labels: {
           //   enabled: false,
           // },
           title: {
-            text: "X"
+            text: 'X',
           },
           min: 0,
           tickInterval: 1,
           // max: 5,
-          gridLineWidth: 1
+          gridLineWidth: 1,
         },
         zAxis: {
           ceiling: 100,
@@ -133,9 +135,9 @@ export default {
           // max: 5,
           // showFirstLabel: false,
         },
-        //图例
+        // 图例
         legend: {
-          enabled: false
+          enabled: false,
         },
         tooltip: {
           formatter: function () {
@@ -155,6 +157,7 @@ export default {
       chart.container.addEventListener('touchstart', this.startDrag);
     },
     startDrag(e) {
+      if (!chart) return;
       e = chart.pointer.normalize(e);
       var posX = e.pageX,
         posY = e.pageY,
@@ -188,14 +191,15 @@ export default {
       document.addEventListener('touchend', end);
     },
     clearChart() {
+      if (!chart) return;
       chart.container.removeEventListener('mousedown', this.startDrag);
       chart.container.removeEventListener('touchstart', this.startDrag);
       chart.destroy();
-    }
+    },
   },
   mounted() {
 	//   console.log(1111)
-	  this.clearChart();
+	  // this.clearChart();
 	  this.setChart();
   },
   watch: {
