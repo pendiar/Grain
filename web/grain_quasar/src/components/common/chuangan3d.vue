@@ -17,18 +17,17 @@ export default {
       return this.sensorList.map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (temp < 20) {
-          color = "#0000ff";
-        } else if (temp >= 20 && temp < 22) {
-          color = "#003399";
-        } else if (temp >= 22 && temp < 24) {
-          color = "0099cc";
-        } else if (temp >= 24 && temp < 28) {
-          color = "ffcc00"
+        if (temp < 30) {
+          color = "#0ce36b";
+        } else if (temp >= 30 && temp < 35) {
+          color = "#e3780c";
+        } else if (temp >= 35) {
+          color = "#af4848";      
         } else {
-          color = "ff0000"
+          color = "#0ce36b"
         }
-        return { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color, SensorId: sensor.SensorId };    
+        return { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color, 
+        SensorId: sensor.SensorId, Collector:sensor.Collector,Label:sensor.Label };    
       });
     },
   },
@@ -45,7 +44,8 @@ export default {
         credits:{enabled:false},
         chart: {
           renderTo: this.$el,
-          margin: 60,
+          // margin: 60,
+           margin: 100,
           type: 'scatter',
           backgroundColor: '#efeff4',
           options3d: {
@@ -74,53 +74,63 @@ export default {
         },
         plotOptions: {
           scatter: {
-            width: 60,
-            height: 60,
-            depth: 50
+            width: 100,
+            height: 100,
+            depth: 100
           },
           series: {
             marker: {
-              radius: 5
+              radius: 8
             },
             point: {
               events: {
                 click() {
-                  console.log(this)
-                  vm.$router.push({ name: 'ChuanGan', params:{ id: this.SensorId } });
+                  vm.$router.push({ name: 'ChuanGan', params:{ id: this.SensorId }
+                  , query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label} });
                 }
               }
             }
           }
         },
-        yAxis: {
+        yAxis: {  
+          //  labels: {
+          //   enabled: false,
+          // },
           title: {
             text: "Y"
           },
           min: 0,
           tickInterval: 1,
-          max: 4,
+          // max: 5,
         },
-        xAxis: {
+        xAxis: {          
+           ceiling: 100,
+          //  labels: {
+          //   enabled: false,
+          // },
           title: {
             text: "X"
           },
           min: 0,
           tickInterval: 1,
-          max: 4,
-          // gridLineWidth: 1
+          // max: 5,
+          gridLineWidth: 1
         },
         zAxis: {
-          labels: {
-            enabled: false,
-          },
-          tickInterval: 1,
-          min: 0,
-          lineColor:'#FFFFFF',
-          // title: {
-          //     text: "Z"
-          // },       
-          max: 4,
-          showFirstLabel: false
+          ceiling: 100,
+          // labels: {
+          //   enabled: false,
+          // },
+          // tickInterval: 1,
+          min: 1,
+          // lineColor:'#FFFFFF',
+          title: {
+              text: null,
+              // align:screenLeft,
+               useHTML:true,
+          },       
+          // max: 5,
+          // showFirstLabel: false,
         },
         //图例
         legend: {
@@ -128,7 +138,11 @@ export default {
         },
         tooltip: {
           formatter: function () {
-            return `ID: <b>${this.point.SensorId}</b><br>x坐标: <b>${this.point.x}</b><br/>y坐标: <b>${this.point.y}</b><br/>z坐标: <b>${this.point.z}</b><br/>温度:<b> ${this.point.temp}</b>`;
+             return ` x坐标: <b>${this.point.x} —[${this.point.SensorId}]</b><br/>
+             y坐标: <b>${this.point.y} —[${this.point.Label}]</b><br/>
+             z坐标: <b>${this.point.z} —[${this.point.Collector}]</b><br/>
+             温度:<b> ${this.point.temp}</b>`;      
+            //return `采集器: <b>${this.point.Collector}</b><br>传感线: <b>${this.point.Label}</b><br>传感器: <b>${this.point.SensorId}</b><br>x坐标: <b>${this.point.x}</b><br/>y坐标: <b>${this.point.y}</b><br/>z坐标: <b>${this.point.z}</b><br/>温度:<b> ${this.point.temp}</b>`;
             // return '<br>温度是: <b>' + this.point.temp + '℃';
           }
         },

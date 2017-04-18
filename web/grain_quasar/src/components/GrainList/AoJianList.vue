@@ -35,24 +35,33 @@ export default {
       sharedState: store.state,
     };
   },
-  beforeRouteEnter: (to, from, next) => {
-    next((vm) => {
-      vm.$http.get(`${vm.serverAddress}/Grain/GranaryTemp_GetList/${to.params.id}`).then((response) => {
+  methods: {
+    fetchData() {
+      this.$http.get(`${this.serverAddress}/Grain/GranaryTemp_GetList/${this.$route.params.id}`).then((response) => {
         if (response.data.Code === 1000) {
           try{
-            vm.GetList = JSON.parse(response.data.JsonValue);
+            this.GetList = JSON.parse(response.data.JsonValue);
           } catch (e) {
-            vm.GetList = [];
+            this.GetList = [];
           }
         } else {
-          vm.GetList = [];
+          this.GetList = [];
         }
       }, () => {
-        vm.GetList = [];
+        this.GetList = [];
       });
+    },
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      if (to.name === 'AoJianList') vm.fetchData();
     });
   },
-}
+  beforeRouteUpdate(to, from, next) {
+    next();
+    if (to.name === 'AoJianList') this.fetchData();
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -9,11 +9,11 @@
         <li><a>楼房监控</a></li>
       </ul>
       <p class="quote" v-if="isDesktop">
-        {{$route.name==='GrainList'?'平湖粮库':`${$route.params.id}粮仓`}}温度状态
+        {{$route.name==='GrainList'?'平湖粮库':`${$route.params.id}粮仓`}}温湿度状态
         <button class="primary small raised float-right" @click="edit(null)"><i class="on-left">add</i> 添加</button>
       </p>
       <p class="text-center" v-else>
-        {{$route.name==='GrainList'?'平湖粮库':`${$route.params.id}粮仓`}}温度状态
+        {{$route.name==='GrainList'?'平湖粮库':`${$route.params.id}粮仓`}}温湿度状态
       </p>
       <div class="row wrap gutter desktop-only">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="(grain, index) in list">

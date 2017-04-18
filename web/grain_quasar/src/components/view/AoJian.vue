@@ -79,16 +79,22 @@ export default {
   },
   beforeRouteEnter: (to, from, next) => {
     next((vm) => {
-      if(to.params.id) vm.$http.post(`${vm.serverAddress}/Granary/GetHeapList`, [
-          "PageIndex^1",
-          "PageCount^2000",
-          `wCode^${to.query.WH_Number}`,
-          `gCode^${to.query.Number}`,
-          "UserId^0"
+      vm.$http.post(`${vm.serverAddress}/Granary/GetHeapList`, [
+        "PageIndex^1",
+        "PageCount^2000",
+        `wCode^${to.query.WH_Number}`,
+        `gCode^${to.query.Number}`,
+        "UserId^0"
       ]).then((response) => {
         if (response.data.Code === 1000) {
           try{
-            vm.GrainReport = JSON.parse(response.data.JsonValue);
+            if (to.name === 'AoJian') {
+              vm.GrainReport = JSON.parse(response.data.JsonValue);
+            } else {
+              vm.GrainReport = JSON.parse(response.data.JsonValue).filter((cang) => {
+                return cang.Number === to.params.id
+              });
+            }
           } catch (e) {
             vm.GrainReport = [];
           }
@@ -97,9 +103,9 @@ export default {
         }
       }, () => {
         vm.GrainReport = [];
-      })
-    })
-  }
+      });
+    });
+  },
 };
 </script>
 
