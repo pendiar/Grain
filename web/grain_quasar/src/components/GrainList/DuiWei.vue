@@ -13,10 +13,10 @@
     <tbody>
       <tr v-for="item in GetList" v-link="{name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:number.split('-')[0],Number:number}}">
         <td>{{item.Number}}</td>
-        <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+        <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
         <td>{{item.MinimumTemperature}}°C</td>
-        <td :class="{'bg-worn':item.InSideTemperature>=30}">{{item.InSideTemperature}}°C</td>
-        <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+        <td :class="{'bg-worn':item.InSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.InSideTemperature}}°C</td>
+        <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
         <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
       </tr>
     </tbody>

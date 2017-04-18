@@ -129,6 +129,7 @@ export default {
               text: null,
               // align:screenLeft,
                useHTML:true,
+          }
           // max: 5,
           // showFirstLabel: false,
         },

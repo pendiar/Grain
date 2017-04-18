@@ -58,19 +58,19 @@
             <template v-for="(item, index) in GrainReport">
               <tr v-if="item.Number.indexOf('L') === 0" v-link="{name:'AoJianList',params:{id:item.Number}}">
                 <td>{{item.Number}}</td>
-                <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+                <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
                 <td>{{item.MinimumTemperature}}°C</td>
-                <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
-                <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+                <td :class="{'bg-worn':item.AverageTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.AverageTemperature}}</td>
+                <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
                 <td :class="{'bg-worn':item.InSideHumidity>=80 ||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
                 <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
               </tr>
               <tr v-else v-link="{name:'DuiWeiMo',query:{wNumber:item.Number,gNumber:item.Number+'-1',Number:item.Number+'-1-1'}}">
                 <td>{{item.Number}}</td>
-                <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+                <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
                 <td>{{item.MinimumTemperature}}°C</td>
-                <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
-                <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+                <td :class="{'bg-worn':item.AverageTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.AverageTemperature}}</td>
+                <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
                 <td :class="{'bg-worn':item.InSideHumidity>=80||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
                 <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
               </tr>

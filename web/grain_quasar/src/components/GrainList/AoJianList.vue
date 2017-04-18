@@ -15,10 +15,10 @@
       <tbody>
         <tr v-for="item in GetList" v-link="{name: 'DuiWei', params: {id: item.Number}}">
           <td>{{item.Number}}</td>
-          <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+          <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
           <td>{{item.MinimumTemperature}}°C</td>
-          <td :class="{'bg-bad':item.BadPoints}">{{item.AverageTemperature}}</td>
-          <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+          <td :class="{'bg-worn':item.AverageTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.AverageTemperature}}</td>
+          <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
           <td :class="{'bg-worn':item.InSideHumidity>=80||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
           <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
         </tr>

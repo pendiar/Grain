@@ -51,24 +51,22 @@ export default {
       this.sensorList.forEach((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (temp < 20) {
-            color = "#0000ff";
-        } else if (temp >= 20 && temp < 22) {
-            color = "#003399";
-        } else if (temp >= 22 && temp < 24) {
-            color = "0099cc";
-        } else if (temp >= 24 && temp < 28) {
-            color = "ffcc00"
+        if (temp < 30) {
+            color = "#195803";
+        } else if (temp >= 30 && temp < 35) {
+            color = "#e97b0a";
+        } else if (temp >= 35) {
+            color = "#ff5a5a";        
         } else {
-            color = "ff0000"
+            color = "#195803"
         }
-        if (!data[sensor.Direction_Y]) {
-          data[sensor.Direction_Y] = [];
-          data[sensor.Direction_Y][sensor.Direction_X] = [];
-        } else if (!data[sensor.Direction_Y][sensor.Direction_X]) {
-          data[sensor.Direction_Y][sensor.Direction_X] = [];
+        if (!data[sensor.Direction_Z]) {
+          data[sensor.Direction_Z] = [];
+          data[sensor.Direction_Z][sensor.Direction_Y] = [];
+        } else if (!data[sensor.Direction_Z][sensor.Direction_Y]) {
+          data[sensor.Direction_Z][sensor.Direction_Y] = [];
         }
-        data[sensor.Direction_Y][sensor.Direction_X][sensor.Direction_Z] = { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color };
+        data[sensor.Direction_Z][sensor.Direction_Y][sensor.Direction_X] = { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color };
       });
       console.log(data)
       return data;

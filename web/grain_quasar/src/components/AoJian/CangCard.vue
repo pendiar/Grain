@@ -37,7 +37,7 @@
               平均湿度：
             </span>
             <span class="item-value">
-              {{cang.AverageHumidity}}%
+              {{cang.AverageHumidity}}%RH
             </span>
           </div>
         </div>
