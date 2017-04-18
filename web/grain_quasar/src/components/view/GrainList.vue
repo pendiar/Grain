@@ -6,7 +6,7 @@
       <!-- if you want automatic padding -->
       <ul class="breadcrumb desktop-only">
         <li><a><i>home</i></a></li>
-        <li><a>楼房监控</a></li>
+        <li><a>粮仓监控</a></li>
       </ul>
       <p class="quote" v-if="isDesktop">
         {{$route.name==='GrainList'?'平湖粮库':`${$route.params.id}粮仓`}}温湿度状态
@@ -46,11 +46,12 @@
           <thead>
             <tr>
               <th>仓号</th>
-              <th>最高温度</th>
-              <th>最低温度</th>
+              <th>最高温</th>
+              <th>最低温</th>
+              <th>平均温</th>
+              <th>仓外温</th>
+              <th>内湿/外湿</th>
               <th>坏点数</th>
-              <th>仓内湿度</th>
-              <th>仓外湿度/温度</th>
             </tr>
           </thead>
           <tbody>
@@ -59,17 +60,19 @@
                 <td>{{item.Number}}</td>
                 <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
                 <td>{{item.MinimumTemperature}}°C</td>
+                <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
+                <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+                <td :class="{'bg-worn':item.InSideHumidity>=80 ||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
                 <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-                <td :class="{'bg-worn':item.InSideHumidity>=80}">{{item.InSideHumidity}}%RH</td>
-                <td :class="{'bg-worn':item.OutSideHumidity>=80||item.OutSideTemperature>=30}">{{item.OutSideHumidity}}%RH/{{item.OutSideTemperature}}°C</td>
               </tr>
               <tr v-else v-link="{name:'DuiWeiMo',query:{wNumber:item.Number,gNumber:item.Number+'-1',Number:item.Number+'-1-1'}}">
                 <td>{{item.Number}}</td>
                 <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
                 <td>{{item.MinimumTemperature}}°C</td>
+                <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
+                <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+                <td :class="{'bg-worn':item.InSideHumidity>=80||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
                 <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-                <td :class="{'bg-worn':item.InSideHumidity>=80}">{{item.InSideHumidity}}%RH</td>
-                <td :class="{'bg-worn':item.OutSideHumidity>=80||item.OutSideTemperature>=30}">{{item.OutSideHumidity}}%RH/{{item.OutSideTemperature}}°C</td>
               </tr>
             </template>
           </tbody>

@@ -3,11 +3,11 @@
     <thead>
       <tr>
         <th>堆位</th>
-        <th>最高温度</th>
-        <th>最低温度</th>
+        <th>最高温</th>
+        <th>最低温</th>
+        <th>仓内温</th>
+        <th>仓外温</th>
         <th>坏点数</th>
-        <th>仓内温度</th>
-        <th>仓外温度</th>
       </tr>
     </thead>
     <tbody>
@@ -15,9 +15,9 @@
         <td>{{item.Number}}</td>
         <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
         <td>{{item.MinimumTemperature}}°C</td>
-        <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
         <td :class="{'bg-worn':item.InSideTemperature>=30}">{{item.InSideTemperature}}°C</td>
         <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+        <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
       </tr>
     </tbody>
   </table>

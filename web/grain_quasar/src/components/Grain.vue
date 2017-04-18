@@ -2,7 +2,7 @@
   <q-layout>
     <div slot="header" class="toolbar">
       <q-toolbar-title :padding="1">
-        粮仓信息
+        粮仓监控
       </q-toolbar-title>
       <!-- opens drawer below
       <button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
@@ -11,11 +11,11 @@
     </div>
 
     <!-- Navigation Tabs -->
-    <q-tabs slot="navigation">
-      <q-tab icon="home" route="/Grain/GrainList" exact replace>粮仓监控</q-tab>
+    <!--<q-tabs slot="navigation">-->
+      <!--<q-tab icon="home" route="/Grain/GrainList" exact replace>粮仓监控</q-tab>-->
       <!--<q-tab icon="cloud" route="/error" exact>粮食信息</q-tab>
       <q-tab icon="help" route="/error" exact>其他管理</q-tab>-->
-    </q-tabs>
+    <!--</q-tabs>-->
 
     <!-- Drawer
     <q-drawer ref="drawer">
