@@ -65,7 +65,7 @@
                 <td :class="{'bg-worn':item.InSideHumidity>=80 ||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
                 <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
               </tr>
-              <tr v-else v-link="{name:'DuiWeiMo',query:{wNumber:item.Number,gNumber:item.Number+'-1',Number:item.Number+'-1-1'}}">
+              <tr v-else v-link="{name:'OtherDuiWei',query:{wNumber:item.Number,gNumber:item.Number+'-1',Number:item.Number+'-1-1'}}">
                 <td>{{item.Number}}</td>
                 <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
                 <td>{{item.MinimumTemperature}}°C</td>

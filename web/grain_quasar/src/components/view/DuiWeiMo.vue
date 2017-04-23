@@ -5,14 +5,19 @@
     <div class="layout-padding">
       <!-- if you want automatic padding -->
       <div class="card">
-        <chuangan3d :sensorList="SensorList" :update="update"></chuangan3d>
+        <chuangan-line :sensorList="SensorList" :update="update"></chuangan-line>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import ChuanganLine from 'components/common/chuanganLine';
+
   export default {
+    components: {
+      ChuanganLine,
+    },
     data() {
       return {
         update: 0,
