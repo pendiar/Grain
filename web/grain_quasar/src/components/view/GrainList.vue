@@ -26,7 +26,7 @@
               <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
               <div class="grain-content" :class="[grain.Type===3?'bottom-icon-yuan':'']">
                 <div class="grain-floor" v-for="floor in grain.Floors.slice().reverse()" :style="{height:100/grain.Floors.length+'%'}">
-                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.Number},query:granary}">
+                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:grain.Type===3?'YuanTong':'AoJian',params:{id:granary.Number},query:granary}">
                     {{granary.Number}}
                     <q-tooltip :ref="granary.Number">
                       <p>{{granary.Location}}</p>
