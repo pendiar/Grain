@@ -187,8 +187,8 @@ export default {
     // console.log(this.$refs[to.params.id]);
     this.$refs[to.params.id] && this.$refs[to.params.id][0] && this.$refs[to.params.id][0].close();
     next();
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="less">
