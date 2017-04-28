@@ -5,10 +5,10 @@
         <div class="item-content has-secondary">
           {{cang.Number}}
         </div>
-        <span class="cangStatus"></span>
-        <span class="item-secondary" @click="toggle">
+        <span class="item-secondary" @click="toggle" v-if="$route.name!=='YuanDuiWei'">
           <i>autorenew</i>
         </span>
+        <span class="cangStatus"></span>
       </div>
       <div class="list bordered inner-delimiter highlight">
         <!-- <div class="item">

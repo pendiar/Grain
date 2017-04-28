@@ -55,26 +55,15 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="(item, index) in GrainReport">
-              <tr v-if="item.Number.indexOf('L') === 0" v-link="{name:'AoJianList',params:{id:item.Number}}">
-                <td>{{item.Number}}</td>
-                <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
-                <td>{{item.MinimumTemperature}}°C</td>
-                <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
-                <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
-                <td :class="{'bg-worn':item.InSideHumidity>=80 ||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
-                <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-              </tr>
-              <tr v-else v-link="{name:'OtherDuiWei',query:{wNumber:item.Number,gNumber:item.Number+'-1',Number:item.Number+'-1-1'}}">
-                <td>{{item.Number}}</td>
-                <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
-                <td>{{item.MinimumTemperature}}°C</td>
-                <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
-                <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
-                <td :class="{'bg-worn':item.InSideHumidity>=80||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
-                <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-              </tr>
-            </template>
+            <tr v-for="(item, index) in GrainReport" v-link="getLink(item)">
+              <td>{{item.Number}}</td>
+              <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+              <td>{{item.MinimumTemperature}}°C</td>
+              <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
+              <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+              <td :class="{'bg-worn':item.InSideHumidity>=80 || item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
+              <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
+            </tr>
           </tbody>
         </table>
         <router-view></router-view>
@@ -112,6 +101,14 @@ export default {
     };
   },
   methods: {
+    getLink(grain) {
+      if (grain.Type === 1) {
+        return { name: 'AoJianList', params: { id: grain.Number } };
+      } else if (grain.Type === 2) {
+        return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };
+      }
+      return { name: 'YuanDuiWei', query: { WH_Number: grain.Number, Number: `${grain.Number}-1`, DW_Number: `${grain.Number}-1-1` } };
+    },
     toAoJianList(item) {
       let list = [];
       item.Floors.forEach((floor) => {

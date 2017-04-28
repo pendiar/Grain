@@ -91,9 +91,17 @@ export default {
           try{
             if (to.name === 'AoJian') {
               vm.GrainReport = JSON.parse(response.data.JsonValue);
+            } else if (to.name === 'YuanDuiWei') {
+              if (to.query.DW_Number) {
+                vm.GrainReport = JSON.parse(response.data.JsonValue).filter((cang) => {
+                  return cang.Number === to.query.DW_Number;
+                });
+              } else {
+                vm.GrainReport = JSON.parse(response.data.JsonValue);
+              }
             } else {
               vm.GrainReport = JSON.parse(response.data.JsonValue).filter((cang) => {
-                return cang.Number === to.params.id
+                return cang.Number === to.params.id;
               });
             }
           } catch (e) {

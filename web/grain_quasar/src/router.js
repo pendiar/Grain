@@ -39,7 +39,7 @@ export default new VueRouter({
             },
           ],
         },
-        { path: 'OtherDuiWei', name: 'OtherDuiWei', component: load('view/DuiWeiMo') },
+        { path: 'YuanDuiWei', name: 'YuanDuiWei', component: load('view/AoJian') },
         { path: 'DuiWeiMo/:id', name: 'DuiWeiMo', component: load('view/AoJian') },
         { path: 'AoJian/:id', name: 'AoJian', component: load('view/AoJian') },
         { path: 'YuanTong/:id', name: 'YuanTong', component: load('view/AoJian') },
