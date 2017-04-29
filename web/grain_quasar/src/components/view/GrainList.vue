@@ -23,10 +23,10 @@
               <button class="primary small absolute-right" @click="edit(index)"><i class="on-left">edit</i> 编辑</button>
             </div>
             <div class="card-content">
-              <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
-              <div class="grain-content" :class="[grain.Type===3?'bottom-icon-yuan':'']">
+              <div class="grain-top"><i class="top-icon" :class="[grain.Type===3||grain.Type===4?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
+              <div class="grain-content" :class="[grain.Type===3||grain.Type===4?'bottom-icon-yuan':'']">
                 <div class="grain-floor" v-for="floor in grain.Floors.slice().reverse()" :style="{height:100/grain.Floors.length+'%'}">
-                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:grain.Type===3?'YuanTong':'AoJian',params:{id:granary.Number},query:granary}">
+                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:grain.Type===3||grain.Type===4?'YuanDuiWei':'AoJian',params:{id:granary.Number},query:granary}">
                     {{granary.Number}}
                     <q-tooltip :ref="granary.Number">
                       <p>{{granary.Location}}</p>
@@ -104,10 +104,11 @@ export default {
     getLink(grain) {
       if (grain.Type === 1) {
         return { name: 'AoJianList', params: { id: grain.Number } };
-      } else if (grain.Type === 2) {
-        return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };
+      // } else if (grain.Type === 2) {
+      //   return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };
       }
-      return { name: 'YuanDuiWei', query: { WH_Number: grain.Number, Number: `${grain.Number}-1`, DW_Number: `${grain.Number}-1-1` } };
+      return { name: 'DuiWei', params: { id: `${grain.Number}-1-1` }, query: { type: grain.Type } };
+      // return { name: 'YuanDuiWei', query: { WH_Number: grain.Number, Number: `${grain.Number}-1`, DW_Number: `${grain.Number}-1-1` } };
     },
     toAoJianList(item) {
       let list = [];

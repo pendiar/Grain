@@ -49,7 +49,8 @@
           </div>
           <i class="item-secondary">keyboard_arrow_right</i>
         </router-link>
-        <chuanganpingmian :sensorList="cang.SensorList" v-if="PM"></chuanganpingmian>
+        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" v-if="$route.name==='YuanDuiWei'"></chuanganline>
+        <chuanganpingmian :sensorList="cang.SensorList" v-else-if="PM"></chuanganpingmian>
         <chuangan3d :sensorList="cang.SensorList" :update="update" v-else></chuangan3d>
       </div>
     </div>

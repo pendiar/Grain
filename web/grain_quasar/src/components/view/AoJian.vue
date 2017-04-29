@@ -5,7 +5,7 @@
     <div class="layout-padding">
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
-        <cang-card v-for="cang in GrainReport" :key="cang.ID" :cang="cang" :update='update3d'></cang-card>
+        <cang-card v-for="cang in GrainReport" :key="cang.Number" :cang="cang" :update='update3d'></cang-card>
       </div>
     </div>
   </div>
@@ -92,6 +92,7 @@ export default {
             if (to.name === 'AoJian') {
               vm.GrainReport = JSON.parse(response.data.JsonValue);
             } else if (to.name === 'YuanDuiWei') {
+              console.log(JSON.parse(response.data.JsonValue).map(cang=>cang.Number))
               if (to.query.DW_Number) {
                 vm.GrainReport = JSON.parse(response.data.JsonValue).filter((cang) => {
                   return cang.Number === to.query.DW_Number;

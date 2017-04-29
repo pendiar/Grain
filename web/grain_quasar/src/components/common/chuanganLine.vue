@@ -1,20 +1,38 @@
 <template>
   <!-- root node required -->
-  <div class="chuangan-line"></div>
+  <div class="chuangan-line">
+    <div ref="chart"></div>
+    <q-modal ref="modal" :content-css="{minWidth: '60vw', minHeight: '60vh'}" @open="modalEvent('open')" @close="modalEvent('close')">
+      <q-layout>
+        <div slot="header" class="toolbar">
+          <button @click="$refs.modal.close()">
+              <i>keyboard_arrow_left</i>
+          </button>
+          <q-toolbar-title :padding="1">
+              {{x}}单位高度截面分布展示
+          </q-toolbar-title>
+        </div>
+        <div class="layout-view">
+          <div ref="polarChart" class="polarChart"></div>
+        </div>
+      </q-layout>
+    </q-modal>
+  </div>
 </template>
 
 <script>
 import Highcharts from 'highcharts';
 // 加载模块
-require('highcharts/highcharts-3d')(Highcharts);
-
-let chart = null;
+require('highcharts/highcharts-more')(Highcharts);
+import { Platform } from 'quasar';
 
 export default {
-  props: ['sensorList', 'update'],
+  props: ['sensorList', 'update', 'LineCount'],
   computed: {
     getData() {
-      return this.sensorList.map((sensor) => {
+      const result = [];
+      const map = {};
+      this.sensorList.forEach((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
         if (temp < 30) {
@@ -26,25 +44,121 @@ export default {
         } else {
           color = "#0ce36b"
         }
-        return { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color, 
-        SensorId: sensor.SensorId, Collector:sensor.Collector,Label:sensor.Label };    
+        if (sensor.Direction_Y in map) {
+          result[map[sensor.Direction_Y]].data.push([sensor.Direction_X, sensor.Direction_Y]);
+        } else {
+          map[sensor.Direction_Y] = result.length;
+          result.push({
+            name: sensor.Direction_Y,
+            marker: {
+              symbol: 'square' // 点形状
+            },
+            color:"#90ed7d",
+            data: [[sensor.Direction_X, sensor.Direction_Y]]
+          });
+        }
+      });
+      return result;
+      return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
+        const temp = sensor.RealTemp;
+        let color = '';
+        if (temp < 30) {
+          color = "#0ce36b";
+        } else if (temp >= 30 && temp < 35) {
+          color = "#e3780c";
+        } else if (temp >= 35) {
+          color = "#af4848";      
+        } else {
+          color = "#0ce36b"
+        }
+        let count = 0;
+        let x, y;
+        this.LineCount.some((num, index) => {
+          const idx = sensor.Direction_Y - count;
+          if (idx <= num) {
+            x = parseInt(360 * idx / num);
+            y = index + 1;
+            return true;
+          }
+          count += num;
+          return false;
+        });
+        return {
+          x,
+          y,
+          temp,
+          color,
+          SensorId: sensor.SensorId,
+          Collector: sensor.Collector,
+          Label: sensor.Label,
+        };
+      });
+    },
+    getPolarData() {
+      return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
+        const temp = sensor.RealTemp;
+        let color = '';
+        if (temp < 30) {
+          color = "#0ce36b";
+        } else if (temp >= 30 && temp < 35) {
+          color = "#e3780c";
+        } else if (temp >= 35) {
+          color = "#af4848";      
+        } else {
+          color = "#0ce36b"
+        }
+        let count = 0;
+        let x, y;
+        this.LineCount.some((num, index) => {
+          const idx = sensor.Direction_Y - count;
+          if (idx <= num) {
+            x = parseInt(360 * idx / num);
+            y = index + 1;
+            return true;
+          }
+          count += num;
+          return false;
+        });
+        return {
+          x,
+          y,
+          temp,
+          color,
+          SensorId: sensor.SensorId,
+          Collector: sensor.Collector,
+          Label: sensor.Label,
+        };
       });
     },
   },
   data() {
     return {
+      hovering: {
+        x: null,
+        y: null,
+        z: null,
+      },
+      x: null,
+      chart: null,
+      polarChart: null,
       //   getData: [17,21,22,25,26,24,19,29,26,25,24,20,23,26,25,30,27,22,21,26,24,21,22,18,27,25,23,26,22,21,24,25,22,28,26,22,21,22,24],
       //   demoData: [],
     };
   },
   methods:{
+    modalEvent(e) {
+      console.log(e)
+      if (e === 'open') {
+        this.setPolarChart();
+      }
+    },
     setChart() {
       const vm = this;
 	    vm.clearChart();
       const option = {  
         chart: {
-          renderTo: this.$el,
-          type: 'spline',
+          renderTo: this.$refs.chart,
+          type: 'line',
           inverted: true
         },
         title: {
@@ -72,7 +186,8 @@ export default {
             }
           },
           maxPadding: 0.01,
-          showLastLabel: true
+          showLastLabel: true,
+          min: 0,
         },
         yAxis: {
           title: {
@@ -94,69 +209,28 @@ export default {
             marker: {
               enable: false
             }
+          },
+          series: {
+            point: {
+              events: {
+                click() {
+                  if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
+                    vm.x = this.x;
+                    vm.$refs.modal.open();
+                  } else {
+                    vm.hovering.x = this.x;
+                    vm.hovering.y = this.y;
+                    vm.hovering.z = this.z;
+                  }
+                }
+              }
+            }
           }
         },
-        series: [
-          {
-            name: 'Lable2',
-            //allowPointSelect: true,
-            marker: {
-              symbol: 'square'//点形状
-            },
-            color:"#90ed7d",
-            data: [[2, 2], [4, 2], [6, 2], [8, 2], [10, 2], [12,2], [14, 2], [16, 2], [18, 2]]
-          },
-          {
-            name: 'Lable4',
-            marker: {
-              symbol: 'square'//点形状
-            },
-            color:"#90ed7d",
-            data: [[2, 4], [4, 4], [6, 4], [8, 4], [10, 4], [12,4], [14, 4], [16, 4], [18, 4]]
-          },
-          {
-            name: 'Lable6',
-            marker: {
-              symbol: 'square'//点形状
-            },
-            color:"#90ed7d",
-            data: [[2, 6], [4,6], [6, 6], [8,6], [10, 6], [12,6], [14, 6], [16, 6], [18, 6]]
-          },
-          {
-            name: 'Lable8',
-            marker: {
-              symbol: 'square'//点形状
-            },
-            color:"#90ed7d",
-            data: [[2, 8], [4,8], [6, 8], [8,8], [10, 8], [12,8], [14, 8], [16, 8], [18,8]]
-          },
-          {
-            name: 'Lable10',
-            marker: {
-              symbol: 'square'//点形状
-            },
-            color:"#90ed7d",
-            data: [[2, 10], [4, 10], [6, 10], [8, 10], [10,10], [12,10], [14, 10], [16, 10], [18, 10]]
-          },
-          {
-            name: 'Lable12',
-            marker: {
-              symbol: 'square'//点形状
-            },
-            color:"#90ed7d",
-            data: [[2, 12], [4,12], [6,12], [8,12], [10,12], [12,12], [14, 12], [16, 12], [18, 12]]
-          },
-          {
-            name: 'Lable14',
-            marker: {
-              symbol: 'square'//点形状
-            },
-            color:"#90ed7d",
-            data: [[2,14], [4,14], [6,14], [8,14], [10,14], [12,14], [14, 14], [16, 14], [18,14]]
-          }
-        ],
+        series: vm.getData,
       }
-      chart = new Highcharts.Chart(option);
+      console.log(vm.getData);
+      vm.chart = new Highcharts.Chart(option);
       // chart = new Highcharts.Chart({
       //   credits:{enabled:false},
       //   chart: {
@@ -268,48 +342,98 @@ export default {
       //     { data: vm.getData }
       //   ]
       // });
-      chart.container.addEventListener('mousedown', this.startDrag);
-      chart.container.addEventListener('touchstart', this.startDrag);
-    },
-    startDrag(e) {
-      if (!chart) return;
-      e = chart.pointer.normalize(e);
-      var posX = e.pageX,
-        posY = e.pageY,
-        alpha = chart.options.chart.options3d.alpha,
-        beta = chart.options.chart.options3d.beta,
-        newAlpha,
-        newBeta,
-        sensitivity = 5; // lower is more sensitive
-      function moving(e) {
-        // Run beta
-        newBeta = beta + (posX - e.pageX) / sensitivity;
-        newBeta = Math.min(100, Math.max(-100, newBeta));
-        chart.options.chart.options3d.beta = newBeta;
-        // Run alpha
-        newAlpha = alpha + (e.pageY - posY) / sensitivity;
-        newAlpha = Math.min(100, Math.max(-100, newAlpha));
-        chart.options.chart.options3d.alpha = newAlpha;
-        chart.redraw(false);
-      }
-      function end() {
-        // document.removeEventListener('mousedown', start);
-        // document.removeEventListener('touchstart', start);
-        document.removeEventListener('mousemove', moving);
-        document.removeEventListener('touchdrag', moving);
-        document.removeEventListener('mouseup', end);
-        document.removeEventListener('touchend', end);
-      }
-      document.addEventListener('mousemove', moving);
-      document.addEventListener('touchdrag', moving);
-      document.addEventListener('mouseup', end);
-      document.addEventListener('touchend', end);
     },
     clearChart() {
-      if (!chart) return;
-      chart.container.removeEventListener('mousedown', this.startDrag);
-      chart.container.removeEventListener('touchstart', this.startDrag);
-      chart.destroy();
+      if (!this.chart) return;
+      this.chart.destroy();
+    },
+    setPolarChart() {
+      const vm = this;
+	    vm.clearPolarChart();
+      const option = {  
+        chart: {
+          renderTo: this.$refs.polarChart,
+          polar: true,
+          // type: 'scatter',
+        },
+        title: {
+            text: false
+        },
+        pane: {
+            startAngle: 0,
+            endAngle: 360
+        },
+        xAxis: {
+          reversed: false,
+          title: {
+            enabled: true,
+            text: '方位'
+          },
+          labels: {
+            formatter: function () {
+              return this.value + '°';
+            }
+          },
+          maxPadding: 0.01,
+          showLastLabel: true,
+          min: 0,
+          max: 360,
+        },
+        yAxis: {
+            min: 0,
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0,
+                groupPadding: 0,
+            },
+            series: {
+              point: {
+                events: {
+                  click() {
+                    if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
+                      vm.$refs.modal.close();
+                      vm.$router.push({
+                        name: 'ChuanGan',
+                        params:{ id: this.SensorId },
+                        query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label},
+                      });
+                    } else {
+                      vm.hovering.x = this.x;
+                      vm.hovering.y = this.y;
+                      vm.hovering.z = this.z;
+                    }
+                  }
+                }
+              }
+            }
+        },
+        series: [{
+            name: '传感器',
+            lineWidth: 0,
+            states: {
+              hover: {
+                lineWidth: 0,
+                lineWidthPlus: 0,
+              }
+            },
+            data: vm.getPolarData,
+            pointPlacement: 'between'
+        }],
+        credits: {
+          enabled:false // 禁用版权信息
+        },
+        tooltip: {
+          headerFormat: '<b>传感线:{series.name}</b><br/>',
+          pointFormat: '深度:{point.x} m<br/>温度: {point.y}\xB0C'
+        },
+      }
+      console.log(vm.getPolarData)
+      vm.polarChart = new Highcharts.Chart(option);
+    },
+    clearPolarChart() {
+      if (!this.polarChart) return;
+      this.polarChart.destroy();
     },
   },
   mounted() {
@@ -330,5 +454,10 @@ export default {
   min-width: 310px;
   max-width: 800px;
   margin: 0 auto;
+}
+.polarChart{
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 </style>

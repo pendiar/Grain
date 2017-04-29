@@ -22,7 +22,7 @@ export default new VueRouter({
 
   routes: [
     { path: '/', redirect: { name: 'GrainList' } },
-    { path: '/Grain', // 粮仓管理
+    { path: '/Grain', // 粮仓监控
       component: load('Grain'),
       children: [
         { path: '', redirect: { name: 'GrainList' } },
@@ -47,6 +47,7 @@ export default new VueRouter({
         { path: 'LiangCang/:id', name: 'LiangCang', component: load('view/LiangCang') },
       ],
     },
+    { path: '/GuanLi', component: load('GuanLi') }, // 系统管理
     { path: '/layout', component: load('layout/Hello') }, // Not found
     { path: '/view', component: load('view/Hello') }, // Not found
     { path: '*', component: load('Error404') }, // Not found

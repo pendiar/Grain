@@ -7,6 +7,7 @@
 import Highcharts from 'highcharts';
 // 加载模块
 require('highcharts/highcharts-3d')(Highcharts);
+import { Platform } from 'quasar';
 
 let chart = null;
 
@@ -33,6 +34,11 @@ export default {
   },
   data() {
     return {
+      hovering: {
+        x: null,
+        y: null,
+        z: null,
+      }
       //   getData: [17,21,22,25,26,24,19,29,26,25,24,20,23,26,25,30,27,22,21,26,24,21,22,18,27,25,23,26,22,21,24,25,22,28,26,22,21,22,24],
       //   demoData: [],
     };
@@ -87,8 +93,17 @@ export default {
             point: {
               events: {
                 click() {
-                  vm.$router.push({ name: 'ChuanGan', params:{ id: this.SensorId }
-                  , query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label} });
+                  if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
+                    vm.$router.push({
+                      name: 'ChuanGan',
+                      params:{ id: this.SensorId },
+                      query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label},
+                    });
+                  } else {
+                    vm.hovering.x = this.x;
+                    vm.hovering.y = this.y;
+                    vm.hovering.z = this.z;
+                  }
                 }
               }
             }

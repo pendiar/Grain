@@ -18,12 +18,14 @@ import 'assets/css/common.css'
 import chuangan3d from 'components/common/chuangan3d'
 import chuanganpingmian from 'components/common/chuanganpingmian'
 import chuanganchart from 'components/common/chuanganchart'
+import chuanganline from 'components/common/chuanganLine'
 
 Vue.use(Quasar) // Install Quasar Framework
 Vue.use(resource) 
 Vue.component('chuangan3d', chuangan3d) 
 Vue.component('chuanganpingmian', chuanganpingmian) 
 Vue.component('chuanganchart', chuanganchart) 
+Vue.component('chuanganline', chuanganline) 
 
 Vue.mixin({
   data() {
