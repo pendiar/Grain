@@ -46,10 +46,10 @@ export default {
     setChart() {
       const vm = this;
 	    vm.clearChart();
-      this.chart = new Highcharts.Chart({
+      vm.chart = new Highcharts.Chart({
         credits:{enabled:false},
         chart: {
-          renderTo: this.$el,
+          renderTo: vm.$el,
           margin: 60,
           //  margin: 100,
           //  margin: 100,
@@ -166,16 +166,17 @@ export default {
           { data: vm.getData }
         ]
       });
-      this.chart.container.addEventListener('mousedown', this.startDrag);
-      this.chart.container.addEventListener('touchstart', this.startDrag);
+      vm.chart.container.addEventListener('mousedown', vm.startDrag);
+      vm.chart.container.addEventListener('touchstart', vm.startDrag);
     },
     startDrag(e) {
-      if (!this.chart) return;
-      e = this.chart.pointer.normalize(e);
+      const vm = this;
+      if (!vm.chart) return;
+      e = vm.chart.pointer.normalize(e);
       var posX = e.pageX,
         posY = e.pageY,
-        alpha = this.chart.options.chart.options3d.alpha,
-        beta = this.chart.options.chart.options3d.beta,
+        alpha = vm.chart.options.chart.options3d.alpha,
+        beta = vm.chart.options.chart.options3d.beta,
         newAlpha,
         newBeta,
         sensitivity = 5; // lower is more sensitive
@@ -183,12 +184,12 @@ export default {
         // Run beta
         newBeta = beta + (posX - e.pageX) / sensitivity;
         newBeta = Math.min(100, Math.max(-100, newBeta));
-        this.chart.options.chart.options3d.beta = newBeta;
+        vm.chart.options.chart.options3d.beta = newBeta;
         // Run alpha
         newAlpha = alpha + (e.pageY - posY) / sensitivity;
         newAlpha = Math.min(100, Math.max(-100, newAlpha));
-        this.chart.options.chart.options3d.alpha = newAlpha;
-        this.chart.redraw(false);
+        vm.chart.options.chart.options3d.alpha = newAlpha;
+        vm.chart.redraw(false);
       }
       function end() {
         // document.removeEventListener('mousedown', start);
@@ -213,7 +214,9 @@ export default {
   mounted() {
 	//   console.log(1111)
 	  // this.clearChart();
-	  this.setChart();
+    this.nextTick(function () {
+      this.setChart();
+    });
   },
   watch: {
 	  update: 'setChart',
