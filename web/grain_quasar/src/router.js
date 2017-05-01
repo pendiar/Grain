@@ -47,7 +47,12 @@ export default new VueRouter({
         { path: 'LiangCang/:id', name: 'LiangCang', component: load('view/LiangCang') },
       ],
     },
-    { path: '/GuanLi', component: load('GuanLi') }, // 系统管理
+    { path: '/GuanLi',  // 系统管理
+      component: load('GuanLi'),
+      children: [
+        { path: 'BuMen', name: 'BuMen', component: load('view/GuanLi/BuMen') },
+      ],
+    },
     { path: '/layout', component: load('layout/Hello') }, // Not found
     { path: '/view', component: load('view/Hello') }, // Not found
     { path: '*', component: load('Error404') }, // Not found
