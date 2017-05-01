@@ -182,12 +182,13 @@ export default {
           },
           labels: {
             formatter: function () {
-              return this.value + 'm';
+              return this.value;
             }
           },
           maxPadding: 0.01,
           showLastLabel: true,
           min: 0,
+          tickInterval: 1,
         },
         yAxis: {
           title: {
@@ -371,7 +372,8 @@ export default {
           },
           labels: {
             formatter: function () {
-              return this.value + '°';
+              if (this.value === 0) return '北';
+              return '';
             }
           },
           maxPadding: 0.01,

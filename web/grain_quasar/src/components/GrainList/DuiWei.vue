@@ -33,7 +33,7 @@ export default {
   methods: {
     getLink(item) {
       // {name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:number.split('-')[0],Number:number}}
-      if (this.$route.query.type === 1 || this.$route.query.type === 2) {
+      if (!this.$route.query.type || this.$route.query.type === 1 || this.$route.query.type === 2) {
         return {name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:this.number.split('-')[0],Number:this.number}};
       // } else if (grain.Type === 2) {
       //   return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };

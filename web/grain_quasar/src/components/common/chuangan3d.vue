@@ -9,8 +9,6 @@ import Highcharts from 'highcharts';
 require('highcharts/highcharts-3d')(Highcharts);
 import { Platform } from 'quasar';
 
-let chart = null;
-
 export default {
   props: ['sensorList', 'update'],
   computed: {
@@ -38,7 +36,8 @@ export default {
         x: null,
         y: null,
         z: null,
-      }
+      },
+      chart: null,
       //   getData: [17,21,22,25,26,24,19,29,26,25,24,20,23,26,25,30,27,22,21,26,24,21,22,18,27,25,23,26,22,21,24,25,22,28,26,22,21,22,24],
       //   demoData: [],
     };
@@ -47,7 +46,7 @@ export default {
     setChart() {
       const vm = this;
 	    vm.clearChart();
-      chart = new Highcharts.Chart({
+      this.chart = new Highcharts.Chart({
         credits:{enabled:false},
         chart: {
           renderTo: this.$el,
@@ -167,16 +166,16 @@ export default {
           { data: vm.getData }
         ]
       });
-      chart.container.addEventListener('mousedown', this.startDrag);
-      chart.container.addEventListener('touchstart', this.startDrag);
+      this.chart.container.addEventListener('mousedown', this.startDrag);
+      this.chart.container.addEventListener('touchstart', this.startDrag);
     },
     startDrag(e) {
-      if (!chart) return;
-      e = chart.pointer.normalize(e);
+      if (!this.chart) return;
+      e = this.chart.pointer.normalize(e);
       var posX = e.pageX,
         posY = e.pageY,
-        alpha = chart.options.chart.options3d.alpha,
-        beta = chart.options.chart.options3d.beta,
+        alpha = this.chart.options.chart.options3d.alpha,
+        beta = this.chart.options.chart.options3d.beta,
         newAlpha,
         newBeta,
         sensitivity = 5; // lower is more sensitive
@@ -184,12 +183,12 @@ export default {
         // Run beta
         newBeta = beta + (posX - e.pageX) / sensitivity;
         newBeta = Math.min(100, Math.max(-100, newBeta));
-        chart.options.chart.options3d.beta = newBeta;
+        this.chart.options.chart.options3d.beta = newBeta;
         // Run alpha
         newAlpha = alpha + (e.pageY - posY) / sensitivity;
         newAlpha = Math.min(100, Math.max(-100, newAlpha));
-        chart.options.chart.options3d.alpha = newAlpha;
-        chart.redraw(false);
+        this.chart.options.chart.options3d.alpha = newAlpha;
+        this.chart.redraw(false);
       }
       function end() {
         // document.removeEventListener('mousedown', start);
@@ -205,10 +204,10 @@ export default {
       document.addEventListener('touchend', end);
     },
     clearChart() {
-      if (!chart) return;
-      chart.container.removeEventListener('mousedown', this.startDrag);
-      chart.container.removeEventListener('touchstart', this.startDrag);
-      chart.destroy();
+      if (!this.chart) return;
+      this.chart.container.removeEventListener('mousedown', this.startDrag);
+      this.chart.container.removeEventListener('touchstart', this.startDrag);
+      this.chart.destroy();
     },
   },
   mounted() {
