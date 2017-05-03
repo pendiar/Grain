@@ -214,7 +214,7 @@ export default {
   mounted() {
 	//   console.log(1111)
 	  // this.clearChart();
-    this.nextTick(function () {
+    this.$nextTick(function () {
       this.setChart();
     });
   },

@@ -45,7 +45,15 @@ export default {
           color = "#0ce36b"
         }
         if (sensor.Direction_Y in map) {
-          result[map[sensor.Direction_Y]].data.push([sensor.Direction_X, sensor.Direction_Y]);
+          result[map[sensor.Direction_Y]].data.push({
+            x: sensor.Direction_X,
+            y: sensor.Direction_Y,
+            temp,
+            color,
+            SensorId: sensor.SensorId,
+            Collector: sensor.Collector,
+            Label: sensor.Label,
+          });
         } else {
           map[sensor.Direction_Y] = result.length;
           result.push({
@@ -53,8 +61,16 @@ export default {
             marker: {
               symbol: 'square' // 点形状
             },
-            color:"#90ed7d",
-            data: [[sensor.Direction_X, sensor.Direction_Y]]
+            color: "#90ed7d",
+            data: [{
+              x: sensor.Direction_X,
+              y: sensor.Direction_Y,
+              temp,
+              color,
+              SensorId: sensor.SensorId,
+              Collector: sensor.Collector,
+              Label: sensor.Label,
+            }],
           });
         }
       });
@@ -154,7 +170,7 @@ export default {
     },
     setChart() {
       const vm = this;
-	    vm.clearChart();
+      vm.clearChart();
       const option = {  
         chart: {
           renderTo: this.$refs.chart,
@@ -175,7 +191,7 @@ export default {
           enabled: false 
         },
         xAxis: {
-          reversed: false,
+          reversed: true,
           title: {
             enabled: true,
             text: 'Length'
@@ -199,11 +215,12 @@ export default {
               return this.value;
             }
           },
-          lineWidth: 1
+          lineWidth: 1,
+          tickInterval: 1,
         },
         tooltip: {
-          headerFormat: '<b>传感线:{series.name}</b><br/>',
-          pointFormat: '深度:{point.x} m<br/>温度: {point.y}\xB0C'
+          headerFormat: '<b>采集器:{series.Collector}</b><br/>',
+          pointFormat: '传感线:{series.Label}<br/>传感器:{series.SensorId}<br/>单位深度:{point.x}<br/>单位温度: {series.temp}',
         },
         plotOptions: {
           spline: {
@@ -350,7 +367,7 @@ export default {
     },
     setPolarChart() {
       const vm = this;
-	    vm.clearPolarChart();
+      vm.clearPolarChart();
       const option = {  
         chart: {
           renderTo: this.$refs.polarChart,
@@ -427,10 +444,9 @@ export default {
         },
         tooltip: {
           headerFormat: '<b>传感线:{series.name}</b><br/>',
-          pointFormat: '深度:{point.x} m<br/>温度: {point.y}\xB0C'
+          pointFormat: `深度:${vm.x} m<br/>编号: {point.y}\xB0C`,
         },
-      }
-      console.log(vm.getPolarData)
+      };
       vm.polarChart = new Highcharts.Chart(option);
     },
     clearPolarChart() {
@@ -439,12 +455,12 @@ export default {
     },
   },
   mounted() {
-	//   console.log(1111)
-	  // this.clearChart();
-	  this.setChart();
+  //   console.log(1111)
+    // this.clearChart();
+    this.setChart();
   },
   watch: {
-	  update: 'setChart',
+    update: 'setChart',
   },
 };
 </script>
