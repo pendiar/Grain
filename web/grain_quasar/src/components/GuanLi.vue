@@ -26,7 +26,7 @@
 
       <div class="list no-border platform-delimiter">
         <q-drawer-link icon="mail" :to="{name: 'CGQGL',}">
-          传感器管理
+          传感线管理
         </q-drawer-link>
         <q-drawer-link icon="mail" :to="{name: 'BuMen',}">
           部门管理
