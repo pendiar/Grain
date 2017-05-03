@@ -50,6 +50,8 @@ export default new VueRouter({
     { path: '/GuanLi',  // 系统管理
       component: load('GuanLi'),
       children: [
+        { path: '', redirect: { name: 'CGQGL' } },
+        { path: 'CGQGL', name: 'CGQGL', component: load('view/GuanLi/CGQGL') },
         { path: 'BuMen', name: 'BuMen', component: load('view/GuanLi/BuMen') },
       ],
     },

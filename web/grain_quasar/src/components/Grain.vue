@@ -5,9 +5,9 @@
         粮仓监控
       </q-toolbar-title>
       <!-- opens drawer below -->
-      <button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
+      <!--<button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
         <i>menu</i>
-      </button>
+      </button>-->
     </div>
 
     <!-- Navigation Tabs -->
