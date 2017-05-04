@@ -126,10 +126,15 @@
             showLastLabel: true,
             min: 0,
             max: 360,
+            step: 45,
           },
           yAxis: {
             min: 0,
+            max: this.LineCount.length,
             tickInterval: 1,
+            labels: {
+              enabled: false, // Y轴刻度值不显示  
+            },
           },
           plotOptions: {
               column: {

@@ -135,11 +135,13 @@ export default {
           count += num;
           return false;
         });
+        // return [x,y];
         return {
           x,
           y,
           temp,
           color,
+          number: sensor.Direction_Y,
           SensorId: sensor.SensorId,
           Collector: sensor.Collector,
           Label: sensor.Label,
@@ -219,8 +221,8 @@ export default {
           tickInterval: 1,
         },
         tooltip: {
-          headerFormat: '<b>采集器:{series.Collector}</b><br/>',
-          pointFormat: '传感线:{series.Label}<br/>传感器:{series.SensorId}<br/>单位深度:{point.x}<br/>单位温度: {series.temp}',
+          headerFormat: '',
+          pointFormat: '<b>采集器:{point.Collector}</b><br/>传感线:{point.Label}<br/>传感器:{point.SensorId}<br/>单位深度:{point.x}<br/>单位温度: {point.temp}',
         },
         plotOptions: {
           spline: {
@@ -384,8 +386,7 @@ export default {
         xAxis: {
           reversed: false,
           title: {
-            enabled: true,
-            text: '方位'
+            enabled: false,
           },
           labels: {
             formatter: function () {
@@ -397,9 +398,15 @@ export default {
           showLastLabel: true,
           min: 0,
           max: 360,
+          step: 45,
         },
         yAxis: {
-            min: 0,
+          min: 0,
+          max: this.LineCount.length,
+          tickInterval: 1,
+          labels: {
+            enabled: false, // Y轴刻度值不显示  
+          },
         },
         plotOptions: {
             column: {
@@ -443,8 +450,8 @@ export default {
           enabled:false // 禁用版权信息
         },
         tooltip: {
-          headerFormat: '<b>传感线:{series.name}</b><br/>',
-          pointFormat: `深度:${vm.x} m<br/>编号: {point.y}\xB0C`,
+          headerFormat: '',
+          pointFormat: `<b>编号: {point.number}</b><br/>采集器:{point.Collector}<br/>传感线:{point.Label}<br/>传感器:{point.SensorId}<br/>单位深度:${vm.x}<br/>单位温度: {point.temp}`,
         },
       };
       vm.polarChart = new Highcharts.Chart(option);
