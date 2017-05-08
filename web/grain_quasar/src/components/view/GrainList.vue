@@ -23,10 +23,10 @@
               <button class="primary small absolute-right" @click="edit(index)"><i class="on-left">edit</i> 编辑</button>
             </div>
             <div class="card-content">
-              <div class="grain-top"><i class="top-icon" :class="[grain.Type===3?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
-              <div class="grain-content" :class="[grain.Type===3?'bottom-icon-yuan':'']">
+              <div class="grain-top"><i class="top-icon" :class="[grain.Type===3||grain.Type===4?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
+              <div class="grain-content" :class="[grain.Type===3||grain.Type===4?'bottom-icon-yuan':'']">
                 <div class="grain-floor" v-for="floor in grain.Floors.slice().reverse()" :style="{height:100/grain.Floors.length+'%'}">
-                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:'AoJian',params:{id:granary.Number},query:granary}">
+                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:grain.Type===3||grain.Type===4?'YuanDuiWei':'AoJian',params:{id:granary.Number},query:granary}">
                     {{granary.Number}}
                     <q-tooltip :ref="granary.Number">
                       <p>{{granary.Location}}</p>
@@ -55,26 +55,15 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="(item, index) in GrainReport">
-              <tr v-if="item.Number.indexOf('L') === 0" v-link="{name:'AoJianList',params:{id:item.Number}}">
-                <td>{{item.Number}}</td>
-                <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
-                <td>{{item.MinimumTemperature}}°C</td>
-                <td :class="{'bg-worn':item.AverageTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.AverageTemperature}}</td>
-                <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
-                <td :class="{'bg-worn':item.InSideHumidity>=80 ||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
-                <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-              </tr>
-              <tr v-else v-link="{name:'DuiWeiMo',query:{wNumber:item.Number,gNumber:item.Number+'-1',Number:item.Number+'-1-1'}}">
-                <td>{{item.Number}}</td>
-                <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
-                <td>{{item.MinimumTemperature}}°C</td>
-                <td :class="{'bg-worn':item.AverageTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.AverageTemperature}}</td>
-                <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
-                <td :class="{'bg-worn':item.InSideHumidity>=80||item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
-                <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-              </tr>
-            </template>
+            <tr v-for="(item, index) in GrainReport" v-link="getLink(item)">
+              <td>{{item.Number}}</td>
+              <td :class="{'bg-worn':item.Maximumemperature>=30}">{{item.Maximumemperature}}°C</td>
+              <td>{{item.MinimumTemperature}}°C</td>
+              <td :class="{'bg-worn':item.AverageTemperature>=30}">{{item.AverageTemperature}}</td>
+              <td :class="{'bg-worn':item.OutSideTemperature>=30}">{{item.OutSideTemperature}}°C</td>
+              <td :class="{'bg-worn':item.InSideHumidity>=80 || item.OutSideHumidity>=80}">{{item.InSideHumidity}}%RH/{{item.OutSideHumidity}}%RH</td>
+              <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
+            </tr>
           </tbody>
         </table>
         <router-view></router-view>
@@ -112,6 +101,15 @@ export default {
     };
   },
   methods: {
+    getLink(grain) {
+      if (grain.Type === 1) {
+        return { name: 'AoJianList', params: { id: grain.Number } };
+      // } else if (grain.Type === 2) {
+      //   return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };
+      }
+      return { name: 'DuiWei', params: { id: `${grain.Number}-1-1` }, query: { type: grain.Type } };
+      // return { name: 'YuanDuiWei', query: { WH_Number: grain.Number, Number: `${grain.Number}-1`, DW_Number: `${grain.Number}-1-1` } };
+    },
     toAoJianList(item) {
       let list = [];
       item.Floors.forEach((floor) => {
@@ -187,8 +185,8 @@ export default {
     // console.log(this.$refs[to.params.id]);
     this.$refs[to.params.id] && this.$refs[to.params.id][0] && this.$refs[to.params.id][0].close();
     next();
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="less">

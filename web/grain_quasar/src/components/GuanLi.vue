@@ -1,39 +1,47 @@
 <template>
   <q-layout>
     <div slot="header" class="toolbar">
-      <q-toolbar-title :padding="1">
-        粮仓信息
-      </q-toolbar-title>
       <!-- opens drawer below -->
       <button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
         <i>menu</i>
       </button>
+      <q-toolbar-title :padding="1">
+        系统管理
+      </q-toolbar-title>
     </div>
 
     <!-- Navigation Tabs -->
     <q-tabs slot="navigation">
-      <q-tab icon="mail" route="/GuanLi/GrainList" exact replace>粮仓</q-tab>
-      <q-tab icon="alarm" route="/GuanLi/AoJian/0" exact replace>粮堆</q-tab>
-      <q-tab icon="help" route="/GuanLi/ChuanGan/0" exact replace>传感器</q-tab>
+      <q-tab icon="home" route="/Grain" exact replace>粮仓监控</q-tab>
+      <q-tab icon="cloud" route="/GuanLi" exact replace>系统管理</q-tab>
     </q-tabs>
 
     <!-- Drawer -->
     <q-drawer ref="drawer">
       <div class="toolbar">
         <q-toolbar-title>
-          导航
+          导航菜单
         </q-toolbar-title>
       </div>
 
       <div class="list no-border platform-delimiter">
-        <q-drawer-link icon="mail" :to="{path: '/jiankong',}">
-          实时监控
+        <q-drawer-link icon="mail" :to="{name: 'CGQGL',}">
+          传感线管理
         </q-drawer-link>
-        <q-drawer-link icon="mail" :to="{path: '/Grain',}">
-          粮仓信息
+        <q-drawer-link icon="mail" :to="{name: 'BuMen',}">
+          部门管理
         </q-drawer-link>
-        <q-drawer-link icon="mail" :to="{path: '/GuanLi',}">
-          粮仓管理
+        <q-drawer-link icon="mail" :to="{path: '/Grdfsain',}">
+          人员管理
+        </q-drawer-link>
+        <q-drawer-link icon="mail" :to="{path: '/GuagsdnLi',}">
+          菜单管理
+        </q-drawer-link>
+        <q-drawer-link icon="mail" :to="{path: '/Grgdsain',}">
+          操作管理
+        </q-drawer-link>
+        <q-drawer-link icon="mail" :to="{path: '/GuagasdnLi',}">
+          角色管理
         </q-drawer-link>
       </div>
     </q-drawer>

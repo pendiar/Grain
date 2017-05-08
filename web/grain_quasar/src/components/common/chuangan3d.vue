@@ -7,8 +7,7 @@
 import Highcharts from 'highcharts';
 // 加载模块
 require('highcharts/highcharts-3d')(Highcharts);
-
-let chart = null;
+import { Platform } from 'quasar';
 
 export default {
   props: ['sensorList', 'update'],
@@ -33,6 +32,12 @@ export default {
   },
   data() {
     return {
+      hovering: {
+        x: null,
+        y: null,
+        z: null,
+      },
+      chart: null,
       //   getData: [17,21,22,25,26,24,19,29,26,25,24,20,23,26,25,30,27,22,21,26,24,21,22,18,27,25,23,26,22,21,24,25,22,28,26,22,21,22,24],
       //   demoData: [],
     };
@@ -41,10 +46,10 @@ export default {
     setChart() {
       const vm = this;
 	    vm.clearChart();
-      chart = new Highcharts.Chart({
+      vm.chart = new Highcharts.Chart({
         credits:{enabled:false},
         chart: {
-          renderTo: this.$el,
+          renderTo: vm.$el,
           margin: 60,
           //  margin: 100,
           //  margin: 100,
@@ -88,8 +93,17 @@ export default {
             point: {
               events: {
                 click() {
-                  vm.$router.push({ name: 'ChuanGan', params:{ id: this.SensorId }
-                  , query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label} });
+                  if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
+                    vm.$router.push({
+                      name: 'ChuanGan',
+                      params:{ id: this.SensorId },
+                      query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label},
+                    });
+                  } else {
+                    vm.hovering.x = this.x;
+                    vm.hovering.y = this.y;
+                    vm.hovering.z = this.z;
+                  }
                 }
               }
             }
@@ -153,16 +167,17 @@ export default {
           { data: vm.getData }
         ]
       });
-      chart.container.addEventListener('mousedown', this.startDrag);
-      chart.container.addEventListener('touchstart', this.startDrag);
+      vm.chart.container.addEventListener('mousedown', vm.startDrag);
+      vm.chart.container.addEventListener('touchstart', vm.startDrag);
     },
     startDrag(e) {
-      if (!chart) return;
-      e = chart.pointer.normalize(e);
+      const vm = this;
+      if (!vm.chart) return;
+      e = vm.chart.pointer.normalize(e);
       var posX = e.pageX,
         posY = e.pageY,
-        alpha = chart.options.chart.options3d.alpha,
-        beta = chart.options.chart.options3d.beta,
+        alpha = vm.chart.options.chart.options3d.alpha,
+        beta = vm.chart.options.chart.options3d.beta,
         newAlpha,
         newBeta,
         sensitivity = 5; // lower is more sensitive
@@ -170,12 +185,12 @@ export default {
         // Run beta
         newBeta = beta + (posX - e.pageX) / sensitivity;
         newBeta = Math.min(100, Math.max(-100, newBeta));
-        chart.options.chart.options3d.beta = newBeta;
+        vm.chart.options.chart.options3d.beta = newBeta;
         // Run alpha
         newAlpha = alpha + (e.pageY - posY) / sensitivity;
         newAlpha = Math.min(100, Math.max(-100, newAlpha));
-        chart.options.chart.options3d.alpha = newAlpha;
-        chart.redraw(false);
+        vm.chart.options.chart.options3d.alpha = newAlpha;
+        vm.chart.redraw(false);
       }
       function end() {
         // document.removeEventListener('mousedown', start);
@@ -191,16 +206,18 @@ export default {
       document.addEventListener('touchend', end);
     },
     clearChart() {
-      if (!chart) return;
-      chart.container.removeEventListener('mousedown', this.startDrag);
-      chart.container.removeEventListener('touchstart', this.startDrag);
-      chart.destroy();
+      if (!this.chart) return;
+      this.chart.container.removeEventListener('mousedown', this.startDrag);
+      this.chart.container.removeEventListener('touchstart', this.startDrag);
+      this.chart.destroy();
     },
   },
   mounted() {
 	//   console.log(1111)
 	  // this.clearChart();
-	  this.setChart();
+    this.$nextTick(function () {
+      this.setChart();
+    });
   },
   watch: {
 	  update: 'setChart',

@@ -1,0 +1,59 @@
+<template>
+    <div class="list no-border inner-delimiter highlight">
+      <div class="item">
+          <div class="item-content">
+            部门：<input v-model="bumenData._name" placeholder="部门名称">
+          </div>
+      </div>
+      <div class="item">
+          <div class="item-content">
+            编号：<input v-model="bumenData._code" placeholder="编号">
+          </div>
+      </div>
+      <div class="item">
+          <div class="item-content">
+            排序：<input v-model.number="bumenData._sort" placeholder="排序">
+          </div>
+      </div>
+      <div class="item">
+          <div class="item-content">
+            地址：<input v-model="bumenData._address" placeholder="地址">
+          </div>
+      </div>
+      <div class="item">
+          <div class="item-content">
+            备注：<input v-model="bumenData._remark" placeholder="备注">
+          </div>
+      </div>
+      <div class="text-center">
+        <button class="primary small" @click="change">修改</button>
+      </div>
+    </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        bumenData: {
+          _id: '',
+          _code: '',
+          _name: '',
+          _parentid: '',
+          _address: '',
+          _sort: '',
+          _remark: '',
+        },
+      };
+    },
+    methods: {
+      change() {
+        this.$http.post(`${this.serverAddress}/Department/Edit`, this.bumenData).then((response) => {
+          if (response.data.code === 1000) {
+            this.$emit('hide');
+          }
+        });
+      },
+    },
+  };
+</script>

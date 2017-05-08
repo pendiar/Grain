@@ -22,7 +22,7 @@ export default new VueRouter({
 
   routes: [
     { path: '/', redirect: { name: 'GrainList' } },
-    { path: '/Grain', // 粮仓管理
+    { path: '/Grain', // 粮仓监控
       component: load('Grain'),
       children: [
         { path: '', redirect: { name: 'GrainList' } },
@@ -39,10 +39,20 @@ export default new VueRouter({
             },
           ],
         },
+        { path: 'YuanDuiWei', name: 'YuanDuiWei', component: load('view/AoJian') },
         { path: 'DuiWeiMo/:id', name: 'DuiWeiMo', component: load('view/AoJian') },
         { path: 'AoJian/:id', name: 'AoJian', component: load('view/AoJian') },
+        { path: 'YuanTong/:id', name: 'YuanTong', component: load('view/AoJian') },
         { path: 'ChuanGan/:id', name: 'ChuanGan', component: load('view/ChuanGan') },
         { path: 'LiangCang/:id', name: 'LiangCang', component: load('view/LiangCang') },
+      ],
+    },
+    { path: '/GuanLi',  // 系统管理
+      component: load('GuanLi'),
+      children: [
+        { path: '', redirect: { name: 'CGQGL' } },
+        { path: 'CGQGL', name: 'CGQGL', component: load('view/GuanLi/CGQGL') },
+        { path: 'BuMen', name: 'BuMen', component: load('view/GuanLi/BuMen') },
       ],
     },
     { path: '/layout', component: load('layout/Hello') }, // Not found

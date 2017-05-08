@@ -5,10 +5,10 @@
         <div class="item-content has-secondary">
           {{cang.Number}}
         </div>
-        <span class="cangStatus"></span>
-        <span class="item-secondary" @click="toggle">
+        <span class="item-secondary" @click="toggle" v-if="$route.name!=='YuanDuiWei'">
           <i>autorenew</i>
         </span>
+        <span class="cangStatus"></span>
       </div>
       <div class="list bordered inner-delimiter highlight">
         <!-- <div class="item">
@@ -49,7 +49,8 @@
           </div>
           <i class="item-secondary">keyboard_arrow_right</i>
         </router-link>
-        <chuanganpingmian :sensorList="cang.SensorList" v-if="PM"></chuanganpingmian>
+        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" v-if="$route.name==='YuanDuiWei'"></chuanganline>
+        <chuanganpingmian :sensorList="cang.SensorList" v-else-if="PM"></chuanganpingmian>
         <chuangan3d :sensorList="cang.SensorList" :update="update" v-else></chuangan3d>
       </div>
     </div>
