@@ -155,10 +155,14 @@ export default {
         },
         tooltip: {
           formatter: function () {
-             return ` x坐标: <b>${this.point.x} —[${this.point.SensorId}]</b><br/>
-             y坐标: <b>${this.point.y} —[${this.point.Label}]</b><br/>
-             z坐标: <b>${this.point.z} —[${this.point.Collector}]</b><br/>
+             return ` 传感器序号: <b>${this.point.x} </b><br/>
+             线号: <b>${this.point.y} </b><br/>
+             层号: <b>${this.point.z} </b><br/>
              温度:<b> ${this.point.temp}</b>`;      
+            //  return ` x坐标: <b>${this.point.x} —[${this.point.SensorId}]</b><br/>
+            //  y坐标: <b>${this.point.y} —[${this.point.Label}]</b><br/>
+            //  z坐标: <b>${this.point.z} —[${this.point.Collector}]</b><br/>
+            //  温度:<b> ${this.point.temp}</b>`;      
             //return `采集器: <b>${this.point.Collector}</b><br>传感线: <b>${this.point.Label}</b><br>传感器: <b>${this.point.SensorId}</b><br>x坐标: <b>${this.point.x}</b><br/>y坐标: <b>${this.point.y}</b><br/>z坐标: <b>${this.point.z}</b><br/>温度:<b> ${this.point.temp}</b>`;
             // return '<br>温度是: <b>' + this.point.temp + '℃';
           }

@@ -44,7 +44,7 @@
         <router-link tag="div" class="item item-link" :to="{name:'LiangCang',params:{id:cang.Number}}">
           <div class="item-content has-secondary">
             <span class="item-label">
-              粮食三温变化图 
+              粮堆三温变化图 
             </span>
           </div>
           <i class="item-secondary">keyboard_arrow_right</i>

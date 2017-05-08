@@ -5,6 +5,7 @@
         <th>堆位</th>
         <th>最高温</th>
         <th>最低温</th>
+        <th>平均温</th>
         <th>仓内温</th>
         <th>仓外温</th>
         <th>坏点数</th>
@@ -15,8 +16,9 @@
         <td>{{item.Number}}</td>
         <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
         <td>{{item.MinimumTemperature}}°C</td>
-        <td :class="{'bg-worn':item.InSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.InSideTemperature}}°C</td>
-        <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.OutSideTemperature}}°C</td>
+        <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature}}°C</td>
+        <td :class="{'bg-worn':item.InSideTemperature>=30&&item.InSideTemperature<35,'bg-alarm':item.InSideTemperature>=35}">{{item.InSideTemperature}}°C</td>
+        <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.OutSideTemperature<35,'bg-alarm':item.OutSideTemperature>=35}">{{item.OutSideTemperature}}°C</td>
         <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
         <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
       </tr>
