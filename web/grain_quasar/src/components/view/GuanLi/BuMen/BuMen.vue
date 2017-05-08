@@ -15,7 +15,7 @@
           <button class="primary clear" @click="deleteBumen(cell)">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="changeMessage(cell)">
+          <button class="primary clear" @click="addChildBumen(cell)">
             <i>add</i>
           </button>
         </template>
@@ -27,6 +27,11 @@
         </template>
       </q-data-table>
       <!--</transition-group>-->
+      <p class="text-center">
+        <button class="primary clear" @click="addBumen">
+          <i>add</i>
+        </button>
+      </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-bumen ref="EditBumen" @hide="closeModal"></edit-bumen>
@@ -39,8 +44,8 @@
 
 <script>
   import { Platform, Utils, Toast, Dialog } from 'quasar';
-  import EditBumen from 'components/BuMen/EditBumen.vue';
-  import AddBumen from 'components/BuMen/AddBumen.vue';
+  import EditBumen from './EditBumen.vue';
+  import AddBumen from './AddBumen.vue';
 
   export default {
     components: {
@@ -157,14 +162,32 @@
         });
       },
       deleteBumens(props) {
-
+        const vm = this;
+        Dialog.create({
+          title: '删除部门',
+          message: '确认删除部门？',
+          buttons: [
+            '否',
+            {
+              label: '是',
+              handler() {
+                vm.$http.post(`${vm.serverAddress}/Department/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
+                  if (response.data.code === 1000) {
+                    vm.closeModal();
+                  }
+                });
+              },
+            },
+          ],
+        });
       },
-      addBumen(cell) {
+      addChildBumen(cell) {
         this.$refs.AddBumen.bumenData._parentid = cell.row._id;
         this.$refs.edit.open();
       },
-      addTopBumen(props) {
-
+      addBumen() {
+        this.$refs.AddBumen.bumenData._parentid = '00000000-000-000-000';
+        this.$refs.edit.open();
       },
       fetchData(done) {
         this.$http.post(`${this.serverAddress}/Department/GetData`, [

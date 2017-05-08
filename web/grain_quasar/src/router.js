@@ -52,7 +52,7 @@ export default new VueRouter({
       children: [
         { path: '', redirect: { name: 'CGQGL' } },
         { path: 'CGQGL', name: 'CGQGL', component: load('view/GuanLi/CGQGL') },
-        { path: 'BuMen', name: 'BuMen', component: load('view/GuanLi/BuMen') },
+        { path: 'BuMen', name: 'BuMen', component: load('view/GuanLi/BuMen/BuMen') },
       ],
     },
     { path: '/layout', component: load('layout/Hello') }, // Not found
