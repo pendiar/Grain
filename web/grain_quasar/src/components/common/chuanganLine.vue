@@ -9,7 +9,7 @@
               <i>keyboard_arrow_left</i>
           </button>
           <q-toolbar-title :padding="1">
-              {{x}}单位高度截面分布展示
+              单位深度{{x}}截面展示
           </q-toolbar-title>
         </div>
         <div class="layout-view">
@@ -205,7 +205,7 @@ export default {
           },
           maxPadding: 0.01,
           showLastLabel: true,
-          min: 0,
+          min: 1,
           tickInterval: 1,
         },
         yAxis: {
@@ -222,7 +222,8 @@ export default {
         },
         tooltip: {
           headerFormat: '',
-          pointFormat: '<b>采集器:{point.Collector}</b><br/>传感线:{point.Label}<br/>传感器:{point.SensorId}<br/>单位深度:{point.x}<br/>单位温度: {point.temp}',
+          // pointFormat: '<b>采集器:{point.Collector}</b><br/>传感线:{point.Label}<br/>传感器:{point.SensorId}<br/>单位深度:{point.x}<br/>单位温度: {point.temp}',
+          pointFormat: '<b>线号:{point.y}</b><br/>深度层级:{point.x}<br/>温度: {point.temp}',
         },
         plotOptions: {
           spline: {
@@ -451,7 +452,8 @@ export default {
         },
         tooltip: {
           headerFormat: '',
-          pointFormat: `<b>编号: {point.number}</b><br/>采集器:{point.Collector}<br/>传感线:{point.Label}<br/>传感器:{point.SensorId}<br/>单位深度:${vm.x}<br/>单位温度: {point.temp}`,
+          // pointFormat: `<b>编号: {point.number}</b><br/>采集器:{point.Collector}<br/>传感线:{point.Label}<br/>传感器:{point.SensorId}<br/>单位深度:${vm.x}<br/>单位温度: {point.temp}`,
+            pointFormat: `<b>线号: {point.y}</b><br/>深度层级:${vm.x}<br/>温度: {point.temp}`,
         },
       };
       vm.polarChart = new Highcharts.Chart(option);
