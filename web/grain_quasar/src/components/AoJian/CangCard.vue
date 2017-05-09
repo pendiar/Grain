@@ -21,37 +21,90 @@
             </span>
           </div>
         </div> -->
-        <div class="item">
-          <div class="item-content">
-            <span class="item-label">
-              平均温度：
-            </span>
-            <span class="item-value">
-              {{cang.AverageTemperature}}°C
-            </span>
+        <div class="row">
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                最高温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.MaxiTemperature}}°C-->
+                 {{$route.query.Maximumemperature}}°C
+              </span>
+            </div>
+          </div>
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                最低温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.MinTemperature}}°C-->
+                 {{$route.query.MinimumTemperature}}°C
+              </span>
+            </div>
           </div>
         </div>
-        <div class="item">
-          <div class="item-content">
-            <span class="item-label">
-              平均湿度：
-            </span>
-            <span class="item-value">
-              {{cang.AverageHumidity}}%RH
-            </span>
+         <div class="row">
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                仓内温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.InSideTemperature}}°C-->
+                {{$route.query.InSideTemperature}}°C
+              </span>
+            </div>
+          </div>
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                仓外温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.OutSideTemperature}}°C-->
+                {{$route.query.OutSideTemperature}}°C
+              </span>
+            </div>
           </div>
         </div>
-        <router-link tag="div" class="item item-link" :to="{name:'LiangCang',params:{id:cang.Number}}">
+           <div class="row">
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                平均温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.AverageTemperature}}°C-->
+                 {{$route.query.AverageTemperature}}°C
+              </span>
+            </div>
+          </div>
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                坏点数：
+              </span>
+              <span class="item-value">
+                <!--{{cang.BadPoints}}-->
+                {{$route.query.BadPoints}}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <router-link tag="div" class="item item-link rmargin" :to="{name:'LiangCang',params:{id:cang.Number}}">
           <div class="item-content has-secondary">
             <span class="item-label">
-              粮堆三温变化图 
+              粮堆三温图 
             </span>
           </div>
           <i class="item-secondary">keyboard_arrow_right</i>
         </router-link>
-        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" v-if="$route.name==='YuanDuiWei'"></chuanganline>
+        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" :cnumber="cang.Number" v-if="$route.name==='YuanDuiWei'"></chuanganline>
         <chuanganpingmian :sensorList="cang.SensorList" v-else-if="PM"></chuanganpingmian>
-        <chuangan3d :sensorList="cang.SensorList" :update="update" v-else></chuangan3d>
+        <chuangan3d :sensorList="cang.SensorList" :update="update" :cnumber="cang.Number" v-else></chuangan3d>
       </div>
     </div>
   </div>
@@ -74,6 +127,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.rheight{
+
+font-size: 14px;
+padding: 1px;
+height: 20Px;
+line-height: 20px;
+
+}
+
+.rmargin{
+  margin-top: 5px;
+}
+
 .cangStatus{
   width: 20px;
   height: 20px;

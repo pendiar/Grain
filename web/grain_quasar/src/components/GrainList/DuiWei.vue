@@ -20,7 +20,6 @@
         <td :class="{'bg-worn':item.InSideTemperature>=30&&item.InSideTemperature<35,'bg-alarm':item.InSideTemperature>=35}">{{item.InSideTemperature}}°C</td>
         <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.OutSideTemperature<35,'bg-alarm':item.OutSideTemperature>=35}">{{item.OutSideTemperature}}°C</td>
         <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
-        <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
       </tr>
     </tbody>
   </table>
@@ -37,12 +36,16 @@ export default {
     getLink(item) {
       // {name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:number.split('-')[0],Number:number}}
       if (!this.$route.query.type || this.$route.query.type === 1 || this.$route.query.type === 2) {
-        return {name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:this.number.split('-')[0],Number:this.number}};
+        return {name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:this.number.split('-')[0],Number:this.number
+        ,Maximumemperature:item.Maximumemperature,MinimumTemperature:item.MinimumTemperature,AverageTemperature:item.AverageTemperature
+        ,InSideTemperature:item.InSideTemperature,OutSideTemperature:item.OutSideTemperature,BadPoints:item.BadPoints}};
       // } else if (grain.Type === 2) {
       //   return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };
       }
       // return { name: 'DuiWei', params: { id: `${grain.Number}-1-1` }, query: { type: grain.Type } };
-      return { name: 'YuanDuiWei', query: { WH_Number: this.number.split('-')[0], Number: this.number, DW_Number: item.Number } };
+      return { name: 'YuanDuiWei', query: { WH_Number: this.number.split('-')[0], Number: this.number, DW_Number: item.Number
+      ,Maximumemperature:item.Maximumemperature,MinimumTemperature:item.MinimumTemperature,AverageTemperature:item.AverageTemperature
+       ,InSideTemperature:item.InSideTemperature,OutSideTemperature:item.OutSideTemperature,BadPoints:item.BadPoints } };
     },
   },
   beforeRouteEnter: (to, from, next) => {
