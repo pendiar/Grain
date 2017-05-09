@@ -226,7 +226,7 @@
             });
             if (result.length) addRows(result, result[0]._id);
             this.table = result;
-            alert(JSON.stringify(this.table));
+            // alert(JSON.stringify(this.table));
           }
           if (done instanceof Function) done();
         }, (error) => {

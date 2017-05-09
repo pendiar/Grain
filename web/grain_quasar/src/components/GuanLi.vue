@@ -34,7 +34,7 @@
         <q-drawer-link icon="mail" :to="{path: '/Grdfsain',}">
           人员管理
         </q-drawer-link>
-        <q-drawer-link icon="mail" :to="{path: '/GuagsdnLi',}">
+        <q-drawer-link icon="mail" :to="{name: 'Menu',}">
           菜单管理
         </q-drawer-link>
         <q-drawer-link icon="mail" :to="{path: '/Grgdsain',}">
