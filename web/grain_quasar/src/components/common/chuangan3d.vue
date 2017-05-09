@@ -10,7 +10,7 @@ require('highcharts/highcharts-3d')(Highcharts);
 import { Platform } from 'quasar';
 
 export default {
-  props: ['sensorList', 'update'],
+  props: ['sensorList', 'update','cnumber'],
   computed: {
     getData() {
       return this.sensorList.map((sensor) => {
@@ -75,7 +75,7 @@ export default {
               '#EDCA4E'//第三个颜色
         ],
         title: {
-          text: `${vm.$route.query.Number} 粮堆温度展示`,
+          text: `${vm.cnumber} 粮堆温度展示`,
         },
         subtitle: {
           text: null

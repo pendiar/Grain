@@ -58,9 +58,11 @@ export default {
               // text: '传感器:'+query.SensorId+'[x:'+query.x+']<br>'
               // +'传感线:'+query.Label+'[y:'+query.y +']<br>'
               // +'采集分机:'+query.Collector+'[z:'+query.z +']',
-              text: '传感器序号:[x:'+query.x+']<br>'
-              +'线号:[y:'+query.y +']<br>'
-              +'层号:[z:'+query.z +']',
+              text: 
+              // '传感器序号:[x:'+query.x+']<br>'
+              // '线号:'+query.y +'<br>'
+              // +'深度层级:'+query.x +'',
+              ''
               // x: -20
           },
           xAxis: {

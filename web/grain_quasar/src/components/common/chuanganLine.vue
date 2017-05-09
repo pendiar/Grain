@@ -27,7 +27,7 @@ require('highcharts/highcharts-more')(Highcharts);
 import { Platform } from 'quasar';
 
 export default {
-  props: ['sensorList', 'update', 'LineCount'],
+  props: ['sensorList', 'update', 'LineCount','cnumber'],
   computed: {
     getData() {
       const result = [];
@@ -180,7 +180,7 @@ export default {
           inverted: true
         },
         title: {
-          text: `${vm.$route.query.Number} 粮堆温度展示`   
+          text: `${vm.cnumber} 粮堆温度展示`   
         },
         subtitle: {
           // text: 'According to the Standard Atmosphere Model'
@@ -453,7 +453,7 @@ export default {
         tooltip: {
           headerFormat: '',
           // pointFormat: `<b>编号: {point.number}</b><br/>采集器:{point.Collector}<br/>传感线:{point.Label}<br/>传感器:{point.SensorId}<br/>单位深度:${vm.x}<br/>单位温度: {point.temp}`,
-            pointFormat: `<b>线号: {point.y}</b><br/>深度层级:${vm.x}<br/>温度: {point.temp}`,
+            pointFormat: `<b>线号: {point.number}</b><br/>深度层级:${vm.x}<br/>温度: {point.temp}`,
         },
       };
       vm.polarChart = new Highcharts.Chart(option);
