@@ -1,5 +1,5 @@
 <template>
-  <div class="menugl">
+  <div class="Operation">
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <q-data-table
@@ -9,55 +9,55 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editMenu(cell)">
+          <button class="primary clear" @click="editOperation(cell)">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteMenu(cell)">
+          <button class="primary clear" @click="deleteOperation(cell)">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="addChildMenu(cell)">
+          <button class="primary clear" @click="addChildOperation(cell)">
             <i>add</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteMenus(props)">
+          <button class="primary clear" @click="deleteOperations(props)">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
       <p class="text-center">
-        <button class="primary clear" @click="addMenu">
+        <button class="primary clear" @click="addOperation">
           <i>add</i>
         </button>
       </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-      <edit-menu ref="EditMenu" @hide="closeModal"></edit-menu>
+      <edit-operation ref="EditOperation" @hide="closeModal"></edit-operation>
     </q-modal>
     <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-      <add-menu ref="AddMenu" @hide="closeModal"></add-menu>
+      <add-operation ref="AddOperation" @hide="closeModal"></add-operation>
     </q-modal>
   </div>
 </template>
 
 <script>
   import { Platform, Utils, Toast, Dialog } from 'quasar';
-  import EditMenu from './EditMenu.vue';
-  import AddMenu from './AddMenu.vue';
+  import EditOperation from './EditOperation.vue';
+  import AddOperation from './AddOperation.vue';
 
   export default {
     components: {
-      EditMenu,
-      AddMenu,
+      EditOperation,
+      AddOperation,
     },
     data() {
       return {
         editData: {},
         table: [],
         config: {
-          title: '菜单管理',
+          title: '操作管理',
           refresh: true,
           columnPicker: true,
           leftStickyColumns: 1,
@@ -79,7 +79,7 @@
         },
         columns: [
           {
-            label: '菜单',
+            label: '操作',
             field: '_name',
             width: '120px',
             filter: true,
@@ -135,23 +135,23 @@
         this.$refs.edit.close();
         this.fetchData();
       },
-      editMenu(cell) {
-        Object.keys(this.$refs.EditMenu.tableData).forEach((key) => {
-          this.$refs.EditMenu.tableData[key] = cell.row[key];
+      editOperation(cell) {
+        Object.keys(this.$refs.EditOperation.tableData).forEach((key) => {
+          this.$refs.EditOperation.tableData[key] = cell.row[key];
         });
         this.$refs.edit.open();
       },
-      deleteMenu(cell) {
+      deleteOperation(cell) {
         const vm = this;
         Dialog.create({
-          title: '删除菜单',
-          message: '确认删除菜单？',
+          title: '删除操作',
+          message: '确认删除操作？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, [{ _id: cell._id }]).then((response) => {
+                vm.$http.post(`${vm.serverAddress}/Operation/Delete`, [{ _id: cell._id }]).then((response) => {
                   if (response.data.code === 1000) {
                     vm.closeModal();
                   }
@@ -161,17 +161,17 @@
           ],
         });
       },
-      deleteMenus(props) {
+      deleteOperations(props) {
         const vm = this;
         Dialog.create({
-          title: '删除菜单',
-          message: '确认删除菜单？',
+          title: '删除操作',
+          message: '确认删除操作？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
+                vm.$http.post(`${vm.serverAddress}/Operation/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
                   if (response.data.code === 1000) {
                     vm.closeModal();
                   }
@@ -181,16 +181,16 @@
           ],
         });
       },
-      addChildMenu(cell) {
-        this.$refs.AddMenu.tableData._parentid = cell.row._id;
+      addChildOperation(cell) {
+        this.$refs.AddOperation.tableData._parentid = cell.row._id;
         this.$refs.edit.open();
       },
-      addMenu(props) {
-        this.$refs.AddMenu.tableData._parentid = '00000000-000-000-000';
+      addOperation(props) {
+        this.$refs.AddOperation.tableData._parentid = '00000000-000-000-000';
         this.$refs.edit.open();
       },
       fetchData(done) {
-        this.$http.post(`${this.serverAddress}/Menu/GetData`, [
+        this.$http.post(`${this.serverAddress}/Operation/GetData`, [
           "PageIndex^1",
           "PageCount^1000",
           "Sort^Name",

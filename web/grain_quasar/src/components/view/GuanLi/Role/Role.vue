@@ -1,5 +1,5 @@
 <template>
-  <div class="menugl">
+  <div class="Role">
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <q-data-table
@@ -9,55 +9,55 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editMenu(cell)">
+          <button class="primary clear" @click="editRole(cell)">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteMenu(cell)">
+          <button class="primary clear" @click="deleteRole(cell)">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="addChildMenu(cell)">
+          <button class="primary clear" @click="addChildRole(cell)">
             <i>add</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteMenus(props)">
+          <button class="primary clear" @click="deleteRoles(props)">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
       <p class="text-center">
-        <button class="primary clear" @click="addMenu">
+        <button class="primary clear" @click="addRole">
           <i>add</i>
         </button>
       </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-      <edit-menu ref="EditMenu" @hide="closeModal"></edit-menu>
+      <edit-role ref="EditRole" @hide="closeModal"></edit-role>
     </q-modal>
     <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-      <add-menu ref="AddMenu" @hide="closeModal"></add-menu>
+      <add-role ref="AddRole" @hide="closeModal"></add-role>
     </q-modal>
   </div>
 </template>
 
 <script>
   import { Platform, Utils, Toast, Dialog } from 'quasar';
-  import EditMenu from './EditMenu.vue';
-  import AddMenu from './AddMenu.vue';
+  import EditRole from './EditRole.vue';
+  import AddRole from './AddRole.vue';
 
   export default {
     components: {
-      EditMenu,
-      AddMenu,
+      EditRole,
+      AddRole,
     },
     data() {
       return {
         editData: {},
         table: [],
         config: {
-          title: '菜单管理',
+          title: '角色管理',
           refresh: true,
           columnPicker: true,
           leftStickyColumns: 1,
@@ -79,7 +79,7 @@
         },
         columns: [
           {
-            label: '菜单',
+            label: '角色',
             field: '_name',
             width: '120px',
             filter: true,
@@ -135,23 +135,23 @@
         this.$refs.edit.close();
         this.fetchData();
       },
-      editMenu(cell) {
-        Object.keys(this.$refs.EditMenu.tableData).forEach((key) => {
-          this.$refs.EditMenu.tableData[key] = cell.row[key];
+      editRole(cell) {
+        Object.keys(this.$refs.EditRole.tableData).forEach((key) => {
+          this.$refs.EditRole.tableData[key] = cell.row[key];
         });
         this.$refs.edit.open();
       },
-      deleteMenu(cell) {
+      deleteRole(cell) {
         const vm = this;
         Dialog.create({
-          title: '删除菜单',
-          message: '确认删除菜单？',
+          title: '删除角色',
+          message: '确认删除角色？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, [{ _id: cell._id }]).then((response) => {
+                vm.$http.post(`${vm.serverAddress}/Role/Delete`, [{ _id: cell._id }]).then((response) => {
                   if (response.data.code === 1000) {
                     vm.closeModal();
                   }
@@ -161,17 +161,17 @@
           ],
         });
       },
-      deleteMenus(props) {
+      deleteRoles(props) {
         const vm = this;
         Dialog.create({
-          title: '删除菜单',
-          message: '确认删除菜单？',
+          title: '删除角色',
+          message: '确认删除角色？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
+                vm.$http.post(`${vm.serverAddress}/Role/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
                   if (response.data.code === 1000) {
                     vm.closeModal();
                   }
@@ -181,16 +181,16 @@
           ],
         });
       },
-      addChildMenu(cell) {
-        this.$refs.AddMenu.tableData._parentid = cell.row._id;
+      addChildRole(cell) {
+        this.$refs.AddRole.tableData._parentid = cell.row._id;
         this.$refs.edit.open();
       },
-      addMenu(props) {
-        this.$refs.AddMenu.tableData._parentid = '00000000-000-000-000';
+      addRole(props) {
+        this.$refs.AddRole.tableData._parentid = '00000000-000-000-000';
         this.$refs.edit.open();
       },
       fetchData(done) {
-        this.$http.post(`${this.serverAddress}/Menu/GetData`, [
+        this.$http.post(`${this.serverAddress}/Role/GetData`, [
           "PageIndex^1",
           "PageCount^1000",
           "Sort^Name",

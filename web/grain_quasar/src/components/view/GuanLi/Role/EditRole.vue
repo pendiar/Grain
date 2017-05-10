@@ -2,7 +2,7 @@
     <div class="list no-border inner-delimiter highlight">
       <div class="item">
           <div class="item-content">
-            菜单：<input v-model="tableData._name" placeholder="菜单名称">
+            角色：<input v-model="tableData._name" placeholder="角色名称">
           </div>
       </div>
       <div class="item">
@@ -48,7 +48,7 @@
     },
     methods: {
       change() {
-        this.$http.post(`${this.serverAddress}/Menu/Edit`, this.tableData).then((response) => {
+        this.$http.post(`${this.serverAddress}/Role/Edit`, this.tableData).then((response) => {
           if (response.data.code === 1000) {
             this.$emit('hide');
           }

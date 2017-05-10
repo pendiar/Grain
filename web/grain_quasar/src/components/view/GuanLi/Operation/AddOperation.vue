@@ -2,7 +2,7 @@
     <div class="list no-border inner-delimiter highlight">
       <div class="item">
           <div class="item-content">
-            菜单：<input v-model="tableData._name" placeholder="菜单名称">
+            操作：<input v-model="tableData._name" placeholder="操作名称">
           </div>
       </div>
       <div class="item">
@@ -54,7 +54,7 @@
         this.tableData._remark = '';
       },
       change() {
-        this.$http.post(`${this.serverAddress}/Department/Create`, this.tableData).then((response) => {
+        this.$http.post(`${this.serverAddress}/Operation/Create`, this.tableData).then((response) => {
           if (response.data.code === 1000) {
             this.refresh();
             this.$emit('hide');

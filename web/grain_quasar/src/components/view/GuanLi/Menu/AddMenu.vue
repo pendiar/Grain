@@ -54,7 +54,7 @@
         this.tableData._remark = '';
       },
       change() {
-        this.$http.post(`${this.serverAddress}/Department/Create`, this.tableData).then((response) => {
+        this.$http.post(`${this.serverAddress}/Menu/Create`, this.tableData).then((response) => {
           if (response.data.code === 1000) {
             this.refresh();
             this.$emit('hide');
