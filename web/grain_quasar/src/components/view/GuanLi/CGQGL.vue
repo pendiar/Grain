@@ -50,6 +50,7 @@
       return {
         number: '',
         LineList: [],
+        LineCount: [],
       };
     },
     methods: {
@@ -90,6 +91,7 @@
               }
             });
             this.LineList = LineList;
+            this.LineCount = data.LineCount;
             this.setPolarChart();
           }
         });
@@ -133,7 +135,7 @@
             max: this.LineCount.length,
             tickInterval: 1,
             labels: {
-              enabled: false, // Y轴刻度值不显示  
+              // enabled: false, // Y轴刻度值不显示  
             },
           },
           plotOptions: {
@@ -182,7 +184,7 @@
             pointFormat: '序号: {point.Sort}<br/>线号: {point.LineCode}<br/>{point.x},{point.y}',
           },
         }
-        console.log(vm.LineList.map(line => ([line.x,line.y])))
+        // console.log(vm.LineList.map(line => ([line.x,line.y])))
         vm.polarChart = new Highcharts.Chart(option);
       },
       clearPolarChart() {
