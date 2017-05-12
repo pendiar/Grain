@@ -54,6 +54,9 @@ export default new VueRouter({
         { path: 'CGQGL', name: 'CGQGL', component: load('view/GuanLi/CGQGL') },
         { path: 'BuMen', name: 'BuMen', component: load('view/GuanLi/BuMen/BuMen') },
         { path: 'Menu', name: 'Menu', component: load('view/GuanLi/Menu/Menu') },
+        { path: 'Operation', name: 'Operation', component: load('view/GuanLi/Operation/Operation') },
+        { path: 'Role', name: 'Role', component: load('view/GuanLi/Role/Role') },
+        { path: 'Permission', name: 'Permission', component: load('view/GuanLi/Permission/Permission') },
       ],
     },
     { path: '/layout', component: load('layout/Hello') }, // Not found
