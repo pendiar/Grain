@@ -45,31 +45,7 @@
             </div>
           </div>
         </div>
-         <div class="row">
-          <div class="item width-1of2 rheight">
-            <div class="item-content">
-              <span class="item-label">
-                仓内温度：
-              </span>
-              <span class="item-value">
-                <!--{{cang.InSideTemperature}}°C-->
-                {{$route.query.InSideTemperature}}°C
-              </span>
-            </div>
-          </div>
-          <div class="item width-1of2 rheight">
-            <div class="item-content">
-              <span class="item-label">
-                仓外温度：
-              </span>
-              <span class="item-value">
-                <!--{{cang.OutSideTemperature}}°C-->
-                {{$route.query.OutSideTemperature}}°C
-              </span>
-            </div>
-          </div>
-        </div>
-           <div class="row">
+        <div class="row">
           <div class="item width-1of2 rheight">
             <div class="item-content">
               <span class="item-label">
@@ -89,6 +65,30 @@
               <span class="item-value">
                 <!--{{cang.BadPoints}}-->
                 {{$route.query.BadPoints}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                仓内温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.InSideTemperature}}°C-->
+                {{$route.query.InSideTemperature}}°C
+              </span>
+            </div>
+          </div>
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                仓外温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.OutSideTemperature}}°C-->
+                {{$route.query.OutSideTemperature}}°C
               </span>
             </div>
           </div>
