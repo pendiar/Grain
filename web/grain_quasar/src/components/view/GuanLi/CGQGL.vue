@@ -115,8 +115,7 @@
           xAxis: {
             reversed: false,
             title: {
-              enabled: true,
-              text: '方位'
+              enabled: false,
             },
             labels: {
               formatter: function () {
@@ -128,7 +127,7 @@
             showLastLabel: true,
             min: 0,
             max: 360,
-            step: 45,
+            tickInterval: 45,
           },
           yAxis: {
             min: 0,
@@ -173,8 +172,8 @@
                   lineWidthPlus: 0,
                 },
               },
-              data: vm.LineList,
-              pointPlacement: 'between',
+              data: JSON.parse(JSON.stringify(vm.LineList)),
+              // pointPlacement: 'between',
           }],
           credits: {
             enabled: false // 禁用版权信息
@@ -184,7 +183,7 @@
             pointFormat: '序号: {point.Sort}<br/>线号: {point.LineCode}<br/>{point.x},{point.y}',
           },
         }
-        // console.log(vm.LineList.map(line => ([line.x,line.y])))
+        console.log(JSON.parse(JSON.stringify(vm.LineList)))
         vm.polarChart = new Highcharts.Chart(option);
       },
       clearPolarChart() {
