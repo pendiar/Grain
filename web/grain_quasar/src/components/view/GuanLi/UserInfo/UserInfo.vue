@@ -1,5 +1,5 @@
 <template>
-  <div class="Role">
+  <div class="UserInfo">
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <q-data-table
@@ -9,55 +9,55 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editRole(cell)">
+          <button class="primary clear" @click="editUserInfo(cell)">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteRole(cell)">
+          <button class="primary clear" @click="deleteUserInfo(cell)">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="editPermission(cell)">
-            <i>account_circle</i>
-          </button>
+          <!--<button class="primary clear" @click="addChildUserInfo(cell)">
+            <i>add</i>
+          </button>-->
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteRoles(props)">
+          <button class="primary clear" @click="deleteUserInfos(props)">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
       <p class="text-center">
-        <button class="primary clear" @click="addRole">
+        <button class="primary clear" @click="addUserInfo">
           <i>add</i>
         </button>
       </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-      <edit-role ref="EditRole" @hide="closeModal"></edit-role>
+      <edit-UserInfo ref="EditUserInfo" @hide="closeModal"></edit-UserInfo>
     </q-modal>
     <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-      <add-role ref="AddRole" @hide="closeModal"></add-role>
+      <add-UserInfo ref="AddUserInfo" @hide="closeModal"></add-UserInfo>
     </q-modal>
   </div>
 </template>
 
 <script>
   import { Platform, Utils, Toast, Dialog } from 'quasar';
-  import EditRole from './EditRole.vue';
-  import AddRole from './AddRole.vue';
+  import EditUserInfo from './EditUserInfo.vue';
+  import AddUserInfo from './AddUserInfo.vue';
 
   export default {
     components: {
-      EditRole,
-      AddRole,
+      EditUserInfo,
+      AddUserInfo,
     },
     data() {
       return {
         editData: {},
         table: [],
         config: {
-          title: '角色管理',
+          title: '人员管理',
           refresh: true,
           columnPicker: true,
           // leftStickyColumns: 1,
@@ -79,38 +79,69 @@
         },
         columns: [
           {
+            label: '用户名',
+            field: '_loginid',
+            width: '100px',
+            filter: true,
+            // sort: true,
+          },
+          {
+            label: '真实名',
+            field: '_nickname',
+            width: '80px',
+            filter: true,
+            // sort: true,
+          },
+          {
             label: '角色',
-            field: '_name',
-            width: '120px',
-            filter: true,
-            // sort: true,
+            field: '_rolename',
+            width: '100px'
           },
           {
-            label: '排序',
-            field: '_sort',
+            label: '所在组织',
+            field: '_departmentname',
             // sort: true,
-            filter: true,
-            width: '80px'
+            width: '100px'
           },
           {
-            label: '备注',
-            field: '_description',
+            label: '性别',
+            field: '_sex',
             // sort: true,
-            // width: '120px'
+            filter: true,
+            width: '50px'
           },
           // {
-          //   label: '是否可见',
-          //   field: '_isshow',
+          //   label: '手机号',
+          //   field: '_phonenumber',
           //   // sort: true,
-          //   width: '120px',
-          //   format(value) {
-          //     return value ? '是' : '否';
-          //   },
+          //   filter: true,
+          //   width: '90px'
           // },
+          // {
+          //   label: '邮箱地址',
+          //   field: '_emailaddress',
+          //   // sort: true,
+          //   width: '100px'
+          // },
+          // {
+          //   label: '住址',
+          //   field: '_address',
+          //   // sort: true,
+          //   // width: '120px'
+          // },
+          {
+            label: '是否开启',
+            field: '_state',
+            // sort: true,
+            width: '80px',
+            // format(value) {
+            //   return value ? '是' : '否';
+            // },
+          },
           {
             label: '操作',
             field: 'handle',
-            width: '180px',
+            width: '120px',
           },
         ],
       };
@@ -124,30 +155,32 @@
         this.$refs.add.close();
         this.fetchData();
       },
-      editRole(cell) {
-        Object.keys(this.$refs.EditRole.tableData).forEach((key) => {
-          this.$refs.EditRole.tableData[key] = cell.row[key];
+      editUserInfo(cell) {
+        Object.keys(this.$refs.EditUserInfo.tableData).forEach((key) => {
+          this.$refs.EditUserInfo.tableData[key] = cell.row[key];
         });
+        this.$refs.EditUserInfo.oldPassword = cell.row._password;
+        this.$refs.EditUserInfo.surePassword = cell.row._password;
         this.$refs.edit.open();
       },
-      deleteRole(cell) {
+      deleteUserInfo(cell) {
         const vm = this;
         Dialog.create({
-          title: '删除角色',
-          message: '确认删除角色？',
+          title: '删除菜单',
+          message: '确认删除菜单？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Role/Delete`, [{ _id: cell.row._id }]).then((response) => {
+                vm.$http.post(`${vm.serverAddress}/UserInfo/Delete`, [{ _id: cell.row._id }]).then((response) => {
                   if (response.data.Code === 1000) {
                     vm.closeModal();
                     Toast.create.positive('删除成功！');
                   } else {
                     Toast.create.warning('删除失败！');
                   }
-                }).catch((e) => {
+                }, (error) => {
                   Toast.create.warning('删除失败！');
                 });
               },
@@ -155,17 +188,17 @@
           ],
         });
       },
-      deleteRoles(props) {
+      deleteUserInfos(props) {
         const vm = this;
         Dialog.create({
-          title: '删除角色',
-          message: '确认删除角色？',
+          title: '删除菜单',
+          message: '确认删除菜单？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Role/Delete`, props.rows.map(cell => ({ _id: cell.data._id }))).then((response) => {
+                vm.$http.post(`${vm.serverAddress}/UserInfo/Delete`, props.rows.map(cell => ({ _id: cell.data._id }))).then((response) => {
                   if (response.data.Code === 1000) {
                     vm.closeModal();
                     Toast.create.positive('删除成功！');
@@ -173,6 +206,7 @@
                     Toast.create.warning('删除失败！');
                   }
                 }).catch((e) => {
+                  console.error(e)
                   Toast.create.warning('删除失败！');
                 });
               },
@@ -180,15 +214,16 @@
           ],
         });
       },
-      editPermission(cell) {
-        this.$router.push({ name: 'EditPermission', params: { id: cell.row._id } });
+      addChildUserInfo(cell) {
+        this.$refs.AddUserInfo.tableData._parentid = cell.row._id;
+        this.$refs.add.open();
       },
-      addRole(props) {
-        this.$refs.AddRole.tableData._parentid = '00000000-000-000-000';
+      addUserInfo(props) {
+        // this.$refs.AddUserInfo.tableData._parentid = null;
         this.$refs.add.open();
       },
       fetchData(done) {
-        this.$http.post(`${this.serverAddress}/Role/GetData`, [
+        this.$http.post(`${this.serverAddress}/UserInfo/GetData`, [
           "PageIndex^1",
           "PageCount^1000",
           "Sort^Name",
@@ -199,31 +234,7 @@
           // alert(JSON.stringify(response.data.DataValue))
           if (response.data.Code === 1000) {
             const obj = {};
-            const result = [];
-            const data = response.data.DataValue.rows;
-            function addRows(arr,id) {
-              obj[id]._childid.forEach((cid) => {
-                const objRow = obj[cid];
-                const row = data[objRow.index];
-                arr.push(row);
-                addRows(arr,cid);
-              });
-            }
-            response.data.DataValue.rows.forEach((row, index) => {
-              if (!row._parentid || row._parentid.indexOf('00000000') === 0) result.push(row);
-              if (row._parentid in obj) {
-                obj[row._parentid]._childid.push(row._id);
-              } else {
-                obj[row._parentid] = { _childid: [row._id] };
-              }
-              if (row._id in obj) {
-                obj[row._id]._parentid = row._parentid;
-              } else {
-                obj[row._id] = { _childid: [], _parentid: row._parentid, index };
-              }
-            });
-            if (result.length) addRows(result, result[0]._id);
-            this.table = result;
+            this.table = response.data.DataValue.rows;
           }
           if (done instanceof Function) done();
         }, (error) => {

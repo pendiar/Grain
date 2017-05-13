@@ -32,6 +32,8 @@
 </template>
 
 <script>
+  import { Toast } from 'quasar';
+
   export default {
     data() {
       return {
@@ -49,9 +51,14 @@
     methods: {
       change() {
         this.$http.post(`${this.serverAddress}/Department/Edit`, this.bumenData).then((response) => {
-          if (response.data.code === 1000) {
+          if (response.data.Code === 1000) {
             this.$emit('hide');
+            Toast.create.positive('编辑组织成功！');
+          } else {
+            Toast.create.warning('编辑组织失败！');
           }
+        }).catch((e) => {
+          Toast.create.warning('编辑组织失败！');
         });
       },
     },

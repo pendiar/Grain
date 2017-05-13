@@ -57,11 +57,11 @@
         editData: {},
         table: [],
         config: {
-          title: '部门管理',
+          title: '组织管理',
           refresh: true,
           columnPicker: true,
-          leftStickyColumns: 1,
-          rightStickyColumns: 2,
+          // leftStickyColumns: 1,
+          // rightStickyColumns: 2,
           bodyStyle: {
             maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
@@ -79,23 +79,23 @@
         },
         columns: [
           {
-            label: '部门',
+            label: '组织',
             field: '_name',
-            width: '120px',
+            width: '100px',
             filter: true,
             // sort: true,
           },
           {
             label: '编号',
             field: '_code',
-            width: '120px'
+            width: '100px'
           },
           {
             label: '排序',
             field: '_sort',
             // sort: true,
             filter: true,
-            width: '80px'
+            width: '60px'
           },
           {
             label: '地址',
@@ -110,19 +110,19 @@
             // sort: true,
             // width: '120px'
           },
-          {
-            label: '是否可见',
-            field: '_isshow',
-            // sort: true,
-            width: '120px',
-            format(value) {
-              return value ? '是' : '否';
-            },
-          },
+          // {
+          //   label: '是否可见',
+          //   field: '_isshow',
+          //   // sort: true,
+          //   width: '80px',
+          //   format(value) {
+          //     return value ? '是' : '否';
+          //   },
+          // },
           {
             label: '操作',
             field: 'handle',
-            width: '120px',
+            width: '180px',
           },
         ],
       };
@@ -133,6 +133,7 @@
     methods: {
       closeModal() {
         this.$refs.edit.close();
+        this.$refs.add.close();
         this.fetchData();
       },
       editBumen(cell) {
@@ -144,17 +145,22 @@
       deleteBumen(cell) {
         const vm = this;
         Dialog.create({
-          title: '删除部门',
-          message: '确认删除部门？',
+          title: '删除组织',
+          message: '确认删除组织？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Department/Delete`, [{ _id: cell._id }]).then((response) => {
-                  if (response.data.code === 1000) {
+                vm.$http.post(`${vm.serverAddress}/Department/Delete`, [{ _id: cell.row._id }]).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }).catch((e) => {
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
@@ -164,17 +170,23 @@
       deleteBumens(props) {
         const vm = this;
         Dialog.create({
-          title: '删除部门',
-          message: '确认删除部门？',
+          title: '删除组织',
+          message: '确认删除组织？',
           buttons: [
             '否',
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Department/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
-                  if (response.data.code === 1000) {
+                console.log(props)
+                vm.$http.post(`${vm.serverAddress}/Department/Delete`, props.rows.map(cell => ({ _id: cell.data._id }))).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }).catch((e) => {
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
@@ -183,11 +195,11 @@
       },
       addChildBumen(cell) {
         this.$refs.AddBumen.bumenData._parentid = cell.row._id;
-        this.$refs.edit.open();
+        this.$refs.add.open();
       },
       addBumen() {
         this.$refs.AddBumen.bumenData._parentid = '00000000-000-000-000';
-        this.$refs.edit.open();
+        this.$refs.add.open();
       },
       fetchData(done) {
         this.$http.post(`${this.serverAddress}/Department/GetData`, [
@@ -220,6 +232,7 @@
               }
               if (row._id in obj) {
                 obj[row._id]._parentid = row._parentid;
+                obj[row._id].index = index;
               } else {
                 obj[row._id] = { _childid: [], _parentid: row._parentid, index };
               }

@@ -60,8 +60,8 @@
           title: '菜单管理',
           refresh: true,
           columnPicker: true,
-          leftStickyColumns: 1,
-          rightStickyColumns: 2,
+          // leftStickyColumns: 1,
+          // rightStickyColumns: 2,
           bodyStyle: {
             maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
@@ -81,28 +81,28 @@
           {
             label: '菜单',
             field: '_name',
-            width: '120px',
+            width: '100px',
             filter: true,
             // sort: true,
           },
           {
             label: '编号',
             field: '_code',
-            width: '120px'
+            width: '100px'
           },
           {
             label: '排序',
             field: '_sort',
             // sort: true,
             filter: true,
-            width: '80px'
+            width: '60px'
           },
           {
-            label: '地址',
-            field: '_address',
+            label: '网址',
+            field: '_linkurl',
             // sort: true,
             filter: true,
-            width: '120px'
+            width: '160px'
           },
           {
             label: '备注',
@@ -110,19 +110,19 @@
             // sort: true,
             // width: '120px'
           },
-          {
-            label: '是否可见',
-            field: '_isshow',
-            // sort: true,
-            width: '120px',
-            format(value) {
-              return value ? '是' : '否';
-            },
-          },
+          // {
+          //   label: '是否可见',
+          //   field: '_isshow',
+          //   // sort: true,
+          //   width: '80px',
+          //   format(value) {
+          //     return value ? '是' : '否';
+          //   },
+          // },
           {
             label: '操作',
             field: 'handle',
-            width: '120px',
+            width: '180px',
           },
         ],
       };
@@ -133,13 +133,32 @@
     methods: {
       closeModal() {
         this.$refs.edit.close();
+        this.$refs.add.close();
         this.fetchData();
       },
       editMenu(cell) {
-        Object.keys(this.$refs.EditMenu.tableData).forEach((key) => {
-          this.$refs.EditMenu.tableData[key] = cell.row[key];
+        this.$http.get(`${this.serverAddress}/Menu/Details/${cell.row._id}`).then((response) => {
+          if (response.data.Code === 1000) {
+            const data = response.data.DataValue.rows;
+            Object.keys(this.$refs.EditMenu.tableData).forEach((key) => {
+              if (key.indexOf('sysoperationid') !== -1) return;
+              this.$refs.EditMenu.tableData[key] = data[key];
+            });
+            this.$refs.EditMenu.tableData._sysoperationid = data._sysoperationidlist || [];
+            this.$refs.EditMenu.tableData._sysoperationidold = (data._sysoperationidlist || []).slice();
+            this.$refs.edit.open();
+          } 
         });
-        this.$refs.edit.open();
+        // Object.keys(this.$refs.EditMenu.tableData).forEach((key) => {
+        //   if (key.indexOf('sysoperationid') !== -1) {
+        //     console.log(cell.row[key]);
+        //     this.$refs.EditMenu.tableData[key] = (cell.row[key] || '').split(',');
+        //     return;
+        //   }
+        //   this.$refs.EditMenu.tableData[key] = cell.row[key];
+        // });
+        // // this.$refs.EditMenu._sysoperationidold = cell.row._sysoperationid.slice();
+        // this.$refs.edit.open();
       },
       deleteMenu(cell) {
         const vm = this;
@@ -151,10 +170,15 @@
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, [{ _id: cell._id }]).then((response) => {
-                  if (response.data.code === 1000) {
+                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, [{ _id: cell.row._id }]).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }, (error) => {
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
@@ -171,10 +195,16 @@
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
-                  if (response.data.code === 1000) {
+                vm.$http.post(`${vm.serverAddress}/Menu/Delete`, props.rows.map(cell => ({ _id: cell.data._id }))).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }).catch((e) => {
+                  console.error(e)
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
@@ -183,11 +213,11 @@
       },
       addChildMenu(cell) {
         this.$refs.AddMenu.tableData._parentid = cell.row._id;
-        this.$refs.edit.open();
+        this.$refs.add.open();
       },
       addMenu(props) {
-        this.$refs.AddMenu.tableData._parentid = '00000000-000-000-000';
-        this.$refs.edit.open();
+        this.$refs.AddMenu.tableData._parentid = null;
+        this.$refs.add.open();
       },
       fetchData(done) {
         this.$http.post(`${this.serverAddress}/Menu/GetData`, [
@@ -205,6 +235,7 @@
             const data = response.data.DataValue.rows;
             function addRows(arr,id) {
               obj[id]._childid.forEach((cid) => {
+                // console.log(cid)
                 const objRow = obj[cid];
                 const row = data[objRow.index];
                 arr.push(row);
@@ -212,7 +243,7 @@
               });
             }
             response.data.DataValue.rows.forEach((row, index) => {
-              if (!row._parentid || row._parentid.indexOf('00000000') === 0) result.push(row);
+              // if (!row._parentid || row._parentid.indexOf('00000000') === 0) result.push(row);
               if (row._parentid in obj) {
                 obj[row._parentid]._childid.push(row._id);
               } else {
@@ -220,13 +251,15 @@
               }
               if (row._id in obj) {
                 obj[row._id]._parentid = row._parentid;
+                obj[row._id].index = index;
               } else {
                 obj[row._id] = { _childid: [], _parentid: row._parentid, index };
               }
             });
-            if (result.length) addRows(result, result[0]._id);
+            // console.log(obj)
+            if (obj[null]) addRows(result, null);
             this.table = result;
-            alert(JSON.stringify(this.table));
+            // console.log(result);
           }
           if (done instanceof Function) done();
         }, (error) => {

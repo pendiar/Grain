@@ -17,7 +17,19 @@
       </div>
       <div class="item">
           <div class="item-content">
-            地址：<input v-model="tableData._address" placeholder="地址">
+            网址：<input v-model="tableData._linkurl" placeholder="网址">
+          </div>
+      </div>
+      <div class="item">
+          <div class="item-content">
+            操作：
+            <q-select
+              type="checkbox"
+              v-model="tableData._sysoperationid"
+              :options="operation"
+              multiple
+            ></q-select>
+            <!--<input v-model="tableData._linkurl" placeholder="网址">-->
           </div>
       </div>
       <div class="item">
@@ -26,22 +38,41 @@
           </div>
       </div>
       <div class="text-center">
-        <button class="primary small" @click="change">修改</button>
+        <button class="primary small" @click="change">添加</button>
       </div>
     </div>
 </template>
 
 <script>
+  import { Toast } from 'quasar';
+
   export default {
+    computed: {
+      postData() {
+        return {
+          _code: this.tableData._code,
+          _name: this.tableData._name,
+          _parentid: this.tableData._parentid,
+          _linkurl: this.tableData._linkurl,
+          _sort: this.tableData._sort,
+          _remark: this.tableData._remark,
+          _sysoperationid: this.tableData._sysoperationid.join(','),
+          _sysoperationidold: '',
+        }
+      },
+    },
     data() {
       return {
+        operation: [],
         tableData: {
           _code: '',
           _name: '',
           _parentid: '',
-          _address: '',
+          _linkurl: '',
           _sort: '',
           _remark: '',
+          _sysoperationid: [],
+          // _sysoperationidold: [],
         },
       };
     },
@@ -49,18 +80,47 @@
       refresh() {
         this.tableData._code = '';
         this.tableData._name = '';
-        this.tableData._address = '';
+        this.tableData._linkurl = '';
         this.tableData._sort = '';
         this.tableData._remark = '';
+        this.tableData._sysoperationid = [];
+        this.tableData._sysoperationidold = [];
       },
       change() {
-        this.$http.post(`${this.serverAddress}/Menu/Create`, this.tableData).then((response) => {
-          if (response.data.code === 1000) {
+        this.$http.post(`${this.serverAddress}/Menu/Create`, this.postData).then((response) => {
+          if (response.data.Code === 1000) {
+            console.log(response.data.Code)
             this.refresh();
             this.$emit('hide');
+            Toast.create.positive('新建菜单成功！');
+          } else {
+            Toast.create.warning('新建菜单失败！');
+          }
+        }).catch((error) => {
+          console.log(error)
+          Toast.create.warning('新建菜单失败！');
+        });
+      },
+      setOperation() {
+        this.$http.post(`${this.serverAddress}/Operation/GetData`, [
+          "PageIndex^1",
+          "PageCount^10000",
+          "Sort^Name",
+          "OrderType^desc",
+          "StartDate^2016-11-11",
+          "EndDate^2017-12-11",
+        ]).then((response) => {
+          if (response.data.Code === 1000) {
+            this.operation = response.data.DataValue.rows.map((operation) => ({
+              label: operation._name,
+              value: operation._id,
+            }));
           }
         });
       },
+    },
+    created() {
+      this.setOperation();
     },
   };
 </script>

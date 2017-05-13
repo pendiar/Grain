@@ -15,9 +15,9 @@
           <button class="primary clear" @click="deleteOperation(cell)">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="addChildOperation(cell)">
+          <!--<button class="primary clear" @click="addChildOperation(cell)">
             <i>add</i>
-          </button>
+          </button>-->
         </template>
 
         <template slot="selection" scope="props">
@@ -60,8 +60,8 @@
           title: '操作管理',
           refresh: true,
           columnPicker: true,
-          leftStickyColumns: 1,
-          rightStickyColumns: 2,
+          // leftStickyColumns: 1,
+          // rightStickyColumns: 2,
           bodyStyle: {
             maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
@@ -81,14 +81,14 @@
           {
             label: '操作',
             field: '_name',
-            width: '120px',
+            width: '80px',
             filter: true,
             // sort: true,
           },
           {
-            label: '编号',
-            field: '_code',
-            width: '120px'
+            label: '方法',
+            field: '_function',
+            width: '100px'
           },
           {
             label: '排序',
@@ -98,27 +98,20 @@
             width: '80px'
           },
           {
-            label: '地址',
-            field: '_address',
-            // sort: true,
-            filter: true,
-            width: '120px'
-          },
-          {
             label: '备注',
             field: '_remark',
             // sort: true,
             // width: '120px'
           },
-          {
-            label: '是否可见',
-            field: '_isshow',
-            // sort: true,
-            width: '120px',
-            format(value) {
-              return value ? '是' : '否';
-            },
-          },
+          // {
+          //   label: '是否可见',
+          //   field: '_isshow',
+          //   // sort: true,
+          //   width: '80px',
+          //   format(value) {
+          //     return value ? '是' : '否';
+          //   },
+          // },
           {
             label: '操作',
             field: 'handle',
@@ -133,6 +126,7 @@
     methods: {
       closeModal() {
         this.$refs.edit.close();
+        this.$refs.add.close();
         this.fetchData();
       },
       editOperation(cell) {
@@ -151,10 +145,15 @@
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Operation/Delete`, [{ _id: cell._id }]).then((response) => {
-                  if (response.data.code === 1000) {
+                vm.$http.post(`${vm.serverAddress}/Operation/Delete`, [{ _id: cell.row._id }]).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }).catch((e) => {
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
@@ -171,10 +170,15 @@
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Operation/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
-                  if (response.data.code === 1000) {
+                vm.$http.post(`${vm.serverAddress}/Operation/Delete`, props.rows.map(cell => ({ _id: cell.data._id }))).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }).catch((e) => {
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
@@ -183,11 +187,11 @@
       },
       addChildOperation(cell) {
         this.$refs.AddOperation.tableData._parentid = cell.row._id;
-        this.$refs.edit.open();
+        this.$refs.add.open();
       },
       addOperation(props) {
         this.$refs.AddOperation.tableData._parentid = '00000000-000-000-000';
-        this.$refs.edit.open();
+        this.$refs.add.open();
       },
       fetchData(done) {
         this.$http.post(`${this.serverAddress}/Operation/GetData`, [
@@ -226,7 +230,7 @@
             });
             if (result.length) addRows(result, result[0]._id);
             this.table = result;
-            alert(JSON.stringify(this.table));
+            // alert(JSON.stringify(this.table));
           }
           if (done instanceof Function) done();
         }, (error) => {

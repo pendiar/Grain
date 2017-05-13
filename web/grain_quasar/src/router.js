@@ -56,7 +56,8 @@ export default new VueRouter({
         { path: 'Menu', name: 'Menu', component: load('view/GuanLi/Menu/Menu') },
         { path: 'Operation', name: 'Operation', component: load('view/GuanLi/Operation/Operation') },
         { path: 'Role', name: 'Role', component: load('view/GuanLi/Role/Role') },
-        { path: 'Permission', name: 'Permission', component: load('view/GuanLi/Permission/Permission') },
+        { path: 'UserInfo', name: 'UserInfo', component: load('view/GuanLi/UserInfo/UserInfo') },
+        { path: 'EditPermission/:id', name: 'EditPermission', component: load('view/GuanLi/Permission/EditPermission') },
       ],
     },
     { path: '/layout', component: load('layout/Hello') }, // Not found
