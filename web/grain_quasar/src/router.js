@@ -21,7 +21,8 @@ export default new VueRouter({
    */
 
   routes: [
-    { path: '/', redirect: { name: 'GrainList' } },
+    { path: '/', redirect: { name: 'Login' } },
+    { path: '/Home', name: 'Home', component: load('Home') },
     { path: '/Grain', // 粮仓监控
       component: load('Grain'),
       children: [
