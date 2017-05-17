@@ -48,9 +48,9 @@ module.exports = {
     // https://github.com/chimurai/http-proxy-middleware
     proxyTable: {
       '/api/': {
-          // target: 'http://200.200.3.230:8012',
+          target: 'http://200.200.3.230:8012',
           // target: 'http://10.10.10.109:8001',
-          target: 'http://10.10.10.101:8001',
+          // target: 'http://10.10.10.101:8001',
           // target: 'http://183.62.210.172:8001/',
           // target: 'http://192.168.1.104:8001',
           changeOrigin: true,
