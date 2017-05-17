@@ -127,9 +127,9 @@ export default {
               obj[row.Id] = { Childid: [], ParentId, Id: row.Id, Name:row.Name, isCheck: [row.isCheck] };
             }
           });
-          console.log(obj)
+          // console.log(obj)
           if (obj.top) addRows(result, 'top');
-          console.log(result)
+          // console.log(result)
           this.table = result;
           this.$http.get(`${this.serverAddress}/Menu/GetMenuRights/${this.$route.params.id}`).then((response) => {
             if(response.data.Code === 1000) {
