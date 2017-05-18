@@ -2,6 +2,11 @@
   <div class="menugl">
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
+      <p class="group">
+        <button class="primary clear" @click="addMenu">
+          <i>add</i>
+        </button>
+      </p>
       <q-data-table
         :data="table"
         :config="config"
@@ -27,11 +32,6 @@
         </template>
       </q-data-table>
       <!--</transition-group>-->
-      <p class="text-center">
-        <button class="primary clear" @click="addMenu">
-          <i>add</i>
-        </button>
-      </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-menu ref="EditMenu" @hide="closeModal"></edit-menu>

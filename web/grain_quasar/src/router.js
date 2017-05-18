@@ -22,7 +22,13 @@ export default new VueRouter({
 
   routes: [
     { path: '/', redirect: { name: 'Login' } },
-    { path: '/Home', name: 'Home', component: load('Home') },
+    { path: '/Account',
+      component: load('Account'),
+      children: [
+        { path: '', redirect: { name: 'Login' } },
+        { path: 'Login', name: 'Login', component: load('view/Account/Login') },
+      ],
+    },
     { path: '/Grain', // 粮仓监控
       component: load('Grain'),
       children: [
