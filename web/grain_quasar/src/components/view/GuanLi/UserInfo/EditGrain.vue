@@ -22,17 +22,19 @@
     <div class="row">
       <div class="width-1of2">
         <div class="list">
-          <div class="item item-link non-selectable item-collapsible" v-for="item in personArr">
-            <div class="item-primary"><input type="checkbox" v-model="selectedUser" :value="item.Id" ></div>
-            <div class="item-content">
-                <div>{{item.NickName}}</div>
+          <label class="item item-link non-selectable item-collapsible" v-for="item in personArr">
+            <div class="item-primary">
+              <span class="q-checkbox cursor-pointer"><input type="checkbox" v-model="selectedUser" :value="item.Id"><div></div></span>
             </div>
-          </div>
+            <div class="item-content">
+                <div>{{item.NickName || item.LoginID}}</div>
+            </div>
+          </label>
         </div>
       </div>
       <div class="width-1of2">
         <div class="list">
-          <select-tree-item v-model="selectedGrain" v-for="item in grainArr" :item="item"></select-tree-item>
+          <select-tree-item v-model="selectedGrain" v-for="item in grainArr" :item="item" :key="item.ID"></select-tree-item>
         </div>
       </div>
     </div>

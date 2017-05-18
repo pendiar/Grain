@@ -11,10 +11,10 @@
     </div>
 
     <!-- Navigation Tabs -->
-    <!--<q-tabs slot="navigation">
+    <q-tabs slot="navigation" v-if="isDesktop">
       <q-tab icon="home" route="/Grain" exact replace>粮仓监控</q-tab>
       <q-tab icon="cloud" route="/GuanLi" exact replace>系统管理</q-tab>
-    </q-tabs>-->
+    </q-tabs>
 
     <!-- Drawer
     <q-drawer ref="drawer">
@@ -48,9 +48,13 @@
 </template>
 
 <script>
+import { Platform } from 'quasar'
+
 export default {
   data () {
-    return {}
+    return {
+      isDesktop: Platform.is.desktop,
+    }
   }
 }
 </script>

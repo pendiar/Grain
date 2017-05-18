@@ -1,6 +1,6 @@
 <template>
   <div class="select-tree">
-    <collapsible-select v-model="selected" v-for="item in tree" :item="item"></collapsible-select>
+    <collapsible-select v-model="selected" v-for="item in tree" :item="item" :key="item.ID"></collapsible-select>
   </div>
 </template>
 
