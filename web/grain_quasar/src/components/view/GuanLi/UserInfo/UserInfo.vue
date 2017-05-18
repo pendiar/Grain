@@ -2,6 +2,10 @@
   <div class="UserInfo">
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
+      <p class="group">
+        <button class="primary" @click="addUserInfo"><i>add</i> 添加用户</button>
+        <button class="primary" @click="editGrain"><i>edit</i> 编辑粮仓关系</button>
+      </p>
       <q-data-table
         :data="table"
         :config="config"
@@ -27,17 +31,15 @@
         </template>
       </q-data-table>
       <!--</transition-group>-->
-      <p class="text-center">
-        <button class="primary clear" @click="addUserInfo">
-          <i>add</i>
-        </button>
-      </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-UserInfo ref="EditUserInfo" @hide="closeModal"></edit-UserInfo>
     </q-modal>
     <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <add-UserInfo ref="AddUserInfo" @hide="closeModal"></add-UserInfo>
+    </q-modal>
+    <q-modal ref="editGrain" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+      <edit-Grain ref="EditGrain" @hide="closeModal"></edit-Grain>
     </q-modal>
   </div>
 </template>
@@ -46,11 +48,13 @@
   import { Platform, Utils, Toast, Dialog } from 'quasar';
   import EditUserInfo from './EditUserInfo.vue';
   import AddUserInfo from './AddUserInfo.vue';
+  import EditGrain from './EditGrain.vue';
 
   export default {
     components: {
       EditUserInfo,
       AddUserInfo,
+      EditGrain,
     },
     data() {
       return {
@@ -154,6 +158,10 @@
         this.$refs.edit.close();
         this.$refs.add.close();
         this.fetchData();
+      },
+      editGrain() {
+        this.$refs.EditGrain.setDepartment();
+        this.$refs.editGrain.open();
       },
       editUserInfo(cell) {
         Object.keys(this.$refs.EditUserInfo.tableData).forEach((key) => {

@@ -2,6 +2,11 @@
   <div class="bu-men">
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
+      <p class="group">
+        <button class="primary clear" @click="addBumen">
+          <i>add</i>
+        </button>
+      </p>
       <q-data-table
         :data="table"
         :config="config"
@@ -27,11 +32,6 @@
         </template>
       </q-data-table>
       <!--</transition-group>-->
-      <p class="text-center">
-        <button class="primary clear" @click="addBumen">
-          <i>add</i>
-        </button>
-      </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-bumen ref="EditBumen" @hide="closeModal"></edit-bumen>

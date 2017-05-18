@@ -1,16 +1,16 @@
 <template>
     <div class="q-collapsible">
         <label class="item item-link non-selectable item-collapsible">
+            <div class="item-primary"><input type="checkbox" v-model="checked" :value="item.Number" ></div>
             <div class="item-content has-secondary">
-                <input type="checkbox" v-model="checked" :value="val" >
-                <div>{{label}}</div>
+                <div>{{item.Name || item.Number}}</div>
             </div>
-            <i class="item-secondary" @click.stop="toggle">keyboard_arrow_down</i>
+            <i class="item-secondary" @click.stop.prevent="toggle" v-if="item.children.length">keyboard_arrow_down</i>
         </label>
         <transition name="toggleSlide">
             <div v-show="show">
                 <div class="q-collapsible-sub-item">
-                    <slot></slot>
+                    <select-tree-item v-model="checked" v-for="childitem in item.children" :item="childitem"></select-tree-item>
                 </div>
             </div>
         </transition>
@@ -19,7 +19,8 @@
 
 <script>
     export default {
-        props: ['label', 'value', 'val'],
+        name: 'select-tree-item',
+        props: ['item', 'value'],
         computed: {
             checked: {
                 get: function () {

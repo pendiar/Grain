@@ -4,13 +4,37 @@
       <q-toolbar-title :padding="1">
         深圳粮食集团
       </q-toolbar-title>
+      <!--<button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
+        <i>menu</i>
+      </button>-->
+      <button class="primary">
+        <i>menu</i>
+        <q-popover ref="popover">
+          <!--
+            The DOM element(s) that make up the Dropdown menu,
+            in this case a list
+          -->
+          <div class="list item-delimiter highlight" @click="$refs.popover.close()">
+            <router-link tag="div" class="item item-link" :to="{ name: 'Login' }">
+              <div class="item-content">
+                登录
+              </div>
+            </router-link>
+            <router-link tag="div" class="item item-link" :to="{ path: '/Home/Register' }">
+              <div class="item-content">
+                注册
+              </div>
+            </router-link>
+          </div>
+        </q-popover>
+      </button>
     </div>
     
     <!-- Navigation Tabs -->
-    <q-tabs slot="navigation">
+    <!--<q-tabs slot="navigation">
       <q-tab icon="home" route="/Home/Register" exact replace>注册</q-tab>
       <q-tab icon="cloud" route="/Home/Login" exact replace>登录</q-tab>
-    </q-tabs>
+    </q-tabs>-->
 
 		<keep-alive>
       <router-view class="layout-view"></router-view>
@@ -22,7 +46,7 @@
 <script>
   export default {
     // created() {
-    //   this.$http.post(`${this.serverAddress}/Account/LogIn`, { LoginName: 'admin666', Password: '1234567' }).then((response) => {
+    //   this.$http.post(`${this.serverAddress}/Account/LogIn`, { LoginName: 'admin666', Password: '123456' }).then((response) => {
     //     if (response.data.Code === 1000) {
     //       // {"Code":1000,"Msg":"成功","DataValue":{"total":-1,"rows":{"Id":"f5212f67-59ea-4d64-86c9-13ae48a3154f","LoginID":"admin666","UserName":"administator","MenuList":[{"_id":"59A2CB76-B6C8-4EDB-9447-E94FF6AC5942","_name":"人员管理","_parentid":"A09A5BC4-8D93-401D-AA48-8B6D938971C9","_isleaf":null,"_linkurl":"UserInfo","_sort":null,"_state":"1","_iconic":null,"_remark":"10001001","_isshow":0,"_code":"10001001","_parentidold":null,"_sysoperationid":null,"_sysoperationidold":null},{"_id":"7559A394-1390-4574-8DBC-51E8A8839BBF","_name":"修改密码","_parentid":"9A8B9815-6613-49D9-9E15-81DEB114A90A","_isleaf":null,"_linkurl":null,"_sort":null,"_state":"1","_iconic":null,"_remark":"10001004","_isshow":0,"_code":"10011000","_parentidold":null,"_sysoperationid":null,"_sysoperationidold":null},{"_id":"9A8B9815-6613-49D9-9E15-81DEB114A90A","_name":"个人设置","_parentid":null,"_isleaf":null,"_linkurl":null,"_sort":null,"_state":"1","_iconic":null,"_remark":"1001","_isshow":0,"_code":"1001","_parentidold":null,"_sysoperationid":null,"_sysoperationidold":null},{"_id":"A09A5BC4-8D93-401D-AA48-8B6D938971C9","_name":"系统设置","_parentid":null,"_isleaf":null,"_linkurl":null,"_sort":null,"_state":"1","_iconic":null,"_remark":"1000","_isshow":0,"_code":"1000","_parentidold":null,"_sysoperationid":null,"_sysoperationidold":null},{"_id":"D773DFEE-FBF5-4C17-ADD6-587A9A3203E2","_name":"基本信息","_parentid":null,"_isleaf":null,"_linkurl":null,"_sort":null,"_state":"1","_iconic":null,"_remark":"1002","_isshow":0,"_code":"1002","_parentidold":null,"_sysoperationid":null,"_sysoperationidold":null}],"RoleIdList":[{"_id":"3ad85573-23a6-4669-9c30-8aef555be0fb","_name":"管理员","_state":1,"_sort":12,"_description":null,"_updatetime":null,"_isshow":0}]}},"TextValue":""}
     //     }
