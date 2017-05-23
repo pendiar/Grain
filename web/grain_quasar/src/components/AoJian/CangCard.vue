@@ -45,6 +45,32 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                平均温度：
+              </span>
+              <span class="item-value">
+                <!--{{cang.AverageTemperature}}°C-->
+                 {{$route.query.AverageTemperature}}°C
+              </span>
+            </div>
+          </div>
+          <div class="item width-1of2 rheight">
+            <div class="item-content">
+              <span class="item-label">
+                坏点数：
+              </span>
+              <span class="item-value">
+                <!--{{cang.BadPoints}}-->
+                {{$route.query.BadPoints}}
+              </span>
+            </div>
+          </div>
+        </div>
+
          <div class="row">
           <div class="item width-1of2 rheight">
             <div class="item-content">
@@ -69,30 +95,7 @@
             </div>
           </div>
         </div>
-           <div class="row">
-          <div class="item width-1of2 rheight">
-            <div class="item-content">
-              <span class="item-label">
-                平均温度：
-              </span>
-              <span class="item-value">
-                <!--{{cang.AverageTemperature}}°C-->
-                 {{$route.query.AverageTemperature}}°C
-              </span>
-            </div>
-          </div>
-          <div class="item width-1of2 rheight">
-            <div class="item-content">
-              <span class="item-label">
-                坏点数：
-              </span>
-              <span class="item-value">
-                <!--{{cang.BadPoints}}-->
-                {{$route.query.BadPoints}}
-              </span>
-            </div>
-          </div>
-        </div>
+    
         
         <router-link tag="div" class="item item-link rmargin" :to="{name:'LiangCang',params:{id:cang.Number}}">
           <div class="item-content has-secondary">

@@ -104,6 +104,8 @@ export default {
                     vm.hovering.y = this.y;
                     vm.hovering.z = this.z;
                   }
+                  //  window.androidShare.jsMethod(this.Label);
+                  alert(this.Label);
                 }
               }
             }
