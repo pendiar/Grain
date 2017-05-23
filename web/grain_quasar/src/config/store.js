@@ -1,8 +1,17 @@
 export default {
-  state: {
-    AoJianList: [],
+  data() {
+    return {
+      states: {
+      },
+    };
   },
-  setAoJianList(list) {
-    this.state.AoJianList = list;
+  methods: {
+    setStates(name, value) {
+      if (this.states[name]) {
+        this.states[name] = value;
+      } else {
+        this.$set(this.states, name, value);
+      }
+    },
   },
 };

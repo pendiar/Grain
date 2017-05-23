@@ -45,7 +45,6 @@
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="item width-1of2 rheight">
             <div class="item-content">
@@ -70,8 +69,7 @@
             </div>
           </div>
         </div>
-
-         <div class="row">
+        <div class="row">
           <div class="item width-1of2 rheight">
             <div class="item-content">
               <span class="item-label">

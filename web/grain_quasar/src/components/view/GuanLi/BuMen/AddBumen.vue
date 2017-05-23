@@ -26,12 +26,17 @@
           </div>
       </div>
       <div class="text-center">
-        <button class="primary small" @click="change">修改</button>
+        <button class="primary small" @click="change">添加</button>
       </div>
     </div>
 </template>
 
 <script>
+  import { Toast } from 'quasar'
+  // Toast.create.positive({...})
+  // Toast.create.negative({...})
+  // Toast.create.warning({...})
+  // Toast.create.info({...})
   export default {
     data() {
       return {
@@ -55,10 +60,15 @@
       },
       change() {
         this.$http.post(`${this.serverAddress}/Department/Create`, this.bumenData).then((response) => {
-          if (response.data.code === 1000) {
+          if (response.data.Code === 1000) {
             this.refresh();
             this.$emit('hide');
+            Toast.create.positive('新建组织成功！');
+          } else {
+            Toast.create.warning('新建组织失败！');
           }
+        }).catch((e) => {
+          Toast.create.warning('新建组织失败！');
         });
       },
     },

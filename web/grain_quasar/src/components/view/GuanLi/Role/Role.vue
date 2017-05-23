@@ -2,6 +2,11 @@
   <div class="Role">
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
+      <p class="group">
+        <button class="primary clear" @click="addRole">
+          <i>add</i>
+        </button>
+      </p>
       <q-data-table
         :data="table"
         :config="config"
@@ -15,8 +20,8 @@
           <button class="primary clear" @click="deleteRole(cell)">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="addChildRole(cell)">
-            <i>add</i>
+          <button class="primary clear" @click="editPermission(cell)">
+            <i>account_circle</i>
           </button>
         </template>
 
@@ -27,11 +32,6 @@
         </template>
       </q-data-table>
       <!--</transition-group>-->
-      <p class="text-center">
-        <button class="primary clear" @click="addRole">
-          <i>add</i>
-        </button>
-      </p>
     </div>
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-role ref="EditRole" @hide="closeModal"></edit-role>
@@ -60,8 +60,8 @@
           title: '角色管理',
           refresh: true,
           columnPicker: true,
-          leftStickyColumns: 1,
-          rightStickyColumns: 2,
+          // leftStickyColumns: 1,
+          // rightStickyColumns: 2,
           bodyStyle: {
             maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
@@ -86,11 +86,6 @@
             // sort: true,
           },
           {
-            label: '编号',
-            field: '_code',
-            width: '120px'
-          },
-          {
             label: '排序',
             field: '_sort',
             // sort: true,
@@ -98,31 +93,24 @@
             width: '80px'
           },
           {
-            label: '地址',
-            field: '_address',
-            // sort: true,
-            filter: true,
-            width: '120px'
-          },
-          {
             label: '备注',
-            field: '_remark',
+            field: '_description',
             // sort: true,
             // width: '120px'
           },
-          {
-            label: '是否可见',
-            field: '_isshow',
-            // sort: true,
-            width: '120px',
-            format(value) {
-              return value ? '是' : '否';
-            },
-          },
+          // {
+          //   label: '是否可见',
+          //   field: '_isshow',
+          //   // sort: true,
+          //   width: '120px',
+          //   format(value) {
+          //     return value ? '是' : '否';
+          //   },
+          // },
           {
             label: '操作',
             field: 'handle',
-            width: '120px',
+            width: '180px',
           },
         ],
       };
@@ -133,6 +121,7 @@
     methods: {
       closeModal() {
         this.$refs.edit.close();
+        this.$refs.add.close();
         this.fetchData();
       },
       editRole(cell) {
@@ -151,10 +140,15 @@
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Role/Delete`, [{ _id: cell._id }]).then((response) => {
-                  if (response.data.code === 1000) {
+                vm.$http.post(`${vm.serverAddress}/Role/Delete`, [{ _id: cell.row._id }]).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }).catch((e) => {
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
@@ -171,23 +165,27 @@
             {
               label: '是',
               handler() {
-                vm.$http.post(`${vm.serverAddress}/Role/Delete`, props.rows.map(cell => ({ _id: cell._id }))).then((response) => {
-                  if (response.data.code === 1000) {
+                vm.$http.post(`${vm.serverAddress}/Role/Delete`, props.rows.map(cell => ({ _id: cell.data._id }))).then((response) => {
+                  if (response.data.Code === 1000) {
                     vm.closeModal();
+                    Toast.create.positive('删除成功！');
+                  } else {
+                    Toast.create.warning('删除失败！');
                   }
+                }).catch((e) => {
+                  Toast.create.warning('删除失败！');
                 });
               },
             },
           ],
         });
       },
-      addChildRole(cell) {
-        this.$refs.AddRole.tableData._parentid = cell.row._id;
-        this.$refs.edit.open();
+      editPermission(cell) {
+        this.$router.push({ name: 'EditPermission', params: { id: cell.row._id } });
       },
       addRole(props) {
         this.$refs.AddRole.tableData._parentid = '00000000-000-000-000';
-        this.$refs.edit.open();
+        this.$refs.add.open();
       },
       fetchData(done) {
         this.$http.post(`${this.serverAddress}/Role/GetData`, [
@@ -226,7 +224,6 @@
             });
             if (result.length) addRows(result, result[0]._id);
             this.table = result;
-            alert(JSON.stringify(this.table));
           }
           if (done instanceof Function) done();
         }, (error) => {
