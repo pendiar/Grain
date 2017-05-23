@@ -10,7 +10,7 @@ require('highcharts/highcharts-3d')(Highcharts);
 import { Platform } from 'quasar';
 
 export default {
-  props: ['sensorList', 'update','cnumber'],
+  props: ['sensorList', 'update','cnumber', 'cangName'],
   computed: {
     getData() {
       return this.sensorList.map((sensor) => {
@@ -75,7 +75,7 @@ export default {
               '#EDCA4E'//第三个颜色
         ],
         title: {
-          text: `${vm.cnumber} 粮堆温度展示`,
+          text: `${vm.cangName || vm.cnumber} 粮堆温度展示`,
         },
         subtitle: {
           text: null
@@ -105,7 +105,7 @@ export default {
                     vm.hovering.z = this.z;
                   }
                   //  window.androidShare.jsMethod(this.Label);
-                  alert(this.Label);
+                  // alert(this.Label);
                 }
               }
             }

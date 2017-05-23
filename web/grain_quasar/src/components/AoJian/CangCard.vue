@@ -3,7 +3,7 @@
     <div class="card" :class="{worn:cang.AverageTemperature>35,error:cang.AverageTemperature>45}">
       <div class="item">
         <div class="item-content has-secondary">
-          {{cang.Number}}
+          {{cang.Name || cang.Number}}
         </div>
         <span class="item-secondary" @click="toggle" v-if="$route.name!=='YuanDuiWei'">
           <i>autorenew</i>
@@ -103,9 +103,9 @@
           </div>
           <i class="item-secondary">keyboard_arrow_right</i>
         </router-link>
-        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" :cnumber="cang.Number" v-if="$route.name==='YuanDuiWei'"></chuanganline>
-        <chuanganpingmian :sensorList="cang.SensorList" v-else-if="PM"></chuanganpingmian>
-        <chuangan3d :sensorList="cang.SensorList" :update="update" :cnumber="cang.Number" v-else></chuangan3d>
+        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" :cnumber="cang.Number" :cang-name="cang.Name" v-if="$route.name==='YuanDuiWei'"></chuanganline>
+        <chuanganpingmian :sensorList="cang.SensorList" :cang-name="cang.Name" v-else-if="PM"></chuanganpingmian>
+        <chuangan3d :sensorList="cang.SensorList" :update="update" :cnumber="cang.Number" :cang-name="cang.Name" v-else></chuangan3d>
       </div>
     </div>
   </div>

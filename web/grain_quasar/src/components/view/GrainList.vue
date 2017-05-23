@@ -13,7 +13,7 @@
         <button class="primary small raised float-right" @click="edit(null)"><i class="on-left">add</i> 添加</button>
       </p>
       <p class="text-center" v-else>
-        {{$route.name==='GrainList'?'平湖粮库':`${$route.params.id}粮仓`}}温湿度状态
+        {{$route.name==='GrainList'?'平湖粮库':`${$route.query.Name || $route.params.id}粮仓`}}温湿度状态
       </p>
       <div class="row wrap gutter desktop-only">
         <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="(grain, index) in list">
@@ -57,7 +57,7 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in GrainReport" v-link="getLink(item)">
-              <td>{{item.Number}}</td>
+              <td>{{item.Name || item.Number}}</td>
               <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
               <td>{{item.MinimumTemperature}}°C</td>
               <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature}}°C</td>
@@ -106,11 +106,11 @@ export default {
   methods: {
     getLink(grain) {
       if (grain.Type === 1) {
-        return { name: 'AoJianList', params: { id: grain.Number } };
+        return { name: 'AoJianList', params: { id: grain.Number }, query: { Name: grain.Name } };
       // } else if (grain.Type === 2) {
       //   return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };
       }
-      return { name: 'DuiWei', params: { id: `${grain.Number}-1-1` }, query: { type: grain.Type } };
+      return { name: 'DuiWei', params: { id: `${grain.Number}-1-1` }, query: { type: grain.Type, Name: grain.Name } };
       // return { name: 'YuanDuiWei', query: { WH_Number: grain.Number, Number: `${grain.Number}-1`, DW_Number: `${grain.Number}-1-1` } };
     },
     toAoJianList(item) {

@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <tr v-for="item in GetList" v-link="getLink(item)">
-        <td>{{item.Number}}</td>
+        <td>{{item.Name || item.Number}}</td>
         <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
         <td>{{item.MinimumTemperature}}°C</td>
         <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature}}°C</td>
@@ -28,7 +28,7 @@
 export default {
   data() {
     return {
-      number:'',
+      number: '',
       GetList: [],
     };
   },
@@ -36,16 +36,38 @@ export default {
     getLink(item) {
       // {name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:number.split('-')[0],Number:number}}
       if (!this.$route.query.type || this.$route.query.type === 1 || this.$route.query.type === 2) {
-        return {name:'DuiWeiMo',params:{id:item.Number},query:{WH_Number:this.number.split('-')[0],Number:this.number
-        ,Maximumemperature:item.Maximumemperature,MinimumTemperature:item.MinimumTemperature,AverageTemperature:item.AverageTemperature
-        ,InSideTemperature:item.InSideTemperature,OutSideTemperature:item.OutSideTemperature,BadPoints:item.BadPoints}};
+        return {
+          name: 'DuiWeiMo',
+          params: { id: item.Number },
+          query: {
+            WH_Number: this.number.split('-')[0],
+            Number: this.number,
+            Maximumemperature: item.Maximumemperature,
+            MinimumTemperature: item.MinimumTemperature,
+            AverageTemperature: item.AverageTemperature,
+            InSideTemperature: item.InSideTemperature,
+            OutSideTemperature: item.OutSideTemperature,
+            BadPoints: item.BadPoints,
+          },
+        };
       // } else if (grain.Type === 2) {
       //   return { name: 'DuiWeiMo', params: { id: `${grain.Number}-1-1` }, query: { WH_Number: grain.Number, Number: `${grain.Number}-1` } };
       }
       // return { name: 'DuiWei', params: { id: `${grain.Number}-1-1` }, query: { type: grain.Type } };
-      return { name: 'YuanDuiWei', query: { WH_Number: this.number.split('-')[0], Number: this.number, DW_Number: item.Number
-      ,Maximumemperature:item.Maximumemperature,MinimumTemperature:item.MinimumTemperature,AverageTemperature:item.AverageTemperature
-       ,InSideTemperature:item.InSideTemperature,OutSideTemperature:item.OutSideTemperature,BadPoints:item.BadPoints } };
+      return {
+        name: 'YuanDuiWei',
+        query: {
+          WH_Number: this.number.split('-')[0],
+          Number: this.number,
+          DW_Number: item.Number,
+          Maximumemperature: item.Maximumemperature,
+          MinimumTemperature: item.MinimumTemperature,
+          AverageTemperature: item.AverageTemperature,
+          InSideTemperature: item.InSideTemperature,
+          OutSideTemperature: item.OutSideTemperature,
+          BadPoints: item.BadPoints,
+        },
+      };
     },
   },
   beforeRouteEnter: (to, from, next) => {

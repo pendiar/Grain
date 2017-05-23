@@ -27,7 +27,7 @@ require('highcharts/highcharts-more')(Highcharts);
 import { Platform } from 'quasar';
 
 export default {
-  props: ['sensorList', 'update', 'LineCount','cnumber'],
+  props: ['sensorList', 'update', 'LineCount','cnumber', 'cangName'],
   computed: {
     getData() {
       const result = [];
@@ -180,7 +180,7 @@ export default {
           inverted: true
         },
         title: {
-          text: `${vm.cnumber} 粮堆温度展示`   
+          text: `${vm.cangName || vm.cnumber} 粮堆温度展示`   
         },
         subtitle: {
           // text: 'According to the Standard Atmosphere Model'

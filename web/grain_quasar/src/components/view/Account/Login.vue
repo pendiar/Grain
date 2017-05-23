@@ -40,7 +40,9 @@
 </template>
 
 <script>
-  import { Toast } from 'quasar';
+  import storage from 'components/../lib/storage';
+  import { Platform, Toast } from 'quasar';
+
   export default {
     data() {
       return {
@@ -70,6 +72,24 @@
           Toast.create.warning('连接错误，请检查网络!');
         });
       },
+    },
+    beforeRouteEnter(to, from, next) {
+      if (Platform.is.desktop) {
+        next();
+        return;
+      }
+      const search = window.location.search;
+      let ID = storage('loginInfo');
+      if (ID) ID = JSON.parse(ID).rows.Id;
+      if (search && search.indexOf('ID=') !== -1) {
+        ID = search.split('ID=')[1].split('&')[0];
+      }
+      if (ID) {
+        storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
+        next({ path: '/Grain/GrainList' });
+      } else {
+        Toast.create.warning('无法获取用户ID');
+      }
     },
     // created() {
     //   this.$http.post(`${this.serverAddress}/Account/LogIn`, { LoginName: 'admin666', Password: '1234567' }).then((response) => {
