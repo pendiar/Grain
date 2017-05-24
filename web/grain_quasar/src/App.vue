@@ -1,6 +1,6 @@
 <template>
   <!-- Don't drop "q-app" class -->
-  <div id="q-app" :class="{ isMobile: Platform.is.mobile }">
+  <div id="q-app" :class="{ isMobile: isMobile }">
     <router-view></router-view>
   </div>
 </template>
@@ -11,7 +11,13 @@ import { Platform } from 'quasar';
 /*
  * Root component
  */
-export default {}
+export default {
+  data() {
+    return {
+      isMobile: Platform.is.mobile,
+    };
+  },
+};
 </script>
 
 <style></style>
