@@ -419,7 +419,7 @@ export default {
                 events: {
                   click() {                   
                     if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
-                      vm.$refs.modal.close();
+                      // vm.$refs.modal.close();
                       vm.$router.push({
                         name: 'ChuanGan',
                         params:{ id: this.SensorId },
@@ -431,14 +431,13 @@ export default {
                       vm.hovering.z = this.z;
                     }
                     try{
-                    window.androidShare.jsMethod(this.Label);
-                  }
-                  catch(err)
-                  {
-                    console.log(err);
-                    // alert(err);
-
-                  }
+                      window.androidShare.jsMethod(this.Label);
+                    }
+                    catch(err)
+                    {
+                      console.log(err);
+                      // alert(err);
+                    }
                     //  alert(this.Label);
                   }
                 }

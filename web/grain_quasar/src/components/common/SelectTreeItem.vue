@@ -46,12 +46,18 @@
     };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .toggleSlide-enter-active, .toggleSlide-leave-active {
         transition: height .5s;
         overflow: hidden;
     }
     .toggleSlide-enter, .toggleSlide-leave-active {
         height: 0;
+    }
+    .is-mobile .item>.item-primary {
+        margin: 4px 0;
+    }
+    .is-mobile .item>.item-primary~.item-content{
+        margin-left: 48px;
     }
 </style>

@@ -47,7 +47,7 @@
     </q-drawer>
 
     <keep-alive>
-      <router-view class="layout-view"></router-view>
+      <router-view class="layout-view" :key="$route.path"></router-view>
     </keep-alive>
 
     <!-- Footer

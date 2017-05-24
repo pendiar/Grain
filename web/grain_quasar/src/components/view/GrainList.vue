@@ -181,6 +181,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
+      alert(1111)
       vm.fetchData();
     });
   },

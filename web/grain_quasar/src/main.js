@@ -43,6 +43,7 @@ Vue.mixin({
 router.beforeEach((to, from, next) => {
   if (!bus.states.userInfo && to.path.indexOf('/Account') !== 0) {
     let loginInfo = storage('loginInfo');
+    // alert(bus.states.userInfo)
     if (loginInfo) {
       try {
         loginInfo = JSON.parse(loginInfo);
@@ -56,7 +57,7 @@ router.beforeEach((to, from, next) => {
           return;
         }
       } catch (e) {
-        // alert(e);
+        alert(e);
       }
     }
     next({ name: 'Login' });
