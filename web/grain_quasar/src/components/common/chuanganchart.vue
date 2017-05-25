@@ -302,6 +302,11 @@ export default {
   },
   watch: {
       type: 'fetchData',
+      $route(to) {
+        if (to.name === 'ChuanGan') {
+          this.fetchData();
+        }
+      },
   }
 };
 </script>

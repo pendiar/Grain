@@ -93,19 +93,21 @@ export default {
             point: {
               events: {
                 click() {
-                  if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
-                    vm.$router.push({
-                      name: 'ChuanGan',
-                      params:{ id: this.SensorId },
-                      query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label},
-                    });
-                  } else {
-                    vm.hovering.x = this.x;
-                    vm.hovering.y = this.y;
-                    vm.hovering.z = this.z;
-                  }
-                  //  window.androidShare.jsMethod(this.Label);
-                  // alert(this.Label);
+                  try {
+                    if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
+                      vm.$router.push({
+                        name: 'ChuanGan',
+                        params:{ id: this.SensorId },
+                        query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label},
+                      });
+                    } else {
+                      vm.hovering.x = this.x;
+                      vm.hovering.y = this.y;
+                      vm.hovering.z = this.z;
+                    }
+                    window.androidShare.jsMethod(this.Label);
+                    // alert(this.Label);
+                  } catch (e) {}
                 }
               }
             }

@@ -57,7 +57,7 @@ router.beforeEach((to, from, next) => {
           return;
         }
       } catch (e) {
-        alert(e);
+        // alert(e);
       }
     }
     next({ name: 'Login' });

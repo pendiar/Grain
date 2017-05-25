@@ -177,11 +177,11 @@ export default {
     }
   },
   mounted() {
-    console.log(this)
+    // console.log(this)
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      alert(1111)
+      // alert(1111)
       vm.fetchData();
     });
   },
