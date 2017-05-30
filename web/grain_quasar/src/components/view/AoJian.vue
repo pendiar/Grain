@@ -5,7 +5,7 @@
     <div class="layout-padding">
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
-        <cang-card v-for="cang in GrainReport" :key="cang.Number" :cang="cang" :update='update3d'></cang-card>
+        <cang-card v-for="cang in GrainReport" :key="cang.Number" :cang="cang" :update='update3d' :class="{disableClick: !$CheckRights(cang.Number)}"></cang-card>
       </div>
     </div>
   </div>

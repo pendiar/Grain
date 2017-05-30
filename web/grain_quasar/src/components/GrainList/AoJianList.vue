@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in GetList" v-link="{name: 'DuiWei', params: {id: item.Number}, query: { Name: item.Name } }">
+        <tr v-for="item in GetList" v-link="{name: 'DuiWei', params: {id: item.Number}, query: { Name: item.Name } }" :class="{disableClick: !$CheckRights(item.Number)}">
           <td>{{item.Name || item.Number}}</td>
           <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
           <td>{{item.MinimumTemperature}}°C</td>

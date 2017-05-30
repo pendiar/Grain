@@ -26,14 +26,16 @@
               <div class="grain-top"><i class="top-icon" :class="[grain.Type===3||grain.Type===4?'top-icon-yuan':'top-icon-ping']"><span></span></i></div>
               <div class="grain-content" :class="[grain.Type===3||grain.Type===4?'bottom-icon-yuan':'']">
                 <div class="grain-floor" v-for="floor in grain.Floors.slice().reverse()" :style="{height:100/grain.Floors.length+'%'}">
-                  <div class="grain-granary" v-for="granary in floor.GranaryList" v-link="{name:grain.Type===3||grain.Type===4?'YuanDuiWei':'AoJian',params:{id:granary.Number},query:granary}">
-                    {{granary.Number}}
-                    <q-tooltip :ref="granary.Number">
-                      <p>{{granary.Location}}</p>
-                      <p>平均温度：{{granary.AverageTemperature}}°C</p>
-                      <p>平均湿度：{{granary.AverageHumidity}}%RH</p>
-                    </q-tooltip>
-                  </div>
+                  <template v-for="granary in floor.GranaryList">
+                    <div class="grain-granary" v-link="{name:grain.Type===3||grain.Type===4?'YuanDuiWei':'AoJian',params:{id:granary.Number},query:granary}" :class="{disableClick: !$CheckRights(granary.Number)}">
+                      {{granary.Number}}
+                      <q-tooltip :ref="granary.Number">
+                        <p>{{granary.Location}}</p>
+                        <p>平均温度：{{granary.AverageTemperature}}°C</p>
+                        <p>平均湿度：{{granary.AverageHumidity}}%RH</p>
+                      </q-tooltip>
+                    </div>
+                  </template>
                 </div>
                 <span></span>
               </div>
@@ -56,7 +58,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in GrainReport" v-link="getLink(item)">
+            <tr v-for="(item, index) in GrainReport" v-link="getLink(item)" :class="{disableClick: !$CheckRights(item.Number)}">
               <td>{{item.Name || item.Number}}</td>
               <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
               <td>{{item.MinimumTemperature}}°C</td>

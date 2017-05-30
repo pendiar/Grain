@@ -31,33 +31,45 @@ Vue.component('chuanganline', chuanganline);
 const bus = new Vue(store);
 Vue.prototype.$bus = bus;
 Vue.prototype.$storage = storage;
+Vue.prototype.$CheckRights = function (num) {
+  const arr = bus.states.UserGranaryList || [];
+  // console.log(arr,num,arr.some(item => num && (item.indexOf(num) === 0 || num.indexOf(item) === 0)))
+  return arr.some(item => num && (item.indexOf(num) === 0 || num.indexOf(item) === 0));
+};
+Vue.prototype.serverAddress = '/api';
 
-Vue.mixin({
-  data() {
-    return {
-      serverAddress: '/api',
-    };
-  },
-});
+// Vue.mixin({
+//   data() {
+//     return {
+//       serverAddress: '/api',
+//     };
+//   },
+// });
+
+let storageLoginInfo = null;
 
 router.beforeEach((to, from, next) => {
   if (!bus.states.userInfo && to.path.indexOf('/Account') !== 0) {
-    let loginInfo = storage('loginInfo');
-    // alert(bus.states.userInfo)
-    if (loginInfo) {
-      try {
-        loginInfo = JSON.parse(loginInfo);
-        const nowDate = new Date().getTime();
-        // alert(nowDate - loginInfo.date)
-        if ((nowDate - loginInfo.date) < 3600000) {
-          loginInfo.date = nowDate;
-          storage('loginInfo', JSON.stringify(loginInfo));
-          bus.setStates('userInfo', loginInfo.rows);
-          next();
-          return;
+    if (!storageLoginInfo) {
+      storageLoginInfo = storage('loginInfo');
+      if (storageLoginInfo) {
+        try {
+          storageLoginInfo = JSON.parse(storageLoginInfo);
+        } catch (e) {
+          // alert(e);
         }
-      } catch (e) {
-        // alert(e);
+      }
+    }
+    // alert(bus.states.userInfo)
+    if (bus.states.UserGranaryList && storageLoginInfo) {
+      const nowDate = new Date().getTime();
+      // alert(nowDate - loginInfo.date)
+      if ((nowDate - storageLoginInfo.date) < 3600000) {
+        next();
+        storageLoginInfo.date = nowDate;
+        storage('loginInfo', JSON.stringify(storageLoginInfo));
+        if (!bus.states.userInfo) bus.setStates('userInfo', storageLoginInfo.rows);
+        return;
       }
     }
     next({ name: 'Login' });

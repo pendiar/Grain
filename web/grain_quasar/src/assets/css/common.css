@@ -8,3 +8,6 @@
 .bg-bad{
   background: #dedede;
 }
+.disableClick{
+  pointer-events: none;
+}

@@ -1,10 +1,10 @@
 <template>
   <div class="UserInfo">
-    <div class="layout-padding">
+    <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addUserInfo"><i>add</i> 添加用户</button>
-        <button class="primary" @click="editGrain"><i>edit</i> 编辑粮仓关系</button>
+        <button class="primary" @click="addUserInfo" v-if="rights.indexOf('flexiCreate')!==-1"><i>add</i> 添加用户</button>
+        <!--<button class="primary" @click="editGrain" v-if="rights.indexOf('grainModify')!==-1"><i>edit</i> 编辑粮仓关系</button>-->
       </p>
       <q-data-table
         :data="table"
@@ -13,25 +13,25 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editUserInfo(cell)">
+          <button class="primary clear" @click="editUserInfo(cell)" v-if="rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteUserInfo(cell)">
+          <button class="primary clear" @click="deleteUserInfo(cell)" v-if="rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <!--<button class="primary clear" @click="addChildUserInfo(cell)">
-            <i>add</i>
-          </button>-->
+          <button class="primary clear" @click="editUserGrain(cell)" v-if="rights.indexOf('grainModify')!==-1">
+            <i>home</i>
+          </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteUserInfos(props)">
+          <button class="primary clear" @click="deleteUserInfos(props)" v-if="rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
-    </div>
+    <!--</div>-->
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-UserInfo ref="EditUserInfo" @hide="closeModal"></edit-UserInfo>
     </q-modal>
@@ -41,6 +41,9 @@
     <q-modal ref="editGrain" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-Grain ref="EditGrain" @hide="closeModal"></edit-Grain>
     </q-modal>
+    <q-modal ref="editUserGrain" :content-css="{minWidth: '80vw', minHeight: '80vh', paddingBottom: '50px', position: 'relative'}">
+      <edit-user-grain ref="EditUserGrain" @hide="closeModal" :userid="editUserGrainInfo.userid" :departmentid="editUserGrainInfo.departmentid"></edit-user-grain>
+    </q-modal>
   </div>
 </template>
 
@@ -49,15 +52,22 @@
   import EditUserInfo from './EditUserInfo.vue';
   import AddUserInfo from './AddUserInfo.vue';
   import EditGrain from './EditGrain.vue';
+  import EditUserGrain from './EditUserGrain.vue';
 
   export default {
     components: {
       EditUserInfo,
       AddUserInfo,
       EditGrain,
+      EditUserGrain,
     },
     data() {
       return {
+        rights: [],
+        editUserGrainInfo: {
+          departmentid: '',
+          userid: '',
+        },
         editData: {},
         table: [],
         config: {
@@ -157,7 +167,19 @@
       closeModal() {
         this.$refs.edit.close();
         this.$refs.add.close();
+        this.$refs.editGrain.close();
+        this.$refs.editUserGrain.close();
         this.fetchData();
+      },
+      editUserGrain(cell) {
+        this.editUserGrainInfo.userid = cell.row._id;
+        this.editUserGrainInfo.departmentid = cell.row._departmentid;
+        this.$refs.editUserGrain.open();
+        // this.$http.get(`${this.serverAddress}/UserGranaryRights/GetUserGranaryListByUid/${this.$bus.states.userInfo.Id}`).then((response) => {
+        //   console.log(response);
+        //   this.
+        // }, () => {
+        // });
       },
       editGrain() {
         this.$refs.EditGrain.setDepartment();
@@ -252,6 +274,24 @@
       refresh (done) {
         this.fetchData(done);
       },
+      setRights() {
+        this.$http.get(`${this.serverAddress}/Operation/GetToolbar/${"59A2CB76-B6C8-4EDB-9447-E94FF6AC5942"}/${this.$bus.states.userInfo.Id}`).then((response) => {
+          if (response.data.Code === 1000) {
+            this.rights = response.data.DataValue.rows.map(item => item._function);
+            // {"Code":1000,"Msg":"成功","DataValue":{"total":3,"rows":[{"_id":"9f5bbf3b-2d80-46a7-a50d-ec3440b1529b","_name":"创建","_function":"flexiCreate","_iconic":"icon-add","_sort":222,"_remark":null,"_state":"1","_isshow":0,"<SysMenuId>k__BackingField":null,"<SysMenuIdOld>k__BackingField":null},{"_id":"5d05d43d-bb5b-47ef-b60a-2252c90fa7b2","_name":"删除","_function":"flexiDelete","_iconic":"icon-remove","_sort":333,"_remark":null,"_state":"1","_isshow":0,"<SysMenuId>k__BackingField":null,"<SysMenuIdOld>k__BackingField":null},{"_id":"e48acd7e-6cb8-4271-b601-c362ea432d84","_name":"修改","_function":"flexiModify","_iconic":"icon-edit","_sort":444,"_remark":null,"_state":"1","_isshow":0,"<SysMenuId>k__BackingField":null,"<SysMenuIdOld>k__BackingField":null}]},"TextValue":""}
+          } else {
+            this.rights = [];
+          }
+          // {"Code":1012,"Msg":"未找到数据","DataValue":null,"TextValue":""}
+        }, () => {
+          this.rights = [];
+        });
+      },
+    },
+    beforeRouteEnter(to, from, next) {
+      next((vm) => {
+        vm.setRights();
+      });
     },
   };
 </script>

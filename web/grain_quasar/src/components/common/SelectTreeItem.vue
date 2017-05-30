@@ -7,7 +7,7 @@
             <div class="item-content has-secondary">
                 <div>{{item.Name || item.Number}}</div>
             </div>
-            <i class="item-secondary" @click.stop.prevent="toggle" v-if="item.children&&item.children.length">keyboard_arrow_down</i>
+            <i class="item-secondary" @click.stop.prevent="toggle" v-if="item.children&&item.children.length">{{show?'keyboard_arrow_up':'keyboard_arrow_down'}}</i>
         </label>
         <transition name="toggleSlide">
             <div v-show="show">

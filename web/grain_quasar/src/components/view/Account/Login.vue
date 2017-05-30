@@ -40,8 +40,19 @@
 </template>
 
 <script>
+  import Vue from 'vue';
   import storage from 'components/../lib/storage';
   import { Platform, Toast } from 'quasar';
+  
+  const getGranaryList = function (fn) {
+    // console.log(Vue.prototype.$bus.states.userInfo)
+    Vue.http.get(`${Vue.prototype.serverAddress}/UserGranaryRights/GetUserGranaryListByUid/${Vue.prototype.$bus.states.userInfo.Id}`).then((response) => {
+      Vue.prototype.$bus.setStates('UserGranaryList', response.data.DataValue.rows.map(item => item.GranaryNumber));
+      fn();
+    }, () => {
+      fn();
+    });
+  }
 
   export default {
     data() {
@@ -64,7 +75,7 @@
             this.$bus.setStates('userInfo', response.data.DataValue.rows);
             this.$storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: response.data.DataValue.rows }));
             Toast.create.positive('登录成功！');
-            this.$router.push({ name: 'GrainList' });
+            this.getGranaryList(() => { this.$router.push({ name: 'GrainList' }); });
           } else {
             Toast.create.warning('用户名或密码错误!');
           }
@@ -72,6 +83,7 @@
           Toast.create.warning('连接错误，请检查网络!');
         });
       },
+      getGranaryList,
     },
     beforeRouteEnter(to, from, next) {
       if (Platform.is.desktop) {
@@ -83,12 +95,18 @@
       if (ID) ID = JSON.parse(ID).rows.Id;
       if (search && search.indexOf('ID=') !== -1) {
         ID = search.split('ID=')[1].split('&')[0];
-      }
-      if (ID) {
-        storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
-        next({ path: '/Grain/GrainList' });
+        Vue.prototype.$bus.setStates('userInfo', { Id: ID });
+        getGranaryList(checkID);
       } else {
-        Toast.create.warning('无法获取用户ID');
+        checkID();
+      }
+      function checkID () {
+        if (ID) {
+          next({ path: '/Grain/GrainList' })  ;
+          storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
+        } else {
+          Toast.create.warning('无法获取用户ID');
+        }
       }
     },
     // created() {
