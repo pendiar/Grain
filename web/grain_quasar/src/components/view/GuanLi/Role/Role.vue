@@ -3,8 +3,8 @@
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary clear" @click="addRole" v-if="rights.indexOf('flexiCreate')!==-1">
-          <i>add</i>
+        <button class="primary" @click="addRole" v-if="rights.indexOf('flexiCreate')!==-1">
+          <i>add</i> 添加角色
         </button>
       </p>
       <q-data-table
@@ -20,7 +20,7 @@
           <button class="primary clear" @click="deleteRole(cell)" v-if="rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="editPermission(cell)" v-if="rights.indexOf('flexiCreate')!==-1">
+          <button class="primary clear" @click="editPermission(cell)" v-if="rights.indexOf('flexiModify')!==-1">
             <i>account_circle</i>
           </button>
         </template>

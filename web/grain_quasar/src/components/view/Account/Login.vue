@@ -102,7 +102,7 @@
       }
       function checkID () {
         if (ID) {
-          next({ path: '/Grain/GrainList' })  ;
+          next({ name: to.query.name || 'GrainList' })  ;
           storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
         } else {
           Toast.create.warning('无法获取用户ID');

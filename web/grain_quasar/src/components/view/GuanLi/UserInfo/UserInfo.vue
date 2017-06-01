@@ -4,7 +4,7 @@
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
         <button class="primary" @click="addUserInfo" v-if="rights.indexOf('flexiCreate')!==-1"><i>add</i> 添加用户</button>
-        <!--<button class="primary" @click="editGrain" v-if="rights.indexOf('grainModify')!==-1"><i>edit</i> 编辑粮仓关系</button>-->
+        <button class="primary" @click="editGrain" v-if="rights.indexOf('grainModify')!==-1"><i>edit</i> 编辑粮仓关系</button>
       </p>
       <q-data-table
         :data="table"

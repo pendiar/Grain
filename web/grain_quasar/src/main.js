@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
         return;
       }
     }
-    next({ name: 'Login' });
+    next({ name: 'Login', query: { name: to.name } });
   } else {
     next();
   }

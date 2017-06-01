@@ -3,8 +3,8 @@
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary clear" @click="addMenu" v-if="rights.indexOf('flexiCreate')!==-1">
-          <i>add</i>
+        <button class="primary" @click="addMenu" v-if="rights.indexOf('flexiCreate')!==-1">
+          <i>add</i> 添加一级菜单
         </button>
       </p>
       <q-data-table

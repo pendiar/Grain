@@ -22,12 +22,24 @@
       </div>
       <div class="item">
           <div class="item-content">
-            组织：<input v-model="tableData._departmentid" placeholder="组织">
+            组织：
+            <q-select
+              type="radio"
+              v-model="tableData._departmentid"
+              :options="department"
+            ></q-select>
+            <!--<input v-model="tableData._departmentid" placeholder="组织">-->
           </div>
       </div>
       <div class="item">
           <div class="item-content">
-            角色：<input v-model="tableData._roleid" placeholder="角色">
+            角色：
+            <q-select
+              type="radio"
+              v-model="tableData._roleid"
+              :options="role"
+            ></q-select>
+            <!--<input v-model="tableData._roleid" placeholder="角色">-->
           </div>
       </div>
       <div class="item">
@@ -112,6 +124,8 @@
     },
     data() {
       return {
+        role: [],
+        department: [],
         oldPassword: '',
         surePassword: '',
         tableData: {
@@ -149,6 +163,74 @@
           Toast.create.warning('编辑用户失败！');
         });
       },
+      setDepartment() {
+        this.$http.post(`${this.serverAddress}/Department/GetData`, [
+          "PageIndex^1",
+          "PageCount^1000",
+          "Sort^Name",
+          "OrderType^desc",
+          "StartDate^2016-11-11",
+          "EndDate^2017-12-11",
+        ]).then((response) => {
+          // alert(JSON.stringify(response.data.DataValue))
+          if (response.data.Code === 1000) {
+            const obj = {};
+            let result = [];
+            const data = response.data.DataValue.rows;
+            // function addRows(arr,id) {
+            //   obj[id]._childid.forEach((cid) => {
+            //     // console.log(cid)
+            //     const objRow = obj[cid];
+            //     const row = data[objRow.index];
+            //     arr.push(row);
+            //     addRows(arr,cid);
+            //   });
+            // }
+            data.forEach((row, index) => {
+              // if (!row._parentid || row._parentid === '00000000-0000-0000-0000-000000000000') result.push(row);
+              if (row._parentid in obj) {
+                obj[row._parentid]._childid.push(row._id);
+              } else {
+                obj[row._parentid] = { _childid: [row._id] };
+              }
+              if (row._id in obj) {
+                obj[row._id]._parentid = row._parentid;
+                obj[row._id].index = index;
+              } else {
+                obj[row._id] = { _childid: [], _parentid: row._parentid, index };
+              }
+            });
+            // console.log(obj)
+            // if (obj['00000000-0000-0000-0000-000000000000']) addRows(result, null);
+            obj['00000000-0000-0000-0000-000000000000']._childid.forEach((id) => {
+              result = result.concat(obj[id]._childid.map((cid) => {
+                const bumen = data[obj[cid].index];
+                return { value: bumen._id, label: bumen._name };
+              }));
+            });
+            this.department = result;
+            // console.log(result);
+          }
+        });
+      },
+      setRole() {
+        this.$http.post(`${this.serverAddress}/Role/GetData`, [
+          "PageIndex^1",
+          "PageCount^10000",
+          "Sort^Name",
+          "OrderType^desc",
+          "StartDate^2016-11-11",
+          "EndDate^2017-12-11",
+        ]).then((response) => {
+          if (response.data.Code === 1000) {
+            this.role = response.data.DataValue.rows.map((role) => ({ label: role._name, value: role._id }));
+          }
+        });
+      },
+    },
+    created() {
+      this.setDepartment();
+      this.setRole();
     },
   };
 </script>

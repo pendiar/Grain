@@ -3,8 +3,8 @@
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary clear" @click="addBumen" v-if="rights.indexOf('flexiCreate')!==-1">
-          <i>add</i>
+        <button class="primary" @click="addBumen" v-if="rights.indexOf('flexiCreate')!==-1">
+          <i>add</i> 添加一级部门
         </button>
       </p>
       <q-data-table
