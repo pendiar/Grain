@@ -28,22 +28,32 @@
         <q-drawer-link icon="mail" :to="{name: 'CGQGL',}">
           传感线管理
         </q-drawer-link>
+        <!--<template v-for="item in MenuList">
+          <q-collapsible icon="inbox" :label="item.name" v-if="item.children.length">
+            <q-drawer-link icon="mail" :to="{name: link._linkurl}" v-for="link in item.children">
+              {{link._name}}
+            </q-drawer-link>
+          </q-collapsible>
+          <q-drawer-link icon="mail" :to="{name: link._linkurl}" v-for="link in item.children">
+            {{link._name}}
+          </q-drawer-link>
+        </template>-->
         <!--<q-drawer-link icon="mail" :to="{name: item._linkurl,}" v-for="item in $bus.states.userInfo.MenuList" :key="item._id">
           {{item._name}}
         </q-drawer-link>-->
-        <q-drawer-link icon="mail" :to="{name: 'BuMen',}">
+        <q-drawer-link icon="mail" :to="{name: 'BuMen'}">
           部门管理
         </q-drawer-link>
-        <q-drawer-link icon="mail" :to="{name: 'UserInfo',}">
+        <q-drawer-link icon="mail" :to="{name: 'UserInfo'}">
           人员管理
         </q-drawer-link>
-        <q-drawer-link icon="mail" :to="{name: 'Menu',}">
+        <q-drawer-link icon="mail" :to="{name: 'Menu'}">
           菜单管理
         </q-drawer-link>
-        <q-drawer-link icon="mail" :to="{name: 'Operation',}">
+        <q-drawer-link icon="mail" :to="{name: 'Operation'}">
           操作管理
         </q-drawer-link>
-        <q-drawer-link icon="mail" :to="{name: 'Role',}">
+        <q-drawer-link icon="mail" :to="{name: 'Role'}">
           角色管理
         </q-drawer-link>
       </div>
@@ -61,6 +71,21 @@
 
 <script>
 export default {
+  computed: {
+    MenuList() {
+      const mapObj = {};
+      const result = this.$bus.states.userInfo.MenuList.filter(item => !item._parentid).sort((a, b) => (a._sort - b._sort)).map((item, idx) => {
+        mapObj[item._id] = idx;
+        return { id: item._id, name: item._name, linkurl: item._linkurl, children: [] };
+      });
+      this.$bus.states.userInfo.MenuList.filter(item => item._parentid).sort((a, b) => (a._sort - b._sort)).forEach((item) => {
+        if (item._parentid in mapObj) {
+          result[mapObj[item._parentid]].children.push({ id: item._id, name: item._name, linkurl: item._linkurl });
+        }
+      });
+      return result;
+    }
+  },
   data () {
     return {}
   }
