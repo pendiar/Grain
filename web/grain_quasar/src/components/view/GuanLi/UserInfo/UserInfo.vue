@@ -3,8 +3,8 @@
     <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addUserInfo" v-if="rights.indexOf('flexiCreate')!==-1"><i>add</i> 添加用户</button>
-        <button class="primary" @click="editGrain" v-if="rights.indexOf('grainModify')!==-1"><i>edit</i> 编辑粮仓关系</button>
+        <button class="primary" @click="addUserInfo" v-if="1||rights.indexOf('flexiCreate')!==-1"><i>add</i> 添加用户</button>
+        <button class="primary" @click="editGrain" v-if="1||rights.indexOf('grainModify')!==-1"><i>edit</i> 编辑粮仓关系</button>
       </p>
       <q-data-table
         :data="table"
@@ -13,19 +13,19 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editUserInfo(cell)" v-if="rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear" @click="editUserInfo(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteUserInfo(cell)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteUserInfo(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="editUserGrain(cell)" v-if="rights.indexOf('grainModify')!==-1">
+          <button class="primary clear" @click="editUserGrain(cell)" v-if="1||rights.indexOf('grainModify')!==-1">
             <i>home</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteUserInfos(props)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteUserInfos(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>

@@ -42,7 +42,7 @@
           {{item._name}}
         </q-drawer-link>-->
         <q-drawer-link icon="mail" :to="{name: 'BuMen'}">
-          部门管理
+          组织管理
         </q-drawer-link>
         <q-drawer-link icon="mail" :to="{name: 'UserInfo'}">
           人员管理

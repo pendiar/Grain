@@ -3,7 +3,7 @@
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addMenu" v-if="rights.indexOf('flexiCreate')!==-1">
+        <button class="primary" @click="addMenu" v-if="1||rights.indexOf('flexiCreate')!==-1">
           <i>add</i> 添加一级菜单
         </button>
       </p>
@@ -14,19 +14,19 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editMenu(cell)" v-if="rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear" @click="editMenu(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteMenu(cell)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteMenu(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="addChildMenu(cell)" v-if="rights.indexOf('flexiCreate')!==-1">
+          <button class="primary clear" @click="addChildMenu(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
             <i>add</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteMenus(props)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteMenus(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>

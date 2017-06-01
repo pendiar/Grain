@@ -2,7 +2,7 @@
     <div class="list no-border inner-delimiter highlight">
       <div class="item">
           <div class="item-content">
-            部门：<input v-model="bumenData._name" placeholder="部门名称">
+            组织：<input v-model="bumenData._name" placeholder="组织名称">
           </div>
       </div>
       <div class="item">

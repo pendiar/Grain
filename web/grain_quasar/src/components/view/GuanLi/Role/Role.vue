@@ -3,7 +3,7 @@
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addRole" v-if="rights.indexOf('flexiCreate')!==-1">
+        <button class="primary" @click="addRole" v-if="1||rights.indexOf('flexiCreate')!==-1">
           <i>add</i> 添加角色
         </button>
       </p>
@@ -14,19 +14,19 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editRole(cell)" v-if="rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear" @click="editRole(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteRole(cell)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteRole(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="editPermission(cell)" v-if="rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear" @click="editPermission(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>account_circle</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteRoles(props)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteRoles(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>

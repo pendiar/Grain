@@ -3,8 +3,8 @@
     <div class="layout-padding">
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addBumen" v-if="rights.indexOf('flexiCreate')!==-1">
-          <i>add</i> 添加一级部门
+        <button class="primary" @click="addBumen" v-if="1||rights.indexOf('flexiCreate')!==-1">
+          <i>add</i> 添加一级组织
         </button>
       </p>
       <q-data-table
@@ -14,19 +14,19 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editBumen(cell)" v-if="rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear" @click="editBumen(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteBumen(cell)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteBumen(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="addChildBumen(cell)" v-if="rights.indexOf('flexiCreate')!==-1">
+          <button class="primary clear" @click="addChildBumen(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
             <i>add</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteBumens(props)" v-if="rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteBumens(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>
