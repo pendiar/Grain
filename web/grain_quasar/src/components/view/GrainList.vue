@@ -58,7 +58,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in GrainReport" v-link="getLink(item)" :class="{disableClick: !$CheckRights(item.Number)}">
+            <tr v-for="(item, index) in filterGrainReport" v-link="getLink(item)">
               <td>{{item.Name || item.Number}}</td>
               <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
               <td>{{item.MinimumTemperature}}°C</td>
@@ -90,6 +90,9 @@ export default {
     EditGrain,
   },
   computed: {
+    filterGrainReport() {
+      return this.GrainReport.filter(item => this.$CheckRights(item.Number));
+    },
     cangNumber() {
       const cang = this.list[this.$route.params.id];
       if (cang) return cang.Number;

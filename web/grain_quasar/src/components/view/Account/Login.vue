@@ -95,18 +95,15 @@
       if (ID) ID = JSON.parse(ID).rows.Id;
       if (search && search.indexOf('ID=') !== -1) {
         ID = search.split('ID=')[1].split('&')[0];
-        Vue.prototype.$bus.setStates('userInfo', { Id: ID });
-        getGranaryList(checkID);
-      } else {
-        checkID();
       }
-      function checkID () {
-        if (ID) {
-          next({ name: to.query.name || 'GrainList' })  ;
-          storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
-        } else {
-          Toast.create.warning('无法获取用户ID');
-        }
+      if (ID) {
+        Vue.prototype.$bus.setStates('userInfo', { Id: ID });
+        getGranaryList(() => {
+          next({ name: to.query.name || 'GrainList' });
+        });
+        storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
+      } else {
+        Toast.create.warning('无法获取用户ID');
       }
     },
     // created() {

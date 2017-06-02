@@ -271,7 +271,11 @@
         this.fetchData(done);
       },
       setRights() {
-        this.$http.get(`${this.serverAddress}/Operation/GetToolbar/${"EF4C937A-F5D2-495E-B6DB-E7D70A3600D6"}/${this.$bus.states.userInfo.Id}`).then((response) => {
+        if (!this.$bus.states.userInfo.RoleIdList || !this.$bus.states.userInfo.RoleIdList[0]) {
+          this.rights = [];
+          return;
+        }
+        this.$http.get(`${this.serverAddress}/Operation/GetToolbar/${this.$route.query.id || "EF4C937A-F5D2-495E-B6DB-E7D70A3600D6"}/${this.$bus.states.userInfo.RoleIdList[0]._id || 'null'}`).then((response) => {
           if (response.data.Code === 1000) {
             this.rights = response.data.DataValue.rows.map(item => item._function);
             // {"Code":1000,"Msg":"成功","DataValue":{"total":3,"rows":[{"_id":"9f5bbf3b-2d80-46a7-a50d-ec3440b1529b","_name":"创建","_function":"flexiCreate","_iconic":"icon-add","_sort":222,"_remark":null,"_state":"1","_isshow":0,"<SysMenuId>k__BackingField":null,"<SysMenuIdOld>k__BackingField":null},{"_id":"5d05d43d-bb5b-47ef-b60a-2252c90fa7b2","_name":"删除","_function":"flexiDelete","_iconic":"icon-remove","_sort":333,"_remark":null,"_state":"1","_isshow":0,"<SysMenuId>k__BackingField":null,"<SysMenuIdOld>k__BackingField":null},{"_id":"e48acd7e-6cb8-4271-b601-c362ea432d84","_name":"修改","_function":"flexiModify","_iconic":"icon-edit","_sort":444,"_remark":null,"_state":"1","_isshow":0,"<SysMenuId>k__BackingField":null,"<SysMenuIdOld>k__BackingField":null}]},"TextValue":""}

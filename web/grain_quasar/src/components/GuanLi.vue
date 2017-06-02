@@ -28,20 +28,20 @@
         <q-drawer-link icon="mail" :to="{name: 'CGQGL',}">
           传感线管理
         </q-drawer-link>
-        <!--<template v-for="item in MenuList">
+        <template v-for="item in MenuList">
           <q-collapsible icon="inbox" :label="item.name" v-if="item.children.length">
-            <q-drawer-link icon="mail" :to="{name: link._linkurl}" v-for="link in item.children">
-              {{link._name}}
+            <q-drawer-link icon="mail" :to="{name: link.linkurl, query: {id: link.id}}" v-for="link in item.children" :key="link.id">
+              {{link.name}}
             </q-drawer-link>
           </q-collapsible>
-          <q-drawer-link icon="mail" :to="{name: link._linkurl}" v-for="link in item.children">
-            {{link._name}}
+          <q-drawer-link icon="mail" :to="{name: link.linkurl, query: {id: link.id}}" v-for="link in item.children" :key="link.id">
+            {{link.name}}
           </q-drawer-link>
-        </template>-->
+        </template>
         <!--<q-drawer-link icon="mail" :to="{name: item._linkurl,}" v-for="item in $bus.states.userInfo.MenuList" :key="item._id">
           {{item._name}}
         </q-drawer-link>-->
-        <q-drawer-link icon="mail" :to="{name: 'BuMen'}">
+        <!--<q-drawer-link icon="mail" :to="{name: 'BuMen'}">
           组织管理
         </q-drawer-link>
         <q-drawer-link icon="mail" :to="{name: 'UserInfo'}">
@@ -55,7 +55,7 @@
         </q-drawer-link>
         <q-drawer-link icon="mail" :to="{name: 'Role'}">
           角色管理
-        </q-drawer-link>
+        </q-drawer-link>-->
       </div>
     </q-drawer>
 
@@ -74,6 +74,7 @@ export default {
   computed: {
     MenuList() {
       const mapObj = {};
+      if (!this.$bus.states.userInfo.MenuList) return [];
       const result = this.$bus.states.userInfo.MenuList.filter(item => !item._parentid).sort((a, b) => (a._sort - b._sort)).map((item, idx) => {
         mapObj[item._id] = idx;
         return { id: item._id, name: item._name, linkurl: item._linkurl, children: [] };

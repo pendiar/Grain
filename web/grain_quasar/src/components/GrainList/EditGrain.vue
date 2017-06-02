@@ -61,7 +61,7 @@
                           :options="TypeOptions"
                           :disable="!!GrainData"
                       ></q-select>
-                      <button class="primary small">
+                      <!--<button class="primary small">
                         {{liangCangData.departmentName || '请选择组织'}}
                         <q-popover ref="departmentpopover">
                           <q-tree
@@ -70,7 +70,7 @@
                             expand-html="<i>add_circle</i>"
                           ></q-tree>
                         </q-popover>
-                      </button>
+                      </button>-->
                     </div>
                 </div>
                 <div class="item">
@@ -189,7 +189,7 @@
         departmentList: [],
         liangCangData: {
           departmentId: '',
-          departmentName: '',
+          // departmentName: '',
           ID: null,
           Type: 1,
           Number: '',
@@ -237,18 +237,21 @@
         activeTab: 'liangcang',
       };
     },
-    methods:{
+    methods: {
       chooseItem(item) {
         this.liangCangData.departmentId = item.value;
-        this.liangCangData.departmentName = item.title;
+        // this.liangCangData.departmentName = item.title;
         this.$refs.departmentpopover.close();
       },
       setDepartment() {
         const vm = this;
         this.$http.get(`${this.serverAddress}/Department/GetOrgSelectList/1`).then((response) => {
-          console.log(response.data.DataValue)
+          // console.log(response.data.DataValue)
           if (response.data.Code === 1000) {
-            this.departmentList = response.data.DataValue
+            this.departmentList = response.data.DataValue.map(item => ({
+              label: item.Name,
+              value: item.Id,
+            }));
             // const obj = {};
             // // let result = [];
             // const data = response.data.DataValue.rows;
