@@ -14,10 +14,10 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editOperation(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editOperation(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteOperation(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear handle" @click="deleteOperation(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
           <!--<button class="primary clear" @click="addChildOperation(cell)" v-if="rights.indexOf('flexiCreate')!==-1">
@@ -60,14 +60,14 @@
         config: {
           title: '操作管理',
           refresh: true,
-          columnPicker: true,
+          // columnPicker: true,
           // leftStickyColumns: 1,
           // rightStickyColumns: 2,
           bodyStyle: {
             maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
           rowHeight: '50px',
-          responsive: true,
+          // responsive: true,
           pagination: {
             rowsPerPage: 15,
             options: [5, 10, 15, 30, 50, 500]
@@ -83,7 +83,7 @@
             label: '操作',
             field: '_name',
             width: '80px',
-            filter: true,
+            // filter: true,
             // sort: true,
           },
           {
@@ -95,7 +95,7 @@
             label: '排序',
             field: '_sort',
             // sort: true,
-            filter: true,
+            // filter: true,
             width: '80px'
           },
           {

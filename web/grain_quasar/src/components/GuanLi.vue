@@ -25,17 +25,17 @@
       </div>
 
       <div class="list no-border platform-delimiter">
-        <q-drawer-link icon="mail" :to="{name: 'CGQGL',}">
+        <!--<q-drawer-link icon="mail" :to="{ name: 'CGQGL' }">
           传感线管理
-        </q-drawer-link>
+        </q-drawer-link>-->
         <template v-for="item in MenuList">
           <q-collapsible icon="inbox" :label="item.name" v-if="item.children.length">
-            <q-drawer-link icon="mail" :to="{name: link.linkurl, query: {id: link.id}}" v-for="link in item.children" :key="link.id">
+            <q-drawer-link icon="mail" :to="getLink(link)" v-for="link in item.children" :key="link.id">
               {{link.name}}
             </q-drawer-link>
           </q-collapsible>
-          <q-drawer-link icon="mail" :to="{name: link.linkurl, query: {id: link.id}}" v-for="link in item.children" :key="link.id">
-            {{link.name}}
+          <q-drawer-link icon="mail" :to="getLink(item)" v-else>
+            {{item.name}}
           </q-drawer-link>
         </template>
         <!--<q-drawer-link icon="mail" :to="{name: item._linkurl,}" v-for="item in $bus.states.userInfo.MenuList" :key="item._id">
@@ -85,11 +85,24 @@ export default {
         }
       });
       return result;
-    }
+    },
   },
-  data () {
-    return {}
-  }
+  data() {
+    return {};
+  },
+  methods: {
+    getLink(link) {
+      const url = link.linkurl;
+      if (!url) {
+        return { path: '/error' };
+      } else if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+        return { path: url };
+      } else if (url.indexOf('/') !== -1) {
+        return { path: url, query: { id: link.id } };
+      }
+      return { name: url, query: { id: link.id } };
+    },
+  },
 }
 </script>
 

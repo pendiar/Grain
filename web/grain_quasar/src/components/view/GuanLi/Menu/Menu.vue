@@ -14,13 +14,13 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editMenu(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editMenu(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteMenu(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear handle" @click="deleteMenu(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="addChildMenu(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
+          <button class="primary clear handle" @click="addChildMenu(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
             <i>add</i>
           </button>
         </template>
@@ -60,14 +60,14 @@
         config: {
           title: '菜单管理',
           refresh: true,
-          columnPicker: true,
+          // columnPicker: true,
           // leftStickyColumns: 1,
           // rightStickyColumns: 2,
           bodyStyle: {
             maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
           rowHeight: '50px',
-          responsive: true,
+          // responsive: true,
           pagination: {
             rowsPerPage: 15,
             options: [5, 10, 15, 30, 50, 500]
@@ -83,7 +83,7 @@
             label: '菜单',
             field: '_name',
             width: '100px',
-            filter: true,
+            // filter: true,
             // sort: true,
           },
           {
@@ -95,14 +95,14 @@
             label: '排序',
             field: '_sort',
             // sort: true,
-            filter: true,
+            // filter: true,
             width: '60px'
           },
           {
             label: '网址',
             field: '_linkurl',
             // sort: true,
-            filter: true,
+            // filter: true,
             width: '160px'
           },
           {

@@ -11,3 +11,9 @@
 .disableClick{
   pointer-events: none;
 }
+.q-data-table table thead tr th {
+    line-height: 16px;
+}
+.q-data-table table tr button.handle{
+  min-height: 0;
+}

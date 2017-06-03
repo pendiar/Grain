@@ -13,13 +13,13 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear" @click="editUserInfo(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editUserInfo(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear" @click="deleteUserInfo(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear handle" @click="deleteUserInfo(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear" @click="editUserGrain(cell)" v-if="1||rights.indexOf('grainModify')!==-1">
+          <button class="primary clear handle" @click="editUserGrain(cell)" v-if="1||rights.indexOf('grainModify')!==-1">
             <i>home</i>
           </button>
         </template>
@@ -73,14 +73,14 @@
         config: {
           title: '人员管理',
           refresh: true,
-          columnPicker: true,
+          // columnPicker: true,
           // leftStickyColumns: 1,
           // rightStickyColumns: 2,
           bodyStyle: {
             maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
           rowHeight: '50px',
-          responsive: true,
+          // responsive: true,
           pagination: {
             rowsPerPage: 15,
             options: [5, 10, 15, 30, 50, 500]
@@ -96,14 +96,14 @@
             label: '用户名',
             field: '_loginid',
             width: '100px',
-            filter: true,
+            // filter: true,
             // sort: true,
           },
           {
             label: '真实名',
             field: '_nickname',
             width: '80px',
-            filter: true,
+            // filter: true,
             // sort: true,
           },
           {
@@ -121,7 +121,7 @@
             label: '性别',
             field: '_sex',
             // sort: true,
-            filter: true,
+            // filter: true,
             width: '50px'
           },
           // {
