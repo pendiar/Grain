@@ -1,12 +1,15 @@
 
 .bg-alarm{
-  background: #d94e59
+  /*background: #d94e59;*/
+  background: #f70808;
 }
 .bg-worn{
-  background: #ff5a5a;
+  /*background: #ff5a5a;*/
+  background: #d6905d;
 }
 .bg-bad{
-  background: #dedede;
+  /*background: #dedede;*/
+  background: #c3bcbc;
 }
 .disableClick{
   pointer-events: none;

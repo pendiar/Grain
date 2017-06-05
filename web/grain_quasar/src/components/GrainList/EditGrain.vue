@@ -147,6 +147,12 @@
                   </div>
                   <div class="item multiple-lines">
                     <div class="item-content row items-center wrap">
+                        <div style="margin-right: 10px;" class="item-label">排序：</div>
+                        <input class="auto" v-model="aoJian.Sort" placeholder="廒间排序">
+                    </div>
+                  </div>
+                  <div class="item multiple-lines">
+                    <div class="item-content row items-center wrap">
                         <div style="margin-right: 10px;" class="item-label">地址：</div>
                         <input class="auto" v-model="aoJian.Location" placeholder="厫间地址">
                     </div>
@@ -215,7 +221,7 @@
           BadPoints: 0,
         },
         louCengData: [{ Code: '', Number: '', Location: '', MaxiTemperature: 0, MinTemperature: 0, Type: 1, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' }],
-        aoJianData: [[{ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' }]],
+        aoJianData: [[{ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '', Sort: '' }]],
         TypeOptions: [
           {
             label: '楼房仓',
@@ -299,12 +305,12 @@
         });
       },
       addAoJian(index) {
-        this.aoJianData[index].push({ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' });
+        this.aoJianData[index].push({ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '', Sort: '' });
       },
       addLouCeng() {
         this.$set(this.submited, `louceng-${this.louCengData.length}`, false);
         this.louCengData.push({ Code: '', Number: '', Location: '', MaxiTemperature: '', MinTemperature: '', Type: 1, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' });
-        this.aoJianData.push([{ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' }]);
+        this.aoJianData.push([{ Code: '', Number: '', Location: '', Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '', Sort: '' }]);
       },
       activeTabs(name) {
         this.activeTab = name;
@@ -419,7 +425,7 @@
             Location: granary.Location,
             MaxiTemperature: granary.MaxiTemperature,
             MinTemperature: granary.MinTemperature,
-            Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: ''
+            Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '', Sort: ''
           })));
           return { Code: item.Number.split('-')[1], Number: item.Number, Location: item.Location, Type: 1, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' };
         });

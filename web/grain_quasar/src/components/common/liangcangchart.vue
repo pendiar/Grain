@@ -77,19 +77,18 @@ export default {
             x: -20
           },
           xAxis: {
-            type: 'datetime',
-            dateTimeLabelFormats: {
-                millisecond: '%H:%M:%S.%L',
-                second: '%H:%M:%S',
-                minute: '%H:%M',
-                hour: '%H:%M',
-                day: '%m-%d',
-                week: '%m-%d',
-                month: '%Y-%m',
-                year: '%Y'
-            },
-            min: this.minDate,
-            max: new Date().getTime(),
+              type: 'datetime',
+              dateTimeLabelFormats: {
+                  // millisecond: '%H:%M:%S.%L',
+                  millisecond: '%H:%M:%S',
+                  second: '%H:%M:%S',
+                  minute: '%H:%M',
+                  hour: '%H:%M',
+                  day: '%m-%d',
+                  week: '%m-%d',
+                  month: '%Y-%m',
+                  year: '%Y'
+              }
           },
           yAxis: {
               title: {
@@ -111,7 +110,8 @@ export default {
           tooltip: {
               valueSuffix: '°C',
               dateTimeLabelFormats: {
-                  millisecond: '%H:%M:%S.%L',
+                  // millisecond: '%H:%M:%S.%L',
+                  millisecond: '%H:%M:%S',
                   second: '%H:%M:%S',
                   minute: '%H:%M',
                   hour: '%H:%M',

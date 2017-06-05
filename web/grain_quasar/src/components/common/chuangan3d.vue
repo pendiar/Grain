@@ -16,14 +16,18 @@ export default {
       return this.sensorList.map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (temp < 30) {
+        if (sensor.BadPoints) {
+          color = "#c3bcbc";
+        } else if (temp < 30) {
           color = "#0ce36b";
         } else if (temp >= 30 && temp < 35) {
-          color = "#e3780c";
+          // color = "#e3780c";
+          color = "#d6905d";
         } else if (temp >= 35) {
-          color = "#af4848";      
-        } else {
-          color = "#0ce36b"
+          // color = "#af4848";
+          color = "#f70808";
+        // } else {
+        //   color = "#0ce36b"
         }
         return { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color, 
         SensorId: sensor.SensorId, Collector:sensor.Collector,Label:sensor.Label };    
