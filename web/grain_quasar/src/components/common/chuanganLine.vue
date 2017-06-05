@@ -35,14 +35,18 @@ export default {
       this.sensorList.forEach((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (temp < 30) {
+        if (sensor.BadPoints) {
+          color = "#c3bcbc";
+        } else if (temp < 30) {
           color = "#0ce36b";
         } else if (temp >= 30 && temp < 35) {
-          color = "#e3780c";
+          // color = "#e3780c";
+          color = "#d6905d";
         } else if (temp >= 35) {
-          color = "#af4848";      
-        } else {
-          color = "#0ce36b"
+          // color = "#af4848";
+          color = "#f70808";
+        // } else {
+        //   color = "#0ce36b"
         }
         if (sensor.Direction_Y in map) {
           result[map[sensor.Direction_Y]].data.push({
@@ -75,53 +79,57 @@ export default {
         }
       });
       return result;
-      return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
-        const temp = sensor.RealTemp;
-        let color = '';
-        if (temp < 30) {
-          color = "#0ce36b";
-        } else if (temp >= 30 && temp < 35) {
-          color = "#e3780c";
-        } else if (temp >= 35) {
-          color = "#af4848";      
-        } else {
-          color = "#0ce36b"
-        }
-        let count = 0;
-        let x, y;
-        this.LineCount.some((num, index) => {
-          const idx = sensor.Direction_Y - count;
-          if (idx <= num) {
-            x = parseInt(360 * idx / num);
-            y = index + 1;
-            return true;
-          }
-          count += num;
-          return false;
-        });
-        return {
-          x,
-          y,
-          temp,
-          color,
-          SensorId: sensor.SensorId,
-          Collector: sensor.Collector,
-          Label: sensor.Label,
-        };
-      });
+      // return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
+      //   const temp = sensor.RealTemp;
+      //   let color = '';
+      //   if (temp < 30) {
+      //     color = "#0ce36b";
+      //   } else if (temp >= 30 && temp < 35) {
+      //     color = "#e3780c";
+      //   } else if (temp >= 35) {
+      //     color = "#af4848";      
+      //   } else {
+      //     color = "#0ce36b"
+      //   }
+      //   let count = 0;
+      //   let x, y;
+      //   this.LineCount.some((num, index) => {
+      //     const idx = sensor.Direction_Y - count;
+      //     if (idx <= num) {
+      //       x = parseInt(360 * idx / num);
+      //       y = index + 1;
+      //       return true;
+      //     }
+      //     count += num;
+      //     return false;
+      //   });
+      //   return {
+      //     x,
+      //     y,
+      //     temp,
+      //     color,
+      //     SensorId: sensor.SensorId,
+      //     Collector: sensor.Collector,
+      //     Label: sensor.Label,
+      //   };
+      // });
     },
     getPolarData() {
       return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (temp < 30) {
+        if (sensor.BadPoints) {
+          color = "#c3bcbc";
+        }else if (temp < 30) {
           color = "#0ce36b";
         } else if (temp >= 30 && temp < 35) {
-          color = "#e3780c";
+          // color = "#e3780c";
+          color = "#d6905d";
         } else if (temp >= 35) {
-          color = "#af4848";      
-        } else {
-          color = "#0ce36b"
+          // color = "#af4848";
+          color = "#f70808";
+        // } else {
+        //   color = "#0ce36b"
         }
         let count = 0;
         let x, y;

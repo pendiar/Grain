@@ -5,7 +5,7 @@
     <div class="layout-padding">
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
-        <cang-card v-for="cang in GrainReport" :key="cang.Number" :cang="cang" :update='update3d' :class="{disableClick: !$CheckRights(cang.Number)}"></cang-card>
+        <cang-card v-for="cang in filterGrainReport" :key="cang.Number" :cang="cang" :update='update3d' :class="{disableClick: !$CheckRights(cang.Number)}"></cang-card>
       </div>
     </div>
   </div>
@@ -17,6 +17,11 @@ import CangCard from 'components/AoJian/CangCard';
 export default {
   components: {
     CangCard,
+  },
+  computed: {
+    filterGrainReport() {
+      return this.GrainReport.sort((a, b) => a.Sort - b.Sort);
+    },
   },
   data() {
     return {

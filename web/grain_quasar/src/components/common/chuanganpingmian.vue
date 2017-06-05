@@ -51,14 +51,18 @@ export default {
       this.sensorList.forEach((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (temp < 30) {
-            color = "#195803";
+        if (sensor.BadPoints) {
+          color = "#c3bcbc";
+        }else if (temp < 30) {
+          color = "#195803";
         } else if (temp >= 30 && temp < 35) {
-            color = "#e97b0a";
+          // color = "#e97b0a";
+          color = "#d6905d";
         } else if (temp >= 35) {
-            color = "#ff5a5a";        
-        } else {
-            color = "#195803"
+          // color = "#ff5a5a";
+          color = "#f70808";
+        // } else {
+        //   color = "#195803"
         }
         if (!data[sensor.Direction_Z]) {
           data[sensor.Direction_Z] = [];

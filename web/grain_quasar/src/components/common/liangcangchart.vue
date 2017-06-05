@@ -61,7 +61,8 @@ export default {
           xAxis: {
               type: 'datetime',
               dateTimeLabelFormats: {
-                  millisecond: '%H:%M:%S.%L',
+                  // millisecond: '%H:%M:%S.%L',
+                  millisecond: '%H:%M:%S',
                   second: '%H:%M:%S',
                   minute: '%H:%M',
                   hour: '%H:%M',
@@ -89,7 +90,8 @@ export default {
           tooltip: {
               valueSuffix: '°C',
               dateTimeLabelFormats: {
-                  millisecond: '%H:%M:%S.%L',
+                  // millisecond: '%H:%M:%S.%L',
+                  millisecond: '%H:%M:%S',
                   second: '%H:%M:%S',
                   minute: '%H:%M',
                   hour: '%H:%M',
