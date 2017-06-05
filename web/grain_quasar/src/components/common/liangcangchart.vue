@@ -37,14 +37,14 @@ export default {
   },
   methods: {
     getTemp(type) {
-      console.log(this.heapTempData.filter(item => item.Type === type),type)
-      const result = this.heapTempData.filter(item => item.Type === type).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
-        // console.log(item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val)))
+      // console.log(this.heapTempData.filter(item => item.Type === type),type)
+      const result = this.heapTempData.filter(item => item.Type === type && new Date(item.StampTime).getTime() < new Date().getTime() && new Date(item.StampTime).getTime() > this.minDate).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
+        // console.log(item.StampTime)
         // return [Date.UTC.apply(this,item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val))), item.Temp];
         // console.log(new Date(item.StampTime).getTime())
-        return [new Date(item.StampTime).getTime(), item.Temp];
+        return [new Date(item.StampTime).getTime() + 8*3600000, item.Temp];
       });
-      console.log(result);
+      // console.log(result);
       return result;
     },
     fetchData() {
@@ -88,7 +88,9 @@ export default {
                   week: '%m-%d',
                   month: '%Y-%m',
                   year: '%Y'
-              }
+              },
+              min: this.minDate + 8*3600000,
+              max: new Date().getTime() + 8*3600000,
           },
           yAxis: {
               title: {

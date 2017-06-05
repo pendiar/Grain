@@ -29,7 +29,7 @@ export default {
         // } else {
         //   color = "#0ce36b"
         }
-        return { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color, 
+        return { x: sensor.Direction_Z, y: sensor.Direction_Y, z: sensor.Direction_X, temp, color, 
         SensorId: sensor.SensorId, Collector:sensor.Collector,Label:sensor.Label };    
       });
     },
@@ -122,7 +122,7 @@ export default {
           //   enabled: false,
           // },
           title: {
-            text: '传感线序号',
+            text: '码层',
           },
           min: 0,
           tickInterval: 1,
@@ -134,12 +134,13 @@ export default {
           //   enabled: false,
           // },
           title: {
-            text: '传感器序号',
+            text: '传感线序号',
           },
           min: 0,
           tickInterval: 1,
           // max: 5,
           gridLineWidth: 1,
+          showFirstLabel: false,
         },
         zAxis: {
           ceiling: 100,
@@ -152,7 +153,7 @@ export default {
           title: {
               text: null,
               // align:screenLeft,
-               useHTML:true,
+              //  useHTML:true,
           }
           // max: 5,
           // showFirstLabel: false,
@@ -186,20 +187,22 @@ export default {
       const vm = this;
       if (!vm.chart) return;
       e = vm.chart.pointer.normalize(e);
-      var posX = e.pageX,
-        posY = e.pageY,
+      var posX = e.pageX || e.touches[0].pageX,
+        posY = e.pageY || e.touches[0].pageY,
         alpha = vm.chart.options.chart.options3d.alpha,
         beta = vm.chart.options.chart.options3d.beta,
         newAlpha,
         newBeta,
         sensitivity = 5; // lower is more sensitive
       function moving(e) {
+        e = e || window.event;
+        e.preventDefault();
         // Run beta
-        newBeta = beta + (posX - e.pageX) / sensitivity;
+        newBeta = beta + (posX - (e.pageX || e.touches[0].pageX)) / sensitivity;
         newBeta = Math.min(100, Math.max(-100, newBeta));
         vm.chart.options.chart.options3d.beta = newBeta;
         // Run alpha
-        newAlpha = alpha + (e.pageY - posY) / sensitivity;
+        newAlpha = alpha + ((e.pageY || e.touches[0].pageY) - posY) / sensitivity;
         newAlpha = Math.min(100, Math.max(-100, newAlpha));
         vm.chart.options.chart.options3d.alpha = newAlpha;
         vm.chart.redraw(false);
@@ -208,12 +211,12 @@ export default {
         // document.removeEventListener('mousedown', start);
         // document.removeEventListener('touchstart', start);
         document.removeEventListener('mousemove', moving);
-        document.removeEventListener('touchdrag', moving);
+        document.removeEventListener('touchmove', moving);
         document.removeEventListener('mouseup', end);
         document.removeEventListener('touchend', end);
       }
       document.addEventListener('mousemove', moving);
-      document.addEventListener('touchdrag', moving);
+      document.addEventListener('touchmove', moving);
       document.addEventListener('mouseup', end);
       document.addEventListener('touchend', end);
     },
@@ -239,7 +242,7 @@ export default {
 
 <style scoped lang="less">
 .chuangan3d{
-  width: 100%;
+  width: 95%;
   height: 400px;
   min-width: 310px;
   max-width: 800px;

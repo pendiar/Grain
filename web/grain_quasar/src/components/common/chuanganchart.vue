@@ -13,6 +13,21 @@ require('highcharts/highcharts-3d')(Highcharts);
 export default {
   props: ['type'],
   computed: {
+    minDate() {
+      let nowDate = new Date().getTime();
+      switch(Number(this.type)) {
+        case 0:
+          return nowDate - 24*3600000;
+        case 1:
+          return nowDate - 7*24*3600000;
+        case 2:
+          return nowDate - 30*24*3600000;
+        case 3:
+          return nowDate - 365*24*3600000;
+        default:
+          return nowDate - 24*3600000;
+      }
+    },
   },
   data() {
     return {
@@ -22,11 +37,11 @@ export default {
   },
   methods: {
     getTemp() {
-      return this.heapTempData.sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
+      return this.heapTempData.filter(item => new Date(item.StampTime).getTime() < new Date().getTime() && new Date(item.StampTime).getTime() > this.minDate).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
         // console.log(item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val)))
         // return [Date.UTC.apply(this,item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val))), item.Temp];
         // console.log(new Date(item.StampTime).getTime())
-        return [new Date(item.StampTime).getTime(), item.Temp];
+        return [new Date(item.StampTime).getTime() + 8*3600000, item.Temp];
       });
     },
     fetchData() {
@@ -70,7 +85,7 @@ export default {
           xAxis: {
               type: 'datetime',
               dateTimeLabelFormats: {
-                  millisecond: '%H:%M:%S.%L',
+                  millisecond: '%H:%M:%S',
                   second: '%H:%M:%S',
                   minute: '%H:%M',
                   hour: '%H:%M',
@@ -79,6 +94,8 @@ export default {
                   month: '%Y-%m',
                   year: '%Y'
               },
+              min: this.minDate + 8*3600000,
+              max: new Date().getTime() + 8*3600000,
           },
           yAxis: {
               title: {
@@ -90,15 +107,17 @@ export default {
                   color: '#808080'
               }]
           },
-          // plotOptions: {
-          //   spline: {
-          //     marker: 
-          //   }
-          // }
+          plotOptions: {
+              series: {
+                  marker: {
+                      enabled: true
+                  }
+              }
+          },
           tooltip: {
               valueSuffix: '°C',
               dateTimeLabelFormats: {
-                  millisecond: '%H:%M:%S.%L',
+                  millisecond: '%H:%M:%S',
                   second: '%H:%M:%S',
                   minute: '%H:%M',
                   hour: '%H:%M',

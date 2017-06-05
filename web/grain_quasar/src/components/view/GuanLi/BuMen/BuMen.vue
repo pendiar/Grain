@@ -13,6 +13,9 @@
         :columns="columns"
         @refresh="refresh"
       >
+        <template slot="col-name" scope="cell">
+          <span :class="{childMenu:cell.row._parentid.indexOf('00000000') !== 0}">{{cell.row._name}}</span>
+        </template>
         <template slot="col-handle" scope="cell">
           <button class="primary clear handle" @click="editBumen(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
@@ -81,7 +84,7 @@
         columns: [
           {
             label: '组织',
-            field: '_name',
+            field: 'name',
             width: '100px',
             // filter: true,
             // sort: true,
@@ -277,4 +280,29 @@
 </script>
 
 <style lang="less" scoped>
+  .childMenu{
+    position: relative;
+    margin-left: 30px;
+    &:before{
+      content: '';
+      position: absolute;
+      top: auto;
+      width: 1px;
+      height: 4rem;
+      right: auto;
+      left: -22px;
+      border-left: 1px solid #ccc;
+      bottom: -1rem;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      top: 9px;
+      width: 20px;
+      height: 20px;
+      right: auto;
+      left: -22px;
+      border-top: 1px solid #ccc;
+    }
+  }
 </style>

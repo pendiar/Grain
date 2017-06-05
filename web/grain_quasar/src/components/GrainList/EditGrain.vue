@@ -59,7 +59,6 @@
                           type="radio"
                           v-model="liangCangData.departmentId"
                           :options="departmentList"
-                          :disable="!!GrainData"
                       ></q-select>
                       <!--<button class="primary small">
                         {{liangCangData.departmentName || '请选择组织'}}

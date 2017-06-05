@@ -83,8 +83,9 @@ export default {
       },
     };
   },
-  beforeRouteEnter: (to, from, next) => {
-    next((vm) => {
+  methods: {
+    fetchData(to, from) {
+      const vm = this;
       vm.$http.post(`${vm.serverAddress}/Granary/GetHeapList`, [
         "PageIndex^1",
         "PageCount^2000",
@@ -97,7 +98,7 @@ export default {
             if (to.name === 'AoJian') {
               vm.GrainReport = JSON.parse(response.data.JsonValue);
             } else if (to.name === 'YuanDuiWei') {
-              console.log(JSON.parse(response.data.JsonValue).map(cang=>cang.Number))
+              // console.log(JSON.parse(response.data.JsonValue).map(cang=>cang.Number))
               if (to.query.DW_Number) {
                 vm.GrainReport = JSON.parse(response.data.JsonValue).filter((cang) => {
                   return cang.Number === to.query.DW_Number;
@@ -125,8 +126,14 @@ export default {
           this.update += 1;
         });
       });
-    });
+    }
   },
+  created() {
+    this.fetchData(this.$route);
+  },
+  watch: {
+    $route: 'fetchData',
+  }
 };
 </script>
 
