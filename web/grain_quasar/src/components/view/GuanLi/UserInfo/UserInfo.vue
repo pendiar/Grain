@@ -108,12 +108,12 @@
           },
           {
             label: '角色',
-            field: '_rolename',
+            field: 'RoleName',
             width: '100px'
           },
           {
             label: '所在组织',
-            field: '_departmentname',
+            field: 'OrgName',
             // sort: true,
             width: '100px'
           },

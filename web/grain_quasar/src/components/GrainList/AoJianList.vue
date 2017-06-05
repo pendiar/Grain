@@ -18,8 +18,8 @@
           <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
           <td>{{item.MinimumTemperature}}°C</td>
           <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature}}°C</td>
-          <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.OutSideTemperature<35
-          ,'bg-alarm':item.OutSideTemperature>=35}">-/{{item.OutSideTemperature}}°C</td>
+          <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.OutSideTemperature<35||item.InSideTemperature>=30&&item.InSideTemperature<35
+          ,'bg-alarm':item.OutSideTemperature>=35||item.InSideTemperature>=35}">{{item.InSideTemperature}}/{{item.OutSideTemperature}}°C</td>
           <td :class="{'bg-worn':item.InSideHumidity>=80||item.OutSideHumidity>=80}">{{item.InSideHumidity}}/{{item.OutSideHumidity}}%RH</td>
           <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
         </tr>
@@ -34,7 +34,7 @@ import store from 'src/config/store';
 export default {
   computed: {
     filterGetList() {
-      return this.GetList.filter(item => this.$CheckRights(item.Number));
+      return this.GetList.filter(item => this.$CheckRights(item.Number)).sort((a, b) => (a.Sort - b.Sort));
     },
   },
   data() {

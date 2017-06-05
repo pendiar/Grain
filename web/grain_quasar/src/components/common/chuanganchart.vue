@@ -12,6 +12,8 @@ require('highcharts/highcharts-3d')(Highcharts);
 
 export default {
   props: ['type'],
+  computed: {
+  },
   data() {
     return {
       // getData: [17,21,22,25,26,24,19,29,26,25,24,20,23,26,25,30,27,22,21,26,24,21,22,18,27,25,23,26,22,21,24,25,22,28,26,22,21,22,24],
@@ -76,7 +78,7 @@ export default {
                   week: '%m-%d',
                   month: '%Y-%m',
                   year: '%Y'
-              }
+              },
           },
           yAxis: {
               title: {

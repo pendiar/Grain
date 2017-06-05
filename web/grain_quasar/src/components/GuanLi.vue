@@ -8,6 +8,22 @@
       <q-toolbar-title :padding="1">
         系统管理
       </q-toolbar-title>
+      <button class="primary">
+        <i>menu</i>
+        <q-popover ref="popover">
+          <!--
+            The DOM element(s) that make up the Dropdown menu,
+            in this case a list
+          -->
+          <div class="list item-delimiter highlight" @click="$refs.popover.close()">
+            <div class="item item-link" @click.stop="logout">
+              <div class="item-content">
+                退出账户
+              </div>
+            </div>
+          </div>
+        </q-popover>
+      </button>
     </div>
 
     <!-- Navigation Tabs -->
@@ -73,15 +89,47 @@
 export default {
   computed: {
     MenuList() {
+            // const obj = {};
+            // const result = [];
+            // const data = this.$bus.states.userInfo.MenuList;
+            // function addRows(arr,code) {
+            //   obj[code].children.forEach((cCode) => {
+            //     const objRow = obj[cCode];
+            //     const row = data[objRow.index];
+            //     arr.push(row);
+            //     addRows(arr,cCode);
+            //   });
+            // }
+            // response.data.DataValue.rows.forEach((row, index) => {
+            //   // if (!row._parentid || row._parentid.indexOf('00000000') === 0) result.push(row);
+            //   const code = row._code.length > 7 ? row._code.slice(0, -4) : '';
+            //   if (code in obj) {
+            //     obj[code].children.push(row._code);
+            //   } else if (code) {
+            //     obj[code] = { children: [row._code] };
+            //   } else {
+            //     result.push(row);
+            //   }
+            //   if (row._code in obj) {
+            //     if (code) obj[row._code].parent = code;
+            //     obj[row._code].index = index;
+            //   } else {
+            //     obj[row._code] = code ? { children: [], parent: code, index } : { children: [], index };
+            //   }
+            // });
+            // // console.log(obj)
+            // if (obj[null]) addRows(result, null);
+            // this.table = result;
       const mapObj = {};
       if (!this.$bus.states.userInfo.MenuList) return [];
-      const result = this.$bus.states.userInfo.MenuList.filter(item => !item._parentid).sort((a, b) => (a._sort - b._sort)).map((item, idx) => {
-        mapObj[item._id] = idx;
+      const result = this.$bus.states.userInfo.MenuList.filter(item => item._code.length < 5).sort((a, b) => (a._sort - b._sort)).map((item, idx) => {
+        mapObj[item._code] = idx;
         return { id: item._id, name: item._name, linkurl: item._linkurl, children: [] };
       });
-      this.$bus.states.userInfo.MenuList.filter(item => item._parentid).sort((a, b) => (a._sort - b._sort)).forEach((item) => {
-        if (item._parentid in mapObj) {
-          result[mapObj[item._parentid]].children.push({ id: item._id, name: item._name, linkurl: item._linkurl });
+      this.$bus.states.userInfo.MenuList.filter(item => item._code.length > 4).sort((a, b) => (a._sort - b._sort)).forEach((item) => {
+        const pCode = item._code.slice(0, 4);
+        if (pCode in mapObj) {
+          result[mapObj[pCode]].children.push({ id: item._id, name: item._name, linkurl: item._linkurl });
         }
       });
       return result;
@@ -101,6 +149,14 @@ export default {
         return { path: url, query: { id: link.id } };
       }
       return { name: url, query: { id: link.id } };
+    },
+    logout() {
+      this.$refs.popover.close();
+      this.$bus.setStates('UserGranaryList', null);
+      this.$storage('UserGranaryList', 'remove');
+      this.$bus.setStates('userInfo', null);
+      this.$storage('loginInfo', 'remove');
+      this.$router.replace({ name: 'Login', query: { name: this.$route.name } })
     },
   },
 }

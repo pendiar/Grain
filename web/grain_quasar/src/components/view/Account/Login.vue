@@ -12,13 +12,13 @@
               <div class="item multiple-lines">
                 <div class="item-content row items-center wrap">
                   <div style="margin-right: 10px;" class="item-label">用户名:</div>
-                  <input class="auto" v-model="LoginName" placeholder="请输入用户名">
+                  <input class="auto" v-model="LoginName" placeholder="请输入用户名" @keydown.enter="login">
                 </div>
               </div>
               <div class="item multiple-lines">
                 <div class="item-content row items-center wrap">
                   <div style="margin-right: 10px;" class="item-label">密&nbsp;&nbsp;码:</div>
-                  <input class="auto" v-model="Password" type="password" placeholder="请输入密码">
+                  <input class="auto" v-model="Password" type="password" placeholder="请输入密码" @keydown.enter="login">
                 </div>
               </div>
             </div>
@@ -46,11 +46,20 @@
   
   const getGranaryList = function (fn) {
     // console.log(Vue.prototype.$bus.states.userInfo)
+    // const UserGranaryList = storage('UserGranaryList');
+    // if (UserGranaryList) {
+    //   Vue.prototype.$bus.setStates('UserGranaryList', data);
+    //   fn();
+    // }
     Vue.http.get(`${Vue.prototype.serverAddress}/UserGranaryRights/GetUserGranaryListByUid/${Vue.prototype.$bus.states.userInfo.Id}`).then((response) => {
-      Vue.prototype.$bus.setStates('UserGranaryList', response.data.DataValue.rows.map(item => item.GranaryNumber));
+      const data = response.data.DataValue.rows.map(item => item.GranaryNumber);
+      Vue.prototype.$bus.setStates('UserGranaryList', data);
+      // storage('UserGranaryList', data);
       fn();
+      // if (!UserGranaryList) fn();
     }, () => {
       fn();
+      // if (!UserGranaryList) fn();
     });
   }
 
@@ -87,24 +96,59 @@
     },
     beforeRouteEnter(to, from, next) {
       if (Platform.is.desktop) {
+        let loginInfo = storage('loginInfo');
+        if (loginInfo) {
+          loginInfo = JSON.parse(loginInfo);
+          console.log(loginInfo)
+          const ID = loginInfo.rows.Id;
+          if (ID) {
+            Vue.prototype.$bus.setStates('userInfo', loginInfo.rows);
+            getGranaryList(() => {
+              next({ name: to.query.name || 'GrainList' });
+            });
+            loginInfo.date = new Date().getTime();
+            storage('loginInfo', JSON.stringify(loginInfo));
+            return;
+          }
+        }
         next();
         return;
       }
-      const search = window.location.search;
-      let ID = storage('loginInfo');
-      if (ID) ID = JSON.parse(ID).rows.Id;
-      if (search && search.indexOf('ID=') !== -1) {
-        ID = search.split('ID=')[1].split('&')[0];
-      }
-      if (ID) {
-        Vue.prototype.$bus.setStates('userInfo', { Id: ID });
-        getGranaryList(() => {
-          next({ name: to.query.name || 'GrainList' });
+      const search = {};
+      if (window.location.search) {
+        window.location.search.slice(1).split('&').forEach((item) => {
+          const idx = item.indexOf('=');
+          search[item.slice(0, idx)] = item.slice(idx + 1);
         });
-        storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
-      } else {
-        Toast.create.warning('无法获取用户ID');
       }
+      // if (search.LoginName) {
+        Vue.http.get(`${Vue.prototype.serverAddress}/Account/LogIn2/${search.ID}`).then((response) => {
+          if (response.data.Code === 1000) {
+            Vue.prototype.$bus.setStates('userInfo', response.data.DataValue.rows);
+            getGranaryList(() => { next({ name: to.query.name || 'GrainList' }); });
+            storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: response.data.DataValue.rows }));
+            // Toast.create.positive('登录成功！');
+          } else {
+            Toast.create.warning('设备登录信息错误!');
+          }
+        }, () => {
+          Toast.create.warning('连接错误，请检查网络!');
+        });
+      // }
+      // let ID = storage('loginInfo');
+      // if (ID) ID = JSON.parse(ID).rows.Id;
+      // if (search && search.indexOf('ID=') !== -1) {
+      //   ID = search.split('ID=')[1].split('&')[0];
+      // }
+      // if (ID) {
+      //   Vue.prototype.$bus.setStates('userInfo', { Id: ID });
+      //   getGranaryList(() => {
+      //     next({ name: to.query.name || 'GrainList' });
+      //   });
+      //   storage('loginInfo', JSON.stringify({ date: new Date().getTime(), rows: { Id: ID } }));
+      // } else {
+      //   Toast.create.warning('无法获取用户ID');
+      // }
     },
     // created() {
     //   this.$http.post(`${this.serverAddress}/Account/LogIn`, { LoginName: 'admin666', Password: '1234567' }).then((response) => {
@@ -122,3 +166,10 @@
     // },
   };
 </script>
+
+<style lang="less" scoped>
+  .card{
+    max-width: 400px;
+    margin: 0 auto;
+  }
+</style>

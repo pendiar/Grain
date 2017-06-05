@@ -5,7 +5,7 @@
         <div class="item two-lines">
           <div class="item-content has-secondary">
             <div class="floating-label">
-              <input class="full-width" v-model="number">
+              <input class="full-width" v-model="number" @keydown.enter="search">
               <label>粮仓编号</label>
             </div>
           </div>

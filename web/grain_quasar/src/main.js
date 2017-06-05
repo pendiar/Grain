@@ -37,6 +37,7 @@ Vue.prototype.$CheckRights = function (num) {
   return arr.some(item => num && (item.indexOf(num) === 0 || num.indexOf(item) === 0));
 };
 Vue.prototype.serverAddress = '/api';
+// Vue.prototype.serverAddress = '/api';
 
 // Vue.mixin({
 //   data() {
@@ -77,6 +78,14 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+// Vue.mixin({
+//   methods: {
+//     logout() {
+
+//     }
+//   },
+// });
 
 Quasar.start(() => {
   /* eslint-disable no-new */

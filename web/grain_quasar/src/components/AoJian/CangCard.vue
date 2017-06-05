@@ -22,6 +22,19 @@
           </div>
         </div> -->
         <div class="row">
+          <div class="item rheight">
+            <div class="item-content">
+              <span class="item-label">
+                最近采集时间：
+              </span>
+              <span class="item-value">
+                <!--{{cang.MaxiTemperature}}°C-->
+                 {{cang.LastTime}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="item width-1of2 rheight">
             <div class="item-content">
               <span class="item-label">
@@ -132,13 +145,17 @@ export default {
 
 font-size: 14px;
 padding: 1px;
-height: 20Px;
+height: auto;
 line-height: 20px;
 
 }
 
 .rmargin{
   margin-top: 5px;
+}
+
+.rheight > .item-content{
+  padding: 0;
 }
 
 .cangStatus{

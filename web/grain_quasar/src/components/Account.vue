@@ -7,13 +7,9 @@
       <!--<button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
         <i>menu</i>
       </button>-->
-      <button class="primary">
+      <!--<button class="primary">
         <i>menu</i>
         <q-popover ref="popover">
-          <!--
-            The DOM element(s) that make up the Dropdown menu,
-            in this case a list
-          -->
           <div class="list item-delimiter highlight" @click="$refs.popover.close()">
             <router-link tag="div" class="item item-link" :to="{ name: 'Login' }">
               <div class="item-content">
@@ -27,7 +23,7 @@
             </router-link>
           </div>
         </q-popover>
-      </button>
+      </button>-->
     </div>
     
     <!-- Navigation Tabs -->

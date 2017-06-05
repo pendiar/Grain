@@ -13,7 +13,21 @@ require('highcharts/highcharts-3d')(Highcharts);
 export default {
   props: ['type'],
   computed: {
-    
+    minDate() {
+      let nowDate = new Date().getTime();
+      switch(Number(this.type)) {
+        case 0:
+          return nowDate - 24*3600000;
+        case 1:
+          return nowDate - 7*24*3600000;
+        case 2:
+          return nowDate - 30*24*3600000;
+        case 3:
+          return nowDate - 365*24*3600000;
+        default:
+          return nowDate - 24*3600000;
+      }
+    },
   },
   data() {
     return {
@@ -23,14 +37,18 @@ export default {
   },
   methods: {
     getTemp(type) {
-      return this.heapTempData.filter(item => item.Type === type).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
+      console.log(this.heapTempData.filter(item => item.Type === type),type)
+      const result = this.heapTempData.filter(item => item.Type === type).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
         // console.log(item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val)))
         // return [Date.UTC.apply(this,item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val))), item.Temp];
         // console.log(new Date(item.StampTime).getTime())
         return [new Date(item.StampTime).getTime(), item.Temp];
       });
+      console.log(result);
+      return result;
     },
     fetchData() {
+      if (this.$route.name !== 'LiangCang') return;
       this.$http.get(`${this.serverAddress}/Granary/GetHeapTempChart/${this.$route.params.id}/${this.type}`).then((response) => {
         if (response.data.Code === 1000) {
           try {
@@ -51,25 +69,27 @@ export default {
       var chart = new Highcharts.Chart({
         credits:{enabled:false},
           chart: {
-              renderTo: this.$refs.chart,
-              type: 'spline',
+            renderTo: this.$refs.chart,
+            type: 'spline',
           },
           title: {
-              text: this.code,
-              x: -20
+            text: this.code,
+            x: -20
           },
           xAxis: {
-              type: 'datetime',
-              dateTimeLabelFormats: {
-                  millisecond: '%H:%M:%S.%L',
-                  second: '%H:%M:%S',
-                  minute: '%H:%M',
-                  hour: '%H:%M',
-                  day: '%m-%d',
-                  week: '%m-%d',
-                  month: '%Y-%m',
-                  year: '%Y'
-              }
+            type: 'datetime',
+            dateTimeLabelFormats: {
+                millisecond: '%H:%M:%S.%L',
+                second: '%H:%M:%S',
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%m-%d',
+                week: '%m-%d',
+                month: '%Y-%m',
+                year: '%Y'
+            },
+            min: this.minDate,
+            max: new Date().getTime(),
           },
           yAxis: {
               title: {
@@ -81,11 +101,13 @@ export default {
                   color: '#808080'
               }]
           },
-          // plotOptions: {
-          //   spline: {
-          //     marker: 
-          //   }
-          // }
+          plotOptions: {
+              series: {
+                  marker: {
+                      enabled: true
+                  }
+              }
+          },
           tooltip: {
               valueSuffix: '°C',
               dateTimeLabelFormats: {
@@ -116,6 +138,7 @@ export default {
               data: this.getTemp(1),
           }]
       });
+      // console.log(new Date(this.minDate))
     }
   },
   // mounted() {
@@ -172,6 +195,7 @@ export default {
   // },
   watch: {
     type: 'fetchData',
+    '$route.params.id': 'fetchData',
   }
 };
 </script>

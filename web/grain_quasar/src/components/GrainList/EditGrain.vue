@@ -58,7 +58,7 @@
                       <q-select
                           type="radio"
                           v-model="liangCangData.departmentId"
-                          :options="TypeOptions"
+                          :options="departmentList"
                           :disable="!!GrainData"
                       ></q-select>
                       <!--<button class="primary small">
@@ -71,6 +71,11 @@
                           ></q-tree>
                         </q-popover>
                       </button>-->
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="item-content">
+                      排序：<input v-model.number="liangCangData.Sort" placeholder="粮仓排序">
                     </div>
                 </div>
                 <div class="item">
@@ -188,6 +193,7 @@
       return {
         departmentList: [],
         liangCangData: {
+          Sort: '',
           departmentId: '',
           // departmentName: '',
           ID: null,
@@ -248,7 +254,7 @@
         this.$http.get(`${this.serverAddress}/Department/GetOrgSelectList/1`).then((response) => {
           // console.log(response.data.DataValue)
           if (response.data.Code === 1000) {
-            this.departmentList = response.data.DataValue.map(item => ({
+            this.departmentList = response.data.DataValue.rows.map(item => ({
               label: item.Name,
               value: item.Id,
             }));
@@ -401,6 +407,7 @@
       this.setDepartment();
       if (this.GrainData) {
         this.submited.liangcang = true;
+          console.log(this.GrainData)
         Object.keys(this.liangCangData).forEach((key) => {
           this.liangCangData[key] = this.GrainData[key];
         });

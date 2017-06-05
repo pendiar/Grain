@@ -8,6 +8,18 @@
       <!--<button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
         <i>menu</i>
       </button>-->
+      <button class="primary" v-if="isDesktop">
+        <i>menu</i>
+        <q-popover ref="popover">
+          <div class="list item-delimiter highlight" @click="$refs.popover.close()">
+            <div class="item item-link" @click.stop="logout">
+              <div class="item-content">
+                退出账户
+              </div>
+            </div>
+          </div>
+        </q-popover>
+      </button>
     </div>
 
     <!-- Navigation Tabs -->
@@ -55,7 +67,17 @@ export default {
     return {
       isDesktop: Platform.is.desktop,
     }
-  }
+  },
+  methods: {
+    logout() {
+      this.$refs.popover.close();
+      this.$bus.setStates('UserGranaryList', null);
+      this.$storage('UserGranaryList', 'remove');
+      this.$bus.setStates('userInfo', null);
+      this.$storage('loginInfo', 'remove');
+      this.$router.replace({ name: 'Login', query: { name: this.$route.name } })
+    },
+  },
 }
 </script>
 

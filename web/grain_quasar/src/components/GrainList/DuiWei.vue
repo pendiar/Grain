@@ -28,7 +28,7 @@
 export default {
   computed: {
     filterGetList() {
-      return this.GetList.filter(item => this.$CheckRights(item.Number));
+      return this.GetList.filter(item => this.$CheckRights(item.Number)).sort((a, b) => (a.Sort - b.Sort));
     },
   },
   data() {

@@ -118,7 +118,7 @@ export default {
           //   enabled: false,
           // },
           title: {
-            text: 'Y',
+            text: '传感线序号',
           },
           min: 0,
           tickInterval: 1,
@@ -130,7 +130,7 @@ export default {
           //   enabled: false,
           // },
           title: {
-            text: 'X',
+            text: '传感器序号',
           },
           min: 0,
           tickInterval: 1,

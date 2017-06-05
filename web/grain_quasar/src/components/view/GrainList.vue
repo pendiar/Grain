@@ -16,7 +16,7 @@
         {{$route.name==='GrainList'?'平湖粮库':`${$route.query.Name || $route.params.id}粮仓`}}温湿度状态
       </p>
       <div class="row wrap gutter desktop-only">
-        <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="(grain, index) in list">
+        <div class="grain-stats md-width-1of2 gt-md-width-1of4 auto" v-for="(grain, index) in filterList">
           <div class="card">
             <div class="card-title bg-primary text-white relative-position">
               {{grain.Name}}
@@ -74,7 +74,7 @@
         <router-view></router-view>
       </div>
       <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @open="modalEvent('open')" @close="modalEvent('close')">
-        <edit-grain :grain-data="list[EditIndex]" v-if="showModal" @hide="closeModal"></edit-grain>
+        <edit-grain :grain-data="filterList[EditIndex]" v-if="showModal" @hide="closeModal"></edit-grain>
       </q-modal>
     </div>
   </div>
@@ -90,8 +90,11 @@ export default {
     EditGrain,
   },
   computed: {
+    filterList() {
+      return this.list.filter(item => this.$CheckRights(item.Number)).sort((a, b) => (a.Sort - b.Sort));
+    },
     filterGrainReport() {
-      return this.GrainReport.filter(item => this.$CheckRights(item.Number));
+      return this.GrainReport.filter(item => this.$CheckRights(item.Number)).sort((a, b) => (a.Sort - b.Sort));
     },
     cangNumber() {
       const cang = this.list[this.$route.params.id];
