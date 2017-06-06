@@ -1,5 +1,6 @@
 <template>
   <div class="cgqgl">
+    <!--<i v-for="name in icon">{{name}}</i>-->
     <div class="layout-padding">
       <div class="list">
         <div class="item two-lines">
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+// import icon from 'assets/icon.json'
   import Highcharts from 'highcharts';
   // 加载模块
   require('highcharts/highcharts-more')(Highcharts);
@@ -48,6 +50,7 @@
     },
     data() {
       return {
+        icon,
         number: '',
         LineList: [],
         LineCount: [],
