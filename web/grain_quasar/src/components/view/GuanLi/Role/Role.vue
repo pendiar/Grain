@@ -1,6 +1,6 @@
 <template>
   <div class="Role">
-    <div class="layout-padding">
+    <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
         <button class="primary" @click="addRole" v-if="1||rights.indexOf('flexiCreate')!==-1">
@@ -32,7 +32,7 @@
         </template>
       </q-data-table>
       <!--</transition-group>-->
-    </div>
+    <!--</div>-->
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-role ref="EditRole" @hide="closeModal"></edit-role>
     </q-modal>

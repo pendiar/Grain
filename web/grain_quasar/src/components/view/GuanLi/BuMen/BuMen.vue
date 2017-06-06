@@ -1,6 +1,6 @@
 <template>
   <div class="bu-men">
-    <div class="layout-padding">
+    <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
         <button class="primary" @click="addBumen" v-if="1||rights.indexOf('flexiCreate')!==-1">
@@ -35,7 +35,7 @@
         </template>
       </q-data-table>
       <!--</transition-group>-->
-    </div>
+    <!--</div>-->
     <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
       <edit-bumen ref="EditBumen" @hide="closeModal"></edit-bumen>
     </q-modal>

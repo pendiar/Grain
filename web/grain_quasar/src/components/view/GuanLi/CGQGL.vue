@@ -69,7 +69,7 @@
         this.$http.get(`${this.serverAddress}/Sensor/GetHeapLineCount/${this.number}`).then((response) => {
           if (response.data.Code === 1000) {
             const data = JSON.parse(response.data.JsonValue);
-            console.log(data)
+            // console.log(data)
             // this.LineList = data.LineList;
             // this.LineCount = data.LineCount;
             const LineObj = {};
@@ -92,7 +92,10 @@
             });
             this.LineList = LineList;
             this.LineCount = data.LineCount;
-            this.setPolarChart();
+            this.$nextTick(() => {
+              this.setData();
+              // this.setPolarChart();
+            });
           }
         });
       },
@@ -108,10 +111,10 @@
           title: {
               text: false
           },
-          // pane: {
-          //     startAngle: 0,
-          //     endAngle: 360
-          // },
+          pane: {
+              startAngle: 0,
+              endAngle: 360
+          },
           xAxis: {
             reversed: false,
             title: {
@@ -127,11 +130,13 @@
             showLastLabel: true,
             min: 0,
             max: 360,
-            tickInterval: 45,
+            step: 45,
+            // tickInterval: 45,
           },
           yAxis: {
             min: 0,
-            max: this.LineCount.length,
+            max: 2,
+            // max: this.LineCount.length,
             tickInterval: 1,
             labels: {
               // enabled: false, // Y轴刻度值不显示  
@@ -172,8 +177,10 @@
                   lineWidthPlus: 0,
                 },
               },
-              data: JSON.parse(JSON.stringify(vm.LineList)),
-              // pointPlacement: 'between',
+              // data: JSON.parse(JSON.stringify(vm.LineList)),
+              data: [[0,1],[90,1],[180,1],[270,1],[0,2],[45,2],[90,2],[135,2],[180,2],[225,2],[270,2],[315,2]],
+              // data: [{"x":0,"y":1,"HeapNumber":"","LineCode":"","Sort":1},{"x":90,"y":1,"HeapNumber":"","LineCode":"","Sort":2},{"x":180,"y":1,"HeapNumber":"","LineCode":"","Sort":3},{"x":270,"y":1,"HeapNumber":"","LineCode":"","Sort":4},{"x":0,"y":2,"HeapNumber":"","LineCode":"","Sort":5},{"x":45,"y":2,"HeapNumber":"","LineCode":"","Sort":6},{"x":90,"y":2,"HeapNumber":"","LineCode":"","Sort":7},{"x":135,"y":2,"HeapNumber":"","LineCode":"","Sort":8},{"x":180,"y":2,"HeapNumber":"","LineCode":"","Sort":9},{"x":225,"y":2,"HeapNumber":"","LineCode":"","Sort":10},{"x":270,"y":2,"HeapNumber":"","LineCode":"","Sort":11},{"x":315,"y":2,"HeapNumber":"","LineCode":"","Sort":12}],
+              pointPlacement: 'between',
           }],
           credits: {
             enabled: false // 禁用版权信息
@@ -183,20 +190,42 @@
             pointFormat: '序号: {point.Sort}<br/>线号: {point.LineCode}<br/>{point.x},{point.y}',
           },
         }
-        console.log(JSON.parse(JSON.stringify(vm.LineList)))
+        // console.log(JSON.stringify(vm.LineList))
         vm.polarChart = new Highcharts.Chart(option);
+      },
+      setData() {
+        // console.log(JSON.parse(JSON.stringify(this.LineList)))
+        this.polarChart.series[0].update({
+          data: this.LineList.map(item => ({
+            x: item.x,
+            y: item.y,
+            HeapNumber: item.HeapNumber,
+            LineCode: item.LineCode,
+            Sort: item.Sort,
+          })),
+        });
+        console.log(this.polarChart.series[0].data)
       },
       clearPolarChart() {
         if (!this.polarChart) return;
         this.polarChart.destroy();
       },
     },
+    mounted() {
+      this.setPolarChart();
+      // setTimeout(() => {
+      //   this.setPolarChart();
+      // }, 4000);
+    },
   };
 </script>
 
 <style lang="less" scoped>
   .polarChart{
-    width: 100%;
+    width: 400px;
+    height: 400px;
+    position: relative;
+    // overflow: hidden;
   }
   .item>.item-primary{
     font-size: 16px;
