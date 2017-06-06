@@ -1,6 +1,9 @@
 <template>
   <div class="edit-permission">
-    <div class="layout-padding">
+    <!--<div class="layout-padding">-->
+      <p class="group">
+        <button class="primary" @click="save">保存</button>
+      </p>
       <q-data-table :data="table" :config="config" :columns="columns" @refresh="refresh">
         <template slot="col-menu" scope="cell">
           <label>
@@ -23,10 +26,7 @@
             </button>
           </template>-->
       </q-data-table>
-      <div>
-        <button @click="save">保存</button>
-      </div>
-    </div>
+    <!--</div>-->
   </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
       config: {
         title: '菜单管理',
         refresh: true,
-        columnPicker: true,
+        // columnPicker: true,
         // leftStickyColumns: 1,
         // rightStickyColumns: 2,
         bodyStyle: {
@@ -55,10 +55,10 @@ export default {
         },
         rowHeight: '50px',
         responsive: true,
-        pagination: {
-          rowsPerPage: 15,
-          options: [5, 10, 15, 30, 50, 500]
-        },
+        // pagination: {
+        //   rowsPerPage: 15,
+        //   options: [5, 10, 15, 30, 50, 500]
+        // },
         // selection: 'multiple',
         messages: {
           noData: '<i>warning</i> 暂无数据！',

@@ -16,7 +16,7 @@ export default {
       return this.sensorList.map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (sensor.BadPoints) {
+        if (sensor.IsBad) {
           color = "#c3bcbc";
         } else if (temp < 30) {
           color = "#0ce36b";

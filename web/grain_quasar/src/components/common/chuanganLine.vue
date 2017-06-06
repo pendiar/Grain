@@ -35,7 +35,7 @@ export default {
       this.sensorList.forEach((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (sensor.BadPoints) {
+        if (sensor.IsBad) {
           color = "#c3bcbc";
         } else if (temp < 30) {
           color = "#0ce36b";
@@ -118,7 +118,7 @@ export default {
       return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (sensor.BadPoints) {
+        if (sensor.IsBad) {
           color = "#c3bcbc";
         }else if (temp < 30) {
           color = "#0ce36b";

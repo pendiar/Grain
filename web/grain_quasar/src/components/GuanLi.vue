@@ -45,12 +45,12 @@
           传感线管理
         </q-drawer-link>-->
         <template v-for="item in MenuList">
-          <q-collapsible icon="inbox" :label="item.name" v-if="item.children.length">
-            <q-drawer-link icon="mail" :to="getLink(link)" v-for="link in item.children" :key="link.id">
+          <q-collapsible :icon="item.iconic || 'inbox'" :label="item.name" v-if="item.children.length">
+            <q-drawer-link :icon="link.iconic || 'mail'" :to="getLink(link)" v-for="link in item.children" :key="link.id">
               {{link.name}}
             </q-drawer-link>
           </q-collapsible>
-          <q-drawer-link icon="mail" :to="getLink(item)" v-else>
+          <q-drawer-link :icon="item.iconic || 'mail'" :to="getLink(item)" v-else>
             {{item.name}}
           </q-drawer-link>
         </template>
@@ -124,12 +124,12 @@ export default {
       if (!this.$bus.states.userInfo.MenuList) return [];
       const result = this.$bus.states.userInfo.MenuList.filter(item => item._code.length < 5).sort((a, b) => (a._sort - b._sort)).map((item, idx) => {
         mapObj[item._code] = idx;
-        return { id: item._id, name: item._name, linkurl: item._linkurl, children: [] };
+        return { id: item._id, name: item._name, linkurl: item._linkurl, iconic: item._iconic, children: [] };
       });
       this.$bus.states.userInfo.MenuList.filter(item => item._code.length > 4).sort((a, b) => (a._sort - b._sort)).forEach((item) => {
         const pCode = item._code.slice(0, 4);
         if (pCode in mapObj) {
-          result[mapObj[pCode]].children.push({ id: item._id, name: item._name, linkurl: item._linkurl });
+          result[mapObj[pCode]].children.push({ id: item._id, name: item._name, iconic: item._iconic, linkurl: item._linkurl });
         }
       });
       return result;

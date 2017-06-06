@@ -51,7 +51,7 @@ export default {
       this.sensorList.forEach((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (sensor.BadPoints) {
+        if (sensor.IsBad) {
           color = "#c3bcbc";
         }else if (temp < 30) {
           color = "#195803";

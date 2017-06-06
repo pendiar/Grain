@@ -77,7 +77,7 @@
               </span>
               <span class="item-value">
                 <!--{{cang.BadPoints}}-->
-                {{$route.query.BadPoints}}
+                {{$route.query.IsBad}}
               </span>
             </div>
           </div>

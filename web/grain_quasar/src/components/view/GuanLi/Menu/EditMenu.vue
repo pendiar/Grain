@@ -33,6 +33,11 @@
       </div>
       <div class="item">
           <div class="item-content">
+            图标：<input v-model="tableData._iconic" placeholder="图标">
+          </div>
+      </div>
+      <div class="item">
+          <div class="item-content">
             备注：<input v-model="tableData._remark" placeholder="备注">
           </div>
       </div>
@@ -55,6 +60,7 @@
           _parentid: this.tableData._parentid,
           _linkurl: this.tableData._linkurl,
           _sort: this.tableData._sort,
+          _iconic: this.tableData._iconic,
           _remark: this.tableData._remark,
           _sysoperationid: this.tableData._sysoperationid.join(','),
           _sysoperationidold: this.tableData._sysoperationidold.join(','),
@@ -71,6 +77,7 @@
           _parentid: '',
           _linkurl: '',
           _sort: '',
+          _iconic: '',
           _remark: '',
           _sysoperationid: [],
           _sysoperationidold: [],
