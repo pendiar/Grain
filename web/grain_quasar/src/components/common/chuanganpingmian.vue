@@ -72,7 +72,7 @@ export default {
         }
         data[sensor.Direction_Y][sensor.Direction_Z][sensor.Direction_X] = { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color };
       });
-      alert(JSON.stringify(data))
+      // alert(JSON.stringify(data))
       return data;
     }
   },

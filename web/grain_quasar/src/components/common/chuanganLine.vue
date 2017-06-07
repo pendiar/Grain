@@ -258,7 +258,7 @@ export default {
         },
         series: vm.getData,
       }
-      console.log(vm.getData);
+      // console.log(vm.getData);
       vm.chart = new Highcharts.Chart(option);
       // chart = new Highcharts.Chart({
       //   credits:{enabled:false},

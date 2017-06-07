@@ -48,7 +48,7 @@ export default {
       return result;
     },
     fetchData() {
-      if (this.$route.name !== 'LiangCang') return;
+      // if (to.name !== 'LiangCang') return;
       this.$http.get(`${this.serverAddress}/Granary/GetHeapTempChart/${this.$route.params.id}/${this.type}`).then((response) => {
         if (response.data.Code === 1000) {
           try {
@@ -197,8 +197,12 @@ export default {
   // },
   watch: {
     type: 'fetchData',
-    '$route.params.id': 'fetchData',
-  }
+    '$route': function(to) {
+      if (to.name === 'LiangCang') {
+        this.fetchData();
+      }
+    },
+  },
 };
 </script>
 
