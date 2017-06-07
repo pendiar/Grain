@@ -4,17 +4,20 @@
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
         <button class="primary" @click="addBumen" v-if="1||rights.indexOf('flexiCreate')!==-1">
-          <i>add</i> 添加一级组织
+          <i>add</i> 添加组织
         </button>
       </p>
       <q-data-table
-        :data="table"
+        :data="filterData"
         :config="config"
         :columns="columns"
         @refresh="refresh"
       >
         <template slot="col-name" scope="cell">
-          <span :class="{childMenu:cell.row._parentid.indexOf('00000000') !== 0}">{{cell.row._name}}</span>
+          <span :class="{childMenu:cell.row._code&&cell.row._code.length>3}" :style="{marginLeft:30*(cell.row._code.length-3)/2+'px'}">{{cell.row._name}}</span>
+          <button class="primary clear handle" @click="toggle(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+            <i v-if="filterData[cell.row.__index+1] && filterData[cell.row.__index+1]._code.indexOf(cell.row._code) === 0 || hideDataArr.indexOf(cell.row._code) !== -1">{{hideDataArr.indexOf(cell.row._code) === -1 ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i>
+          </button>
         </template>
         <template slot="col-handle" scope="cell">
           <button class="primary clear handle" @click="editBumen(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
@@ -23,9 +26,9 @@
           <button class="primary clear handle" @click="deleteBumen(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear handle" @click="addChildBumen(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
+          <!--<button class="primary clear handle" @click="addChildBumen(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
             <i>add</i>
-          </button>
+          </button>-->
         </template>
 
         <template slot="selection" scope="props">
@@ -55,26 +58,33 @@
       EditBumen,
       AddBumen,
     },
+    computed: {
+      filterData() {
+        return this.oData.filter(item => this.hideDataArr.every(hide => item._code === hide || item._code.indexOf(hide) !== 0)).sort((a, b) => ((a._code > b._code) ? 1 : -1))
+      }
+    },
     data() {
       return {
+        hideDataArr: [],  
+        oData: [],
         rights: [],
         editData: {},
         table: [],
         config: {
-          title: '组织管理',
+          title: '组织管理',  
           refresh: true,
           // columnPicker: true,
           // leftStickyColumns: 1,
           // rightStickyColumns: 2,
           bodyStyle: {
-            maxHeight: Platform.is.mobile ? '50vh' : '500px'
+            // maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
           rowHeight: '50px',
           // responsive: true,
-          pagination: {
-            rowsPerPage: 15,
-            options: [5, 10, 15, 30, 50, 500]
-          },
+          // pagination: {
+          //   rowsPerPage: 15,
+          //   options: [5, 10, 15, 30, 50, 500]
+          // },
           selection: 'multiple',
           messages: {
             noData: '<i>warning</i> 暂无数据！',
@@ -85,7 +95,7 @@
           {
             label: '组织',
             field: 'name',
-            width: '100px',
+            width: '280px',
             // filter: true,
             // sort: true,
           },
@@ -94,13 +104,13 @@
             field: '_code',
             width: '100px'
           },
-          {
-            label: '排序',
-            field: '_sort',
-            // sort: true,
-            // filter: true,
-            width: '60px'
-          },
+          // {
+          //   label: '排序',
+          //   field: '_sort',
+          //   // sort: true,
+          //   // filter: true,
+          //   width: '60px'
+          // },
           {
             label: '地址',
             field: '_address',
@@ -126,12 +136,20 @@
           {
             label: '操作',
             field: 'handle',
-            width: '180px',
+            width: '120px',
           },
         ],
       };
     },
     methods: {
+      toggle(cell) {
+        const idx = this.hideDataArr.indexOf(cell.row._code);
+        if (idx !== -1) {
+          this.hideDataArr.splice(idx, 1);
+        } else {
+          this.hideDataArr.push(cell.row._code);
+        }
+      },
       closeModal() {
         this.$refs.edit.close();
         this.$refs.add.close();
@@ -239,6 +257,7 @@
               }
             });
             if (result.length) addRows(result, result[0]._id);
+            this.oData = data;
             this.table = result;
             // alert(JSON.stringify(this.table));
           }

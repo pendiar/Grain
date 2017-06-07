@@ -4,17 +4,20 @@
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
         <button class="primary" @click="addMenu" v-if="1||rights.indexOf('flexiCreate')!==-1">
-          <i>add</i> 添加一级菜单
+          <i>add</i> 添加菜单
         </button>
       </p>
       <q-data-table
-        :data="table"
+        :data="filterData"
         :config="config"
         :columns="columns"
         @refresh="refresh"
       >
         <template slot="col-name" scope="cell">
           <span :class="{childMenu:cell.row._code&&cell.row._code.length>4}">{{cell.row._name}}</span>
+          <button class="primary clear handle" @click="toggle(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+            <i v-if="filterData[cell.row.__index+1] && filterData[cell.row.__index+1]._code.indexOf(cell.row._code) === 0 || hideDataArr.indexOf(cell.row._code) !== -1">{{hideDataArr.indexOf(cell.row._code) === -1 ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i>
+          </button>
         </template>
         <template slot="col-handle" scope="cell">
           <button class="primary clear handle" @click="editMenu(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
@@ -23,9 +26,9 @@
           <button class="primary clear handle" @click="deleteMenu(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear handle" @click="addChildMenu(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
+          <!--<button class="primary clear handle" @click="addChildMenu(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
             <i>add</i>
-          </button>
+          </button>-->
         </template>
 
         <template slot="selection" scope="props">
@@ -55,8 +58,16 @@
       EditMenu,
       AddMenu,
     },
+    computed: {
+      filterData() {
+        return this.oData.filter(item => this.hideDataArr.every(hide => item._code === hide || item._code.indexOf(hide) !== 0)).sort((a, b) => ((a._code > b._code) ? 1 : -1))
+      }
+    },
     data() {
       return {
+        hideDataArr: [],
+        oData: [],
+        // dataMap: {},
         rights: [],
         editData: {},
         table: [],
@@ -67,14 +78,14 @@
           // leftStickyColumns: 1,
           // rightStickyColumns: 2,
           bodyStyle: {
-            maxHeight: Platform.is.mobile ? '50vh' : '500px'
+            // maxHeight: Platform.is.mobile ? '50vh' : '500px'
           },
           rowHeight: '50px',
           // responsive: true,
-          pagination: {
-            rowsPerPage: 15,
-            options: [5, 10, 15, 30, 50, 500]
-          },
+          // pagination: {
+          //   rowsPerPage: 15,
+          //   options: [5, 10, 15, 30, 50, 500]
+          // },
           selection: 'multiple',
           messages: {
             noData: '<i>warning</i> 暂无数据！',
@@ -85,7 +96,7 @@
           {
             label: '菜单',
             field: 'name',
-            width: '150px',
+            width: '250px',
             // filter: true,
             // sort: true,
           },
@@ -94,13 +105,13 @@
             field: '_code',
             width: '100px'
           },
-          {
-            label: '排序',
-            field: '_sort',
-            // sort: true,
-            // filter: true,
-            width: '60px'
-          },
+          // {
+          //   label: '排序',
+          //   field: '_sort',
+          //   // sort: true,
+          //   // filter: true,
+          //   width: '60px'
+          // },
           {
             label: '网址',
             field: '_linkurl',
@@ -126,7 +137,7 @@
           {
             label: '操作',
             field: 'handle',
-            width: '180px',
+            width: '120px',
           },
         ],
       };
@@ -135,6 +146,23 @@
       this.fetchData();
     },
     methods: {
+      toggle(cell) {
+        const idx = this.hideDataArr.indexOf(cell.row._code);
+        if (idx !== -1) {
+          this.hideDataArr.splice(idx, 1);
+        } else {
+          this.hideDataArr.push(cell.row._code);
+        }
+      },
+      // setRows(arr,id) {
+      //   this.dataMap[id]._childid.forEach((cid) => {
+      //     // console.log(cid)
+      //     const objRow = this.dataMap[cid];
+      //     const row = this.oData[objRow.index];
+      //     arr.push(row);
+      //     this.setRows(arr,cid);
+      //   });
+      // },
       closeModal() {
         this.$refs.edit.close();
         this.$refs.add.close();
@@ -237,32 +265,35 @@
             const obj = {};
             const result = [];
             const data = response.data.DataValue.rows;
-            function addRows(arr,id) {
-              obj[id]._childid.forEach((cid) => {
-                // console.log(cid)
-                const objRow = obj[cid];
-                const row = data[objRow.index];
-                arr.push(row);
-                addRows(arr,cid);
-              });
-            }
-            response.data.DataValue.rows.forEach((row, index) => {
-              // if (!row._parentid || row._parentid.indexOf('00000000') === 0) result.push(row);
-              if (row._parentid in obj) {
-                obj[row._parentid]._childid.push(row._id);
-              } else {
-                obj[row._parentid] = { _childid: [row._id] };
-              }
-              if (row._id in obj) {
-                obj[row._id]._parentid = row._parentid;
-                obj[row._id].index = index;
-              } else {
-                obj[row._id] = { _childid: [], _parentid: row._parentid, index };
-              }
-            });
-            // console.log(obj)
-            if (obj[null]) addRows(result, null);
-            this.table = result;
+            // function addRows(arr,id) {
+            //   obj[id]._childid.forEach((cid) => {
+            //     // console.log(cid)
+            //     const objRow = obj[cid];
+            //     const row = data[objRow.index];
+            //     arr.push(row);
+            //     addRows(arr,cid);
+            //   });
+            // }
+            // response.data.DataValue.rows.forEach((row, index) => {
+            //   // if (!row._parentid || row._parentid.indexOf('00000000') === 0) result.push(row);
+            //   const pCode = row._code.slice(0,-4);
+            //   if (pCode in obj) {
+            //     obj[pCode]._childid.push(row._code);
+            //   } else {
+            //     obj[row._parentid] = { _childid: [row._id] };
+            //   }
+            //   if (row._id in obj) {
+            //     obj[row._id]._parentid = row._parentid;
+            //     obj[row._id].index = index;
+            //   } else {
+            //     obj[row._id] = { _childid: [], _parentid: row._parentid, index };
+            //   }
+            // });
+            // // console.log(obj)
+            // if (obj[null]) addRows(result, null);
+            this.oData = data;
+            // this.dataMap = obj;
+            // this.table = result;
             // console.log(result);
           }
           if (done instanceof Function) done();

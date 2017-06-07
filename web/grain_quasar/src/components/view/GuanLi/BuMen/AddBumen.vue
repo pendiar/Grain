@@ -1,34 +1,46 @@
 <template>
-    <div class="list no-border inner-delimiter highlight">
-      <div class="item">
-          <div class="item-content">
-            组织：<input v-model="bumenData._name" placeholder="组织名称">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            编号：<input v-model="bumenData._code" placeholder="编号">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            排序：<input v-model.number="bumenData._sort" placeholder="排序">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            地址：<input v-model="bumenData._address" placeholder="地址">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            备注：<input v-model="bumenData._remark" placeholder="备注">
-          </div>
-      </div>
-      <div class="text-center">
-        <button class="primary small" @click="change">添加</button>
+  <q-layout>
+    <div slot="header" class="toolbar">
+      <q-toolbar-title :padding="1">
+          添加组织
+      </q-toolbar-title>
+      <button @click="$emit('hide')">
+          <i>close</i>
+      </button>
+    </div>
+    <div class="layout-view">
+      <div class="list no-border inner-delimiter highlight">
+        <div class="item">
+            <div class="item-content">
+              组织：<input v-model="bumenData._name" placeholder="组织名称">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              编号：<input v-model="bumenData._code" placeholder="编号">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              排序：<input v-model.number="bumenData._sort" placeholder="排序">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              地址：<input v-model="bumenData._address" placeholder="地址">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              备注：<input v-model="bumenData._remark" placeholder="备注">
+            </div>
+        </div>
+        <div class="text-center">
+          <button class="primary small" @click="change">添加</button>
+        </div>
       </div>
     </div>
+  </q-layout>
 </template>
 
 <script>

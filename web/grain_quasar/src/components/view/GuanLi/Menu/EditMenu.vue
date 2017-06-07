@@ -33,7 +33,8 @@
       </div>
       <div class="item">
           <div class="item-content">
-            图标：<input v-model="tableData._iconic" placeholder="图标">
+            图标：<button class="primary clear" @click="$refs.icon.open()"><i>{{tableData._iconic}}</i> 选择图标</button>
+            <!--<input v-model="tableData._iconic" placeholder="图标">-->
           </div>
       </div>
       <div class="item">
@@ -44,10 +45,27 @@
       <div class="text-center">
         <button class="primary small" @click="change">修改</button>
       </div>
+      <q-modal ref="icon" :content-css="{width: '800px', height: '600px'}">
+        <q-layout>
+            <div slot="header" class="toolbar">
+              <q-toolbar-title :padding="1">
+                  选择图标
+              </q-toolbar-title>
+              <button @click="$refs.icon.close()">
+                  <i>close</i>
+              </button>
+            </div>
+            <div class="layout-view">
+              <button class="primary clear icon-btn" v-for="name in icon" @click="chooseIcon(name)"><i>{{name}}</i></button>
+              <!--<i class="icon" v-for="name in icon" @click="chooseIcon(name)">{{name}}</i>-->
+            </div>
+        </q-layout>
+      </q-modal>
     </div>
 </template>
 
 <script>
+  import icon from 'assets/icon.json';
   import { Toast } from 'quasar';
 
   export default {
@@ -69,6 +87,7 @@
     },
     data() {
       return {
+        icon,
         operation: [],
         tableData: {
           _id: '',
@@ -85,6 +104,10 @@
       };
     },
     methods: {
+      chooseIcon(name) {
+        this.tableData._iconic = name;
+        this.$refs.icon.close();
+      },
       change() {
         this.$http.post(`${this.serverAddress}/Menu/Edit`, this.postData).then((response) => {
           if (response.data.Code === 1000) {
@@ -121,3 +144,15 @@
     },
   };
 </script>
+
+<style lang="less" scoped>
+  .icon-btn{
+    // font-size: 20px;
+    // padding: 5px;
+    margin: 5px 5px;
+    // width: 100px;
+    // span{
+    //   font-size: 12px;
+    // }
+  }
+</style>
