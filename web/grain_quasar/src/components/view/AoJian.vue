@@ -3,20 +3,29 @@
   <div>
     <!-- your content -->
     <div class="layout-padding">
+      <p class="quote" v-if="isDesktop">
+        {{cang.name || cang.Number}}廒间
+        <!--<button class="primary small raised float-right" @click="addDuiwei"><i class="on-left">add</i> 添加堆位</button>-->
+      </p>
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
         <cang-card v-for="cang in filterGrainReport" :key="cang.Number" :cang="cang" :update='update3d' :class="{disableClick: !$CheckRights(cang.Number)}"></cang-card>
       </div>
+      <!--<q-modal ref="addDuiwei" :content-css="{minWidth: '80vw', minHeight: '80vh'}" @open="modalEvent('open')" @close="modalEvent('close')">
+        <add-duiwei :grain-data="filterList[EditIndex]" v-if="showModal" @hide="closeModal"></add-duiwei>
+      </q-modal>-->
     </div>
   </div>
 </template>
 
 <script>
 import CangCard from 'components/AoJian/CangCard';
+// import AddDuiwei from 'components/GrainList/AddDuiwei';
 
 export default {
   components: {
     CangCard,
+    // AddDuiwei,
   },
   computed: {
     filterGrainReport() {
@@ -25,6 +34,7 @@ export default {
   },
   data() {
     return {
+      showModal: false,
       update3d: 0,
       GrainReport: [],
       LDList: {
@@ -84,6 +94,15 @@ export default {
     };
   },
   methods: {
+    closeModal() {
+      setTimeout(() => {
+        this.$refs.addDuiwei.close();
+      }, 0);
+    },
+    modalEvent(e) {
+      this.showModal = e === 'open';
+      this.fetchData();
+    },
     fetchData(to, from) {
       const vm = this;
       vm.$http.post(`${vm.serverAddress}/Granary/GetHeapList`, [

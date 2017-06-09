@@ -10,7 +10,7 @@
       </ul>
       <p class="quote" v-if="isDesktop">
         {{$route.name==='GrainList'?'平湖粮库':`${$route.params.id}粮仓`}}温湿度状态
-        <button class="primary small raised float-right" @click="edit(null)"><i class="on-left">add</i> 添加</button>
+        <button class="primary small raised float-right" @click="edit(null)"><i class="on-left">add</i> 添加粮仓</button>
       </p>
       <p class="text-center" v-else>
         {{$route.name==='GrainList'?'平湖粮库':`${$route.query.Name || $route.params.id}粮仓`}}温湿度状态
@@ -31,8 +31,8 @@
                       {{granary.Number}}
                       <q-tooltip :ref="granary.Number">
                         <p>{{granary.Location}}</p>
-                        <p>平均温度：{{granary.AverageTemperature}}°C</p>
-                        <p>平均湿度：{{granary.AverageHumidity}}%RH</p>
+                        <p>平均温度：{{granary.AverageTemperature||'-'}}°C</p>
+                        <p>平均湿度：{{granary.AverageHumidity||'-'}}%RH</p>
                       </q-tooltip>
                     </div>
                   </template>
@@ -48,25 +48,25 @@
           <thead>
             <tr>
               <th>仓库</th>
-              <th>最高温</th>
-              <th>最低温</th>
-              <th>平均温</th>
+              <th>最高温<br>(°C)</th>
+              <th>最低温<br>(°C)</th>
+              <th>平均温<br>(°C)</th>
               <!--<th>仓内/外温</th>-->
-              <th>仓外温</th>
-              <th>仓内/外湿</th>
+              <th>仓外温<br>(°C)</th>
+              <th>仓内/外湿<br>(%RH/%RH)</th>
               <th>坏点数</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in filterGrainReport" v-link="getLink(item)">
               <td>{{item.Name || item.Number}}</td>
-              <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
-              <td>{{item.MinimumTemperature}}°C</td>
-              <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature}}°C</td>
-              <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.OutSideTemperature<35,'bg-alarm':item.OutSideTemperature>=35}">{{item.OutSideTemperature}}°C</td>
+              <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature || '-'}}</td>
+              <td>{{item.MinimumTemperature || '-'}}</td>
+              <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature || '-'}}</td>
+              <td :class="{'bg-worn':item.OutSideTemperature>=30&&item.OutSideTemperature<35,'bg-alarm':item.OutSideTemperature>=35}">{{item.OutSideTemperature || '-'}}</td>
               <!--<td :class="{'bg-worn':item.InSideTemperature>=30&&item.InSideTemperature<35||item.OutSideTemperature>=30&&item.OutSideTemperature<35,
               'bg-alarm':item.InSideTemperature>=35||item.OutSideTemperature>=35}">{{item.Type==1||item.Type==2?'-':item.InSideTemperature}}/{{item.OutSideTemperature}}°C</td>              -->
-              <td :class="{'bg-worn':item.InSideHumidity>=80 || item.OutSideHumidity>=80}">{{item.InSideHumidity}}/{{item.OutSideHumidity}}%RH</td>
+              <td :class="{'bg-worn':item.InSideHumidity>=80 || item.OutSideHumidity>=80}">{{item.InSideHumidity || '-'}}/{{item.OutSideHumidity || '-'}}</td>
               <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>
             </tr>
           </tbody>
@@ -112,6 +112,9 @@ export default {
     };
   },
   methods: {
+    addDuiwei() {
+
+    },
     getLink(grain) {
       if (grain.Type === 1) {
         return { name: 'AoJianList', params: { id: grain.Number }, query: { Name: grain.Name } };

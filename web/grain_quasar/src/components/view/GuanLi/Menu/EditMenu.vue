@@ -1,67 +1,90 @@
 <template>
-    <div class="list no-border inner-delimiter highlight">
-      <div class="item">
-          <div class="item-content">
-            菜单：<input v-model="tableData._name" placeholder="菜单名称">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            编号：<input v-model="tableData._code" placeholder="编号">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            排序：<input v-model.number="tableData._sort" placeholder="排序">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            网址：<input v-model="tableData._linkurl" placeholder="网址">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            操作：
-            <q-select
-              type="checkbox"
-              v-model="tableData._sysoperationid"
-              :options="operation"
-            ></q-select>
-            <!--<input v-model="tableData._linkurl" placeholder="网址">-->
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            图标：<button class="primary clear" @click="$refs.icon.open()"><i>{{tableData._iconic}}</i> 选择图标</button>
-            <!--<input v-model="tableData._iconic" placeholder="图标">-->
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            备注：<input v-model="tableData._remark" placeholder="备注">
-          </div>
-      </div>
-      <div class="text-center">
-        <button class="primary small" @click="change">修改</button>
-      </div>
-      <q-modal ref="icon" :content-css="{width: '800px', height: '600px'}">
-        <q-layout>
-            <div slot="header" class="toolbar">
-              <q-toolbar-title :padding="1">
-                  选择图标
-              </q-toolbar-title>
-              <button @click="$refs.icon.close()">
-                  <i>close</i>
-              </button>
-            </div>
-            <div class="layout-view">
-              <button class="primary clear icon-btn" v-for="name in icon" @click="chooseIcon(name)"><i>{{name}}</i></button>
-              <!--<i class="icon" v-for="name in icon" @click="chooseIcon(name)">{{name}}</i>-->
-            </div>
-        </q-layout>
-      </q-modal>
+  <q-layout>
+    <div slot="header" class="toolbar">
+      <q-toolbar-title :padding="1">
+          编辑菜单
+      </q-toolbar-title>
+      <button @click="$emit('hide')">
+          <i>close</i>
+      </button>
     </div>
+    <div slot="footer">
+      <q-progress-button
+        indeterminate
+        class="primary"
+        :percentage="changing"
+        @click.native="change"
+      >
+        修改
+      </q-progress-button>
+      <button class="primary" @click="$emit('hide')">取消</button>
+    </div>
+    <div class="layout-view">
+      <div class="list no-border inner-delimiter highlight">
+        <div class="item">
+            <div class="item-content">
+              菜单：<input v-model="tableData._name" placeholder="菜单名称">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              编号：<input v-model="tableData._code" placeholder="编号">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              排序：<input v-model.number="tableData._sort" placeholder="排序">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              网址：<input v-model="tableData._linkurl" placeholder="网址">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              操作：
+              <q-select
+                type="checkbox"
+                v-model="tableData._sysoperationid"
+                :options="operation"
+              ></q-select>
+              <!--<input v-model="tableData._linkurl" placeholder="网址">-->
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              图标：<button class="primary clear" @click="$refs.icon.open()"><i>{{tableData._iconic}}</i> 选择图标</button>
+              <!--<input v-model="tableData._iconic" placeholder="图标">-->
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              备注：<input v-model="tableData._remark" placeholder="备注">
+            </div>
+        </div>
+        <!--<div class="text-center">
+          <button class="primary small" @click="change">修改</button>
+        </div>-->
+        <q-modal ref="icon" :content-css="{width: '800px', height: '600px'}">
+          <q-layout>
+              <div slot="header" class="toolbar">
+                <q-toolbar-title :padding="1">
+                    选择图标
+                </q-toolbar-title>
+                <button @click="$refs.icon.close()">
+                    <i>close</i>
+                </button>
+              </div>
+              <div class="layout-view">
+                <button class="primary clear icon-btn" v-for="name in icon" @click="chooseIcon(name)"><i>{{name}}</i></button>
+                <!--<i class="icon" v-for="name in icon" @click="chooseIcon(name)">{{name}}</i>-->
+              </div>
+          </q-layout>
+        </q-modal>
+      </div>
+    </div>
+  </q-layout>
 </template>
 
 <script>
@@ -87,6 +110,7 @@
     },
     data() {
       return {
+        changing: 0,
         icon,
         operation: [],
         tableData: {
@@ -109,15 +133,18 @@
         this.$refs.icon.close();
       },
       change() {
+        this.changing = 50;
         this.$http.post(`${this.serverAddress}/Menu/Edit`, this.postData).then((response) => {
           if (response.data.Code === 1000) {
+            this.changing = 100;
             this.$emit('hide');
             Toast.create.positive('编辑菜单成功！');
           } else {
+            this.changing = 0;
             Toast.create.warning('编辑菜单失败！');
           }
         }).catch((error) => {
-          console.log(error)
+          this.changing = 0;
           Toast.create.warning('编辑菜单失败！');
         });
       },

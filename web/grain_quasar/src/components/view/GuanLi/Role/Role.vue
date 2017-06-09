@@ -3,7 +3,7 @@
     <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addRole" v-if="1||rights.indexOf('flexiCreate')!==-1">
+        <button class="primary" @click="addRole" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiCreate')!==-1">
           <i>add</i> 添加角色
         </button>
       </p>
@@ -14,43 +14,48 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear handle" @click="editRole(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editRole(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear handle" @click="deleteRole(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear handle" @click="deleteRole(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear handle" @click="editPermission(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editPermission(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiModify')!==-1">
             <i>account_circle</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteRoles(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteRoles(props)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
     <!--</div>-->
-    <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="edit" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <edit-role ref="EditRole" @hide="closeModal"></edit-role>
     </q-modal>
-    <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="add" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <add-role ref="AddRole" @hide="closeModal"></add-role>
+    </q-modal>
+    <q-modal ref="permissionModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+      <edit-permission ref="EditPermission" @hide="closeModal"></edit-permission>
     </q-modal>
   </div>
 </template>
 
 <script>
-  import { Platform, Utils, Toast, Dialog } from 'quasar';
+  import { Platform, Toast, Dialog } from 'quasar';
   import EditRole from './EditRole.vue';
   import AddRole from './AddRole.vue';
+  import EditPermission from './EditPermission.vue';
 
   export default {
     components: {
       EditRole,
       AddRole,
+      EditPermission,
     },
     data() {
       return {
@@ -123,6 +128,7 @@
       closeModal() {
         this.$refs.edit.close();
         this.$refs.add.close();
+        this.$refs.permissionModal.close();
         this.fetchData();
       },
       editRole(cell) {
@@ -182,7 +188,9 @@
         });
       },
       editPermission(cell) {
-        this.$router.push({ name: 'EditPermission', params: { id: cell.row._id } });
+        this.$refs.EditPermission.userId = cell.row._id;
+        this.$refs.permissionModal.open();
+        // this.$router.push({ name: 'EditPermission', params: { id: cell.row._id } });
       },
       addRole(props) {
         this.$refs.AddRole.tableData._parentid = '00000000-000-000-000';

@@ -8,6 +8,17 @@
           <i>close</i>
       </button>
     </div>
+    <div slot="footer">
+      <q-progress-button
+        indeterminate
+        class="primary"
+        :percentage="changing"
+        @click.native="change"
+      >
+        添加
+      </q-progress-button>
+      <button class="primary" @click="$emit('hide')">取消</button>
+    </div>
     <div class="layout-view">
       <div class="list no-border inner-delimiter highlight">
         <div class="item">
@@ -35,9 +46,9 @@
               备注：<input v-model="bumenData._remark" placeholder="备注">
             </div>
         </div>
-        <div class="text-center">
+        <!--<div class="text-center">
           <button class="primary small" @click="change">添加</button>
-        </div>
+        </div>-->
       </div>
     </div>
   </q-layout>
@@ -52,6 +63,7 @@
   export default {
     data() {
       return {
+        changing: 0,
         bumenData: {
           _code: '',
           _name: '',
@@ -71,15 +83,19 @@
         this.bumenData._remark = '';
       },
       change() {
+        this.changing = 50;
         this.$http.post(`${this.serverAddress}/Department/Create`, this.bumenData).then((response) => {
           if (response.data.Code === 1000) {
+            this.changing = 100;
             this.refresh();
             this.$emit('hide');
             Toast.create.positive('新建组织成功！');
           } else {
+            this.changing = 0;
             Toast.create.warning('新建组织失败！');
           }
         }).catch((e) => {
+          this.changing = 0;
           Toast.create.warning('新建组织失败！');
         });
       },

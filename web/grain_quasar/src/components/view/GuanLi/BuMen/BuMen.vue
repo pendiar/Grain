@@ -3,7 +3,7 @@
     <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addBumen" v-if="1||rights.indexOf('flexiCreate')!==-1">
+        <button class="primary" @click="addBumen" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiCreate')!==-1">
           <i>add</i> 添加组织
         </button>
       </p>
@@ -15,34 +15,34 @@
       >
         <template slot="col-name" scope="cell">
           <span :class="{childMenu:cell.row._code&&cell.row._code.length>3}" :style="{marginLeft:30*(cell.row._code.length-3)/2+'px'}">{{cell.row._name}}</span>
-          <button class="primary clear handle" @click="toggle(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="toggle(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiModify')!==-1">
             <i v-if="filterData[cell.row.__index+1] && filterData[cell.row.__index+1]._code.indexOf(cell.row._code) === 0 || hideDataArr.indexOf(cell.row._code) !== -1">{{hideDataArr.indexOf(cell.row._code) === -1 ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i>
           </button>
         </template>
         <template slot="col-handle" scope="cell">
-          <button class="primary clear handle" @click="editBumen(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editBumen(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear handle" @click="deleteBumen(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear handle" @click="deleteBumen(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <!--<button class="primary clear handle" @click="addChildBumen(cell)" v-if="1||rights.indexOf('flexiCreate')!==-1">
+          <!--<button class="primary clear handle" @click="addChildBumen(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiCreate')!==-1">
             <i>add</i>
           </button>-->
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteBumens(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteBumens(props)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
     <!--</div>-->
-    <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="edit" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <edit-bumen ref="EditBumen" @hide="closeModal"></edit-bumen>
     </q-modal>
-    <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="add" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <add-bumen ref="AddBumen" @hide="closeModal"></add-bumen>
     </q-modal>
   </div>

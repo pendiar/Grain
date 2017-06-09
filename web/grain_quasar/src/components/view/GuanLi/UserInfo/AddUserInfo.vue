@@ -1,89 +1,112 @@
 <template>
-    <div class="list no-border inner-delimiter highlight">
-      <div class="item">
-          <div class="item-content">
-            用户名：<input v-model="tableData._loginid" placeholder="用户名">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            密码：<input v-model="tableData._password" type="password" placeholder="密码">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            确认密码：<input v-model="surePassword" type="password" placeholder="确认密码">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            真实名：<input v-model.number="tableData._nickname" placeholder="真实名">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            组织：
-            <q-select
-              type="radio"
-              v-model="tableData._departmentid"
-              :options="department"
-            ></q-select>
-            <!--<input v-model="tableData._departmentid" placeholder="组织">-->
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            角色：
-            <q-select
-              type="radio"
-              v-model="tableData._roleid"
-              :options="role"
-            ></q-select>
-            <!--<input v-model="tableData._roleid" placeholder="角色">-->
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            性别：
-            <label>
-              <q-radio v-model="tableData._sex" val="男"></q-radio>
-              男
-            </label>
-            <label>
-              <q-radio v-model="tableData._sex" val="女"></q-radio>
-              女
-            </label>
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            座机：<input v-model="tableData._telphone" placeholder="座机">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            手机：<input v-model="tableData._phonenumber" placeholder="手机">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            邮箱：<input v-model="tableData._emailaddress" placeholder="邮箱">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            住址：<input v-model="tableData._address" placeholder="住址">
-          </div>
-      </div>
-      <div class="item">
-          <div class="item-content">
-            备注：<input v-model="tableData._remark" placeholder="备注">
-          </div>
-      </div>
-      <div class="text-center">
-        <button class="primary small" @click="change">添加</button>
+  <q-layout>
+    <div slot="header" class="toolbar">
+      <q-toolbar-title :padding="1">
+          添加操作
+      </q-toolbar-title>
+      <button @click="$emit('hide')">
+          <i>close</i>
+      </button>
+    </div>
+    <div slot="footer">
+      <q-progress-button
+        indeterminate
+        class="primary"
+        :percentage="changing"
+        @click.native="change"
+      >
+        添加
+      </q-progress-button>
+      <button class="primary" @click="$emit('hide')">取消</button>
+    </div>
+    <div class="layout-view">
+      <div class="list no-border inner-delimiter highlight">
+        <div class="item">
+            <div class="item-content">
+              用户名：<input v-model="tableData._loginid" placeholder="用户名">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              密码：<input v-model="tableData._password" type="password" placeholder="密码">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              确认密码：<input v-model="surePassword" type="password" placeholder="确认密码">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              真实名：<input v-model.number="tableData._nickname" placeholder="真实名">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              组织：
+              <q-select
+                type="radio"
+                v-model="tableData._departmentid"
+                :options="department"
+              ></q-select>
+              <!--<input v-model="tableData._departmentid" placeholder="组织">-->
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              角色：
+              <q-select
+                type="radio"
+                v-model="tableData._roleid"
+                :options="role"
+              ></q-select>
+              <!--<input v-model="tableData._roleid" placeholder="角色">-->
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              性别：
+              <label>
+                <q-radio v-model="tableData._sex" val="男"></q-radio>
+                男
+              </label>
+              <label>
+                <q-radio v-model="tableData._sex" val="女"></q-radio>
+                女
+              </label>
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              座机：<input v-model="tableData._telphone" placeholder="座机">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              手机：<input v-model="tableData._phonenumber" placeholder="手机">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              邮箱：<input v-model="tableData._emailaddress" placeholder="邮箱">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              住址：<input v-model="tableData._address" placeholder="住址">
+            </div>
+        </div>
+        <div class="item">
+            <div class="item-content">
+              备注：<input v-model="tableData._remark" placeholder="备注">
+            </div>
+        </div>
+        <!--<div class="text-center">
+          <button class="primary small" @click="change">添加</button>
+        </div>-->
       </div>
     </div>
+  </q-layout>
 </template>
 
 <script>
@@ -92,6 +115,7 @@
   export default {
     data() {
       return {
+        changing: 0,
         role: [],
         department: [],
         surePassword: '',
@@ -132,17 +156,19 @@
           Toast.create.warning('密码不一致！');
           return;
         }
+        this.changing = 50;
         this.$http.post(`${this.serverAddress}/UserInfo/Create`, this.tableData).then((response) => {
           if (response.data.Code === 1000) {
-            console.log(response.data.Code)
+            this.changing = 100;
             this.refresh();
             this.$emit('hide');
             Toast.create.positive('新建用户成功！');
           } else {
+            this.changing = 0;
             Toast.create.warning('新建用户失败！');
           }
         }).catch((error) => {
-          console.log(error)
+          this.changing = 0;
           Toast.create.warning('新建用户失败！');
         });
       },

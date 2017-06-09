@@ -42,7 +42,7 @@
               </span>
               <span class="item-value">
                 <!--{{cang.MaxiTemperature}}°C-->
-                 {{$route.query.Maximumemperature}}°C
+                 {{$route.query.Maximumemperature || '-'}}°C
               </span>
             </div>
           </div>
@@ -53,7 +53,7 @@
               </span>
               <span class="item-value">
                 <!--{{cang.MinTemperature}}°C-->
-                 {{$route.query.MinimumTemperature}}°C
+                 {{$route.query.MinimumTemperature || '-'}}°C
               </span>
             </div>
           </div>
@@ -66,7 +66,7 @@
               </span>
               <span class="item-value">
                 <!--{{cang.AverageTemperature}}°C-->
-                 {{$route.query.AverageTemperature}}°C
+                 {{$route.query.AverageTemperature || '-'}}°C
               </span>
             </div>
           </div>
@@ -90,7 +90,7 @@
               </span>
               <span class="item-value">
                 <!--{{cang.InSideTemperature}}°C-->
-                {{$route.query.InSideTemperature}}°C
+                {{$route.query.InSideTemperature || '-'}}°C
               </span>
             </div>
           </div>
@@ -101,7 +101,7 @@
               </span>
               <span class="item-value">
                 <!--{{cang.OutSideTemperature}}°C-->
-                {{$route.query.OutSideTemperature}}°C
+                {{$route.query.OutSideTemperature || '-'}}°C
               </span>
             </div>
           </div>

@@ -4,21 +4,13 @@
       <q-toolbar-title :padding="1">
         选择粮仓关系
       </q-toolbar-title>
-      <button @click="cancel">
+      <button @click="$emit('hide')">
         <i>close</i>
       </button>
     </div>
     <div slot="footer">
-      <q-progress-button
-        indeterminate
-        class="primary"
-        :percentage="saving"
-        @click.native="save"
-      >
-        保存
-      </q-progress-button>
-      <!--<button class="primary" @click="submit">确定</button>-->
-      <button class="primary" @click="cancel">取消</button>
+      <button class="primary" @click="save">保存</button>
+      <button class="primary" @click="$emit('hide')">取消</button>
     </div>
     <div class="layout-view">
       <!--<div class="layout-padding">-->
@@ -53,7 +45,7 @@
 </template>
 
 <script>
-import { Platform, Utils, Toast, Dialog } from 'quasar';
+import { Platform, Toast } from 'quasar';
 
 
 export default {
@@ -62,7 +54,7 @@ export default {
   },
   data() {
     return {
-      saving: 0,
+      userId: '',
       // menuData: [],
       checkData: [],
       editData: {},
@@ -73,9 +65,9 @@ export default {
         // columnPicker: true,
         // leftStickyColumns: 1,
         // rightStickyColumns: 2,
-        bodyStyle: {
-          maxHeight: Platform.is.mobile ? '50vh' : '500px'
-        },
+        // bodyStyle: {
+        //   maxHeight: Platform.is.mobile ? '50vh' : '500px'
+        // },
         rowHeight: '50px',
         responsive: true,
         // pagination: {
@@ -105,23 +97,15 @@ export default {
     };
   },
   methods: {
-    cancel() {
-      this.$emit('hide');
-    },
     save() {
-      this.saving = 50;
-      this.$http.post(`${this.serverAddress}/Role/SaveRoleRights`, { ids: this.checkData.join(','), roleid: this.$route.params.id })
+      this.$http.post(`${this.serverAddress}/Role/SaveRoleRights`, { ids: this.checkData.join(','), roleid: this.userId })
       .then((response) => {
         if (response.data.Code === 1000) {
-          this.saving = 100;
           Toast.create.positive('保存成功！');
-          this.cancel();
         } else {
-          this.saving = 0;
           Toast.create.warning('保存失败！');
         }
       }, (error) => {
-        this.saving = 0;
         Toast.create.warning('保存失败！');
       });
     },
@@ -162,7 +146,7 @@ export default {
           if (obj.top) addRows(result, 'top');
           // console.log(result)
           this.table = result;
-          this.$http.get(`${this.serverAddress}/Menu/GetMenuRights/${this.$route.params.id}`).then((response) => {
+          this.$http.get(`${this.serverAddress}/Menu/GetMenuRights/${this.userId}`).then((response) => {
             if(response.data.Code === 1000) {
               // const oData = response.data.DataValue.rows;
               // const menuData = [];
@@ -179,10 +163,16 @@ export default {
       });
     },
   },
-  beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.refresh();
-    });
+  created() {
+    this.refresh();
+  },
+  // beforeRouteEnter(to, from, next) {
+  //   next((vm) => {
+  //     vm.refresh();
+  //   });
+  // },
+  watch: {
+    userId: 'refresh',
   },
 };
 </script>

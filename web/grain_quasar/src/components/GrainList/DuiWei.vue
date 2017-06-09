@@ -1,16 +1,16 @@
 <template>
 <div>
   <div class="topItem">
-    <div class="float-left">仓内温：<span :class="{'bg-worn':filterGetList[0]&&filterGetList[0].InSideTemperature>=30&&filterGetList[0].InSideTemperature<35,'bg-alarm':filterGetList[0]&&filterGetList[0].InSideTemperature>=35}">{{filterGetList[0] && filterGetList[0].InSideTemperature}}</span></div>
+    <div class="float-left">仓内温：<span :class="{'bg-worn':filterGetList[0]&&filterGetList[0].InSideTemperature>=30&&filterGetList[0].InSideTemperature<35,'bg-alarm':filterGetList[0]&&filterGetList[0].InSideTemperature>=35}">{{filterGetList[0] && filterGetList[0].InSideTemperature}}°C</span></div>
     <div class="float-right">仓外温：<span :class="{'bg-worn':filterGetList[0]&&filterGetList[0].OutSideTemperature>=30&&filterGetList[0].OutSideTemperature<35,'bg-alarm':filterGetList[0]&&filterGetList[0].OutSideTemperature>=35}">{{filterGetList[0].OutSideTemperature}}°C</span></div>
   </div>
   <table class="q-table bordered highlight horizontal-delimiter striped-even text-center" >
     <thead>
       <tr>
         <th>堆位</th>
-        <th>最高温</th>
-        <th>最低温</th>
-        <th>平均温</th>
+        <th>最高温<br>(°C)</th>
+        <th>最低温<br>(°C)</th>
+        <th>平均温<br>(°C)</th>
         <!--<th>仓内温</th>-->
         <!--<th>仓外温</th>-->
         <th>坏点数</th>
@@ -19,9 +19,9 @@
     <tbody>
       <tr v-for="item in filterGetList" v-link="getLink(item)">
         <td>{{item.Name || item.Number}}</td>
-        <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature}}°C</td>
-        <td>{{item.MinimumTemperature}}°C</td>
-        <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature}}°C</td>
+        <td :class="{'bg-worn':item.Maximumemperature>=30&&item.Maximumemperature<35,'bg-alarm':item.Maximumemperature>=35}">{{item.Maximumemperature || '-'}}</td>
+        <td>{{item.MinimumTemperature || '-'}}</td>
+        <td :class="{'bg-worn':item.AverageTemperature>=30&&item.AverageTemperature<35,'bg-alarm':item.AverageTemperature>=35}">{{item.AverageTemperature || '-'}}</td>
         <!--<td :class="{'bg-worn':item.InSideTemperature>=30&&item.InSideTemperature<35,'bg-alarm':item.InSideTemperature>=35}">{{item.InSideTemperature}}°C</td>-->
         <!--<td :class="{'bg-worn':item.OutSideTemperature>=30&&item.OutSideTemperature<35,'bg-alarm':item.OutSideTemperature>=35}">{{item.OutSideTemperature}}°C</td>-->
         <td :class="{'bg-bad':item.BadPoints}">{{item.BadPoints}}</td>

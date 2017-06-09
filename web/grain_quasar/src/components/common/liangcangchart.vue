@@ -113,15 +113,26 @@ export default {
               valueSuffix: '°C',
               dateTimeLabelFormats: {
                   // millisecond: '%H:%M:%S.%L',
-                  millisecond: '%H:%M:%S',
-                  second: '%H:%M:%S',
-                  minute: '%H:%M',
-                  hour: '%H:%M',
-                  day: '%Y-%m-%d',
-                  week: '%m-%d',
-                  month: '%Y-%m',
-                  year: '%Y'
+                  millisecond: '%Y-%m-%d %H:%M:%S',
+                  second: '%Y-%m-%d %H:%M:%S',
+                  minute: '%Y-%m-%d %H:%M:%S',
+                  hour: '%Y-%m-%d %H:%M:%S',
+                  day: '%Y-%m-%d %H:%M:%S',
+                  week: '%Y-%m-%d %H:%M:%S',
+                  month: '%Y-%m-%d %H:%M:%S',
+                  year: '%Y-%m-%d %H:%M:%S'
               }
+              // dateTimeLabelFormats: {
+              //     // millisecond: '%H:%M:%S.%L',
+              //     millisecond: '%H:%M:%S',
+              //     second: '%H:%M:%S',
+              //     minute: '%H:%M',
+              //     hour: '%H:%M',
+              //     day: '%Y-%m-%d',
+              //     week: '%m-%d',
+              //     month: '%Y-%m',
+              //     year: '%Y'
+              // }
           },
           // legend: {
           //     // layout: 'vertical',
@@ -138,6 +149,7 @@ export default {
           },{
               name: '粮堆温度',
               data: this.getTemp(1),
+              color: '#f70808',
           }]
       });
       // console.log(new Date(this.minDate))
