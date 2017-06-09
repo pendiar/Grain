@@ -3,7 +3,7 @@
     <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addOperation" v-if="1||rights.indexOf('flexiCreate')!==-1">
+        <button class="primary" @click="addOperation" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiCreate')!==-1">
           <i>add</i> 添加操作
         </button>
       </p>
@@ -14,10 +14,10 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear handle" @click="editOperation(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editOperation(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear handle" @click="deleteOperation(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear handle" @click="deleteOperation(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
           <!--<button class="primary clear" @click="addChildOperation(cell)" v-if="rights.indexOf('flexiCreate')!==-1">
@@ -26,17 +26,17 @@
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteOperations(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteOperations(props)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
     <!--</div>-->
-    <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="edit" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <edit-operation ref="EditOperation" @hide="closeModal"></edit-operation>
     </q-modal>
-    <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="add" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <add-operation ref="AddOperation" @hide="closeModal"></add-operation>
     </q-modal>
   </div>

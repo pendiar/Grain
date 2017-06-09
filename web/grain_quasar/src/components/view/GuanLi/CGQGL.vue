@@ -1,7 +1,8 @@
 <template>
   <div class="cgqgl">
     <!--<i v-for="name in icon">{{name}}</i>-->
-    <div class="layout-padding">
+    <!--<div class="layout-padding">-->
+      <div ref="polarChart" class="polarChart"></div>
       <div class="list">
         <div class="item two-lines">
           <div class="item-content has-secondary">
@@ -12,7 +13,6 @@
           </div>
           <i class="item-secondary" @click="search">search</i>
         </div>
-        <div ref="polarChart" class="polarChart"></div>
         <div class="item">
           <div class="item-primary">
             序号
@@ -33,7 +33,7 @@
           <button class="primary" @click="save">更新</button>
         </div>
       </div>
-    </div>
+    <!--</div>-->
   </div>
 </template>
 
@@ -50,7 +50,7 @@
     },
     data() {
       return {
-        icon,
+        // icon,
         number: '',
         LineList: [],
         LineCount: [],
@@ -133,8 +133,8 @@
             showLastLabel: true,
             min: 0,
             max: 360,
-            step: 45,
-            // tickInterval: 45,
+            // step: 45,
+            tickInterval: 45,
           },
           yAxis: {
             min: 0,
@@ -181,7 +181,8 @@
                 },
               },
               // data: JSON.parse(JSON.stringify(vm.LineList)),
-              data: [[0,1],[90,1],[180,1],[270,1],[0,2],[45,2],[90,2],[135,2],[180,2],[225,2],[270,2],[315,2]],
+              data: [],
+              // data: [[0,1],[90,1],[180,1],[270,1],[0,2],[45,2],[90,2],[135,2],[180,2],[225,2],[270,2],[315,2]],
               // data: [{"x":0,"y":1,"HeapNumber":"","LineCode":"","Sort":1},{"x":90,"y":1,"HeapNumber":"","LineCode":"","Sort":2},{"x":180,"y":1,"HeapNumber":"","LineCode":"","Sort":3},{"x":270,"y":1,"HeapNumber":"","LineCode":"","Sort":4},{"x":0,"y":2,"HeapNumber":"","LineCode":"","Sort":5},{"x":45,"y":2,"HeapNumber":"","LineCode":"","Sort":6},{"x":90,"y":2,"HeapNumber":"","LineCode":"","Sort":7},{"x":135,"y":2,"HeapNumber":"","LineCode":"","Sort":8},{"x":180,"y":2,"HeapNumber":"","LineCode":"","Sort":9},{"x":225,"y":2,"HeapNumber":"","LineCode":"","Sort":10},{"x":270,"y":2,"HeapNumber":"","LineCode":"","Sort":11},{"x":315,"y":2,"HeapNumber":"","LineCode":"","Sort":12}],
               pointPlacement: 'between',
           }],
@@ -195,6 +196,7 @@
         }
         // console.log(JSON.stringify(vm.LineList))
         vm.polarChart = new Highcharts.Chart(option);
+        vm.polarChart.reflow();
       },
       setData() {
         // console.log(JSON.parse(JSON.stringify(this.LineList)))
@@ -215,21 +217,30 @@
       },
     },
     mounted() {
-      this.setPolarChart();
-      // setTimeout(() => {
-      //   this.setPolarChart();
-      // }, 4000);
+      // this.setPolarChart();
+      setTimeout(() => {
+        this.setPolarChart();
+      }, 0);
     },
   };
 </script>
 
 <style lang="less" scoped>
-  .polarChart{
-    width: 400px;
-    height: 400px;
-    position: relative;
+// .cgqgl{
+//   position: absolute;
+// }
+  // .polar-box{
+  //   width: 100%;
+  //   height: 400px;
+    // position: relative;
     // overflow: hidden;
-  }
+    .polarChart{
+      width: 100%;
+      height: 400px;
+      position: relative;
+      // overflow: hidden;
+    }
+  // }
   .item>.item-primary{
     font-size: 16px;
   }

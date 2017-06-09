@@ -1,7 +1,8 @@
 <template>
-  <div class="edit-grain-permission">
-    <div class="item ">
-      <div class="item-content">
+  <q-layout>
+    <div slot="header" class="toolbar">
+      <q-toolbar-title :padding="1">
+        编辑粮仓关系
         组织：
         <button class="primary small">
           {{departmentName || '请选择组织'}}
@@ -17,31 +18,55 @@
             ></q-tree>
           </q-popover>
         </button>
-      </div>
+      </q-toolbar-title>
+      <button @click="cancel">
+        <i>close</i>
+      </button>
     </div>
-    <div class="row">
-      <div class="width-1of2">
-        <div class="list">
-          <label class="item item-link non-selectable item-collapsible" v-for="item in personArr">
-            <div class="item-primary">
-              <span class="q-checkbox cursor-pointer"><input type="checkbox" v-model="selectedUser" :value="item.Id"><div></div></span>
-            </div>
-            <div class="item-content">
-                <div>{{item.NickName || item.LoginID}}</div>
-            </div>
-          </label>
-        </div>
-      </div>
-      <div class="width-1of2">
-        <div class="list">
-          <select-tree-item v-model="selectedGrain" v-for="item in grainArr" :item="item" :key="item.ID"></select-tree-item>
-        </div>
-      </div>
-    </div>
-    <p class="group">
+    <div slot="footer">
+      <q-progress-button
+        indeterminate
+        class="primary"
+        :percentage="submitPercentage"
+        @click.native="submit"
+      >
+        保存
+      </q-progress-button>
+      <!--<button class="primary" @click="submit">确定</button>-->
       <button class="primary" @click="cancel">取消</button>
-    </p>
-  </div>
+    </div>
+    <div class="layout-view">
+      <!--<div class="edit-grain-permission">-->
+        <!--<div class="item ">
+          <div class="item-content">
+            组织：
+          </div>
+        </div>-->
+        <div class="row">
+          <div class="width-1of2">
+            <div class="list">
+              <label class="item item-link non-selectable item-collapsible" v-for="item in personArr">
+                <div class="item-primary">
+                  <span class="q-checkbox cursor-pointer"><input type="checkbox" v-model="selectedUser" :value="item.Id"><div></div></span>
+                </div>
+                <div class="item-content">
+                    <div>{{item.NickName || item.LoginID}}</div>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="width-1of2">
+            <div class="list">
+              <select-tree-item v-model="selectedGrain" v-for="item in grainArr" :item="item" :key="item.ID"></select-tree-item>
+            </div>
+          </div>
+        </div>
+        <!--<p class="group">
+          <button class="primary" @click="cancel">取消</button>
+        </p>-->
+      <!--</div>-->
+    </div>
+  </q-layout>
 </template>
 
 <script>
@@ -53,6 +78,7 @@
     },
     data() {
       return {
+        submitPercentage: 0,
         departmentId: '',
         departmentName: '',
         departmentList: [],
@@ -63,6 +89,29 @@
       };
     },
     methods: {
+      submit() {
+        // console.log(this.selectedGrain);
+        this.submitPercentage = 50;
+        let data = [];
+        this.selectedUser.forEach((user) => {
+          data = data.concat(this.selectedGrain.map(Granary => ({ UserId: user, GranaryNumber: Granary })));
+        });
+        // if (data.length === 0) data = [{ UserId: this.userid }];
+        this.$http.post(`${this.serverAddress}/UserGranaryRights/SetUsersGranaryRights`, data).then((response) => {
+          // console.log(response.data);
+          if (response.data.Code === 1000) {
+            this.submitPercentage = 100;
+            Toast.create.positive('编辑成功！');
+            this.cancel();
+          } else {
+            this.submitPercentage = 0;
+            Toast.create.warning('编辑失败！');
+          }
+        }, () => {
+          this.submitPercentage = 0;
+          Toast.create.warning('编辑失败！');
+        });
+      },
       cancel() {
         this.$emit('hide');
       },

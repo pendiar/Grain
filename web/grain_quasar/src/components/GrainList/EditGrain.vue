@@ -147,7 +147,7 @@
                   <div class="item multiple-lines">
                     <div class="item-content row items-center wrap">
                         <div style="margin-right: 10px;" class="item-label">排序：</div>
-                        <input class="auto" v-model="aoJian.Sort" placeholder="廒间排序">
+                        <input class="auto" v-model.number="aoJian.Sort" placeholder="廒间排序">
                     </div>
                   </div>
                   <div class="item multiple-lines">
@@ -412,7 +412,7 @@
       this.setDepartment();
       if (this.GrainData) {
         this.submited.liangcang = true;
-          console.log(this.GrainData)
+          // console.log(this.GrainData)
         Object.keys(this.liangCangData).forEach((key) => {
           this.liangCangData[key] = this.GrainData[key];
         });
@@ -424,7 +424,8 @@
             Location: granary.Location,
             MaxiTemperature: granary.MaxiTemperature,
             MinTemperature: granary.MinTemperature,
-            Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '', Sort: ''
+            Sort: granary.Sort,
+            Type: 2, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: ''
           })));
           return { Code: item.Number.split('-')[1], Number: item.Number, Location: item.Location, Type: 1, PID: 0, WH_ID:0, BadPoints: 0, AverageTemperature:0, AverageHumidity: 0, UserId: 0, IsActive: 1, WH_Number: '' };
         });

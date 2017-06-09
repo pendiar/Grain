@@ -407,7 +407,8 @@ export default {
           showLastLabel: true,
           min: 0,
           max: 360,
-          step: 45,
+          // step: 45,
+          tickInterval: 45,
         },
         yAxis: {
           min: 0,

@@ -53,11 +53,10 @@
       submit() {
         // console.log(this.selectedGrain);
         this.submitPercentage = 50;
-        this.$http.post(`${this.serverAddress}/UserGranaryRights/SetUsersGranaryRights`, this.selectedGrain.map((item) => ({
-          UserId: this.userid,
-          GranaryNumber: item,
-        }))).then((response) => {
-          console.log(response.data);
+        let data = this.selectedGrain.map(item => ({ UserId: this.userid, GranaryNumber: item }));
+        if (data.length === 0) data = [{ UserId: this.userid }];
+        this.$http.post(`${this.serverAddress}/UserGranaryRights/SetUsersGranaryRights`, data).then((response) => {
+          // console.log(response.data);
           if (response.data.Code === 1000) {
             this.submitPercentage = 100;
             Toast.create.positive('修改成功！');
@@ -75,12 +74,16 @@
         this.$emit('hide');
       },
       getGrainList() {
-        this.grainArr = GrainList;
-        // this.$http.get(`${this.serverAddress}/UserGranaryRights/GetUserGranaryListByUid/${this.departmentid}`).then((response) => {
-        //   console.log(response.data.DataValue.rows);
-          
-        //   }, () => {
-        // });
+        // this.grainArr = GrainList;
+        this.$http.get(`${this.serverAddress}/Grain/GetListByOrgid/${this.departmentid || 0}`).then((response) => {
+          if (response.data.Code === 1000) {
+            this.grainArr = response.data.DataValue.rows;
+          } else {
+            this.grainArr = [];
+          }
+        }, () => {
+          this.grainArr = [];
+        });
       },
       getUserGrainList() {
         this.selectedGrain = [];

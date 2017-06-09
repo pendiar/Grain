@@ -57,14 +57,14 @@ export default new VueRouter({
     { path: '/GuanLi',  // 系统管理
       component: load('GuanLi'),
       children: [
-        { path: '', redirect: { name: 'CGQGL' } },
+        { path: '', redirect: { name: 'BuMen' } },
         { path: 'CGQGL', name: 'CGQGL', component: load('view/GuanLi/CGQGL') },
         { path: 'BuMen', name: 'BuMen', component: load('view/GuanLi/BuMen/BuMen') },
         { path: 'Menu', name: 'Menu', component: load('view/GuanLi/Menu/Menu') },
         { path: 'Operation', name: 'Operation', component: load('view/GuanLi/Operation/Operation') },
         { path: 'Role', name: 'Role', component: load('view/GuanLi/Role/Role') },
         { path: 'UserInfo', name: 'UserInfo', component: load('view/GuanLi/UserInfo/UserInfo') },
-        { path: 'EditPermission/:id', name: 'EditPermission', component: load('view/GuanLi/Permission/EditPermission') },
+        // { path: 'EditPermission/:id', name: 'EditPermission', component: load('view/GuanLi/Permission/EditPermission') },
       ],
     },
     { path: '/layout', component: load('layout/Hello') }, // Not found

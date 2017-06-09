@@ -3,8 +3,8 @@
     <!--<div class="layout-padding">-->
       <!--<transition-group name="list-complete" tag="tr">-->
       <p class="group">
-        <button class="primary" @click="addUserInfo" v-if="1||rights.indexOf('flexiCreate')!==-1"><i>add</i> 添加用户</button>
-        <button class="primary" @click="editGrain" v-if="1||rights.indexOf('grainModify')!==-1"><i>edit</i> 编辑粮仓关系</button>
+        <button class="primary" @click="addUserInfo" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiCreate')!==-1"><i>add</i> 添加用户</button>
+        <button class="primary" @click="editGrain" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('grainModify')!==-1"><i>edit</i> 编辑粮仓关系</button>
       </p>
       <q-data-table
         :data="table"
@@ -13,29 +13,29 @@
         @refresh="refresh"
       >
         <template slot="col-handle" scope="cell">
-          <button class="primary clear handle" @click="editUserInfo(cell)" v-if="1||rights.indexOf('flexiModify')!==-1">
+          <button class="primary clear handle" @click="editUserInfo(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiModify')!==-1">
             <i>edit</i>
           </button>
-          <button class="primary clear handle" @click="deleteUserInfo(cell)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear handle" @click="deleteUserInfo(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
-          <button class="primary clear handle" @click="editUserGrain(cell)" v-if="1||rights.indexOf('grainModify')!==-1">
+          <button class="primary clear handle" @click="editUserGrain(cell)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('grainModify')!==-1">
             <i>home</i>
           </button>
         </template>
 
         <template slot="selection" scope="props">
-          <button class="primary clear" @click="deleteUserInfos(props)" v-if="1||rights.indexOf('flexiDelete')!==-1">
+          <button class="primary clear" @click="deleteUserInfos(props)" v-if="$bus.states.userInfo&&$bus.states.userInfo.LoginID==='admin'||rights.indexOf('flexiDelete')!==-1">
             <i>delete</i>
           </button>
         </template>
       </q-data-table>
       <!--</transition-group>-->
     <!--</div>-->
-    <q-modal ref="edit" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="edit" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <edit-UserInfo ref="EditUserInfo" @hide="closeModal"></edit-UserInfo>
     </q-modal>
-    <q-modal ref="add" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal ref="add" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
       <add-UserInfo ref="AddUserInfo" @hide="closeModal"></add-UserInfo>
     </q-modal>
     <q-modal ref="editGrain" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
