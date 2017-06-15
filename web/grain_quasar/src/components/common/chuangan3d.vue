@@ -4,9 +4,9 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
-// 加载模块
-require('highcharts/highcharts-3d')(Highcharts);
+// import Highcharts from 'highcharts';
+// // 加载模块
+// require('highcharts/highcharts-3d')(Highcharts);
 import { Platform } from 'quasar';
 
 export default {
@@ -50,7 +50,7 @@ export default {
     setChart() {
       const vm = this;
 	    vm.clearChart();
-      vm.chart = new Highcharts.Chart({
+      vm.chart = new vm.$Highcharts.Chart({
         credits:{enabled:false},
         chart: {
           renderTo: vm.$el,
@@ -102,7 +102,7 @@ export default {
                       vm.$router.push({
                         name: 'ChuanGan',
                         params:{ id: this.SensorId },
-                        query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label},
+                        query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label, cnumber: vm.cnumber, cangName: vm.cangName},
                       });
                     } else {
                       vm.hovering.x = this.x;

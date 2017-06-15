@@ -9,7 +9,7 @@
               <i>keyboard_arrow_left</i>
           </button>
           <q-toolbar-title :padding="1">
-              单位深度{{x}}截面展示
+              {{cangName||cnumber}}粮仓 单位深度{{x}}截面展示
           </q-toolbar-title>
         </div>
         <div class="layout-view">
@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
-// 加载模块
-require('highcharts/highcharts-more')(Highcharts);
+// import Highcharts from 'highcharts';
+// // 加载模块
+// require('highcharts/highcharts-more')(Highcharts);
 import { Platform } from 'quasar';
 
 export default {
@@ -259,8 +259,8 @@ export default {
         series: vm.getData,
       }
       // console.log(vm.getData);
-      vm.chart = new Highcharts.Chart(option);
-      // chart = new Highcharts.Chart({
+      vm.chart = new vm.$Highcharts.Chart(option);
+      // chart = new vm.$Highcharts.Chart({
       //   credits:{enabled:false},
       //   chart: {
       //     renderTo: this.$el,
@@ -474,7 +474,7 @@ export default {
             pointFormat: `<b>线号: {point.number}</b><br/>深度层级:${vm.x}<br/>温度: {point.temp}`,
         },
       };
-      vm.polarChart = new Highcharts.Chart(option);
+      vm.polarChart = new vm.$Highcharts.Chart(option);
     },
     clearPolarChart() {
       if (!this.polarChart) return;

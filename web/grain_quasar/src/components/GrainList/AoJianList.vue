@@ -7,8 +7,8 @@
           <th>最高温<br>(°C)</th>
           <th>最低温<br>(°C)</th>
           <th>平均温<br>(°C)</th>
-          <th>仓内/外温<br>(°C/°C)</th>
-          <th>仓内/外湿<br>(%RH/%RH)</th>
+          <th>内温/外温<br>(°C/°C)</th>
+          <th>内湿/外湿<br>(%RH/%RH)</th>
           <th>坏点数</th>
         </tr>
       </thead>
@@ -78,6 +78,7 @@ export default {
   width: 100%;
   th,td{
     text-align: center;
+    vertical-align: middle;
     padding:0.5rem 0;
   }
 }

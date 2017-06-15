@@ -4,6 +4,9 @@
     <!-- your content -->
     <div class="layout-padding">
       <!-- if you want automatic padding -->
+      <p class="quote">
+        {{$route.query.name || $route.params.id}} 粮堆三温图
+      </p>
       <q-tabs
           v-model="xTabsModel"
           class="justified"
@@ -11,9 +14,9 @@
           <q-tab
               name="0"
           >最近24小时</q-tab>
-          <q-tab
+          <!--<q-tab
               name="1"
-          >最近七天</q-tab>
+          >最近七天</q-tab>-->
           <q-tab
               name="2"
           >最近一个月</q-tab>

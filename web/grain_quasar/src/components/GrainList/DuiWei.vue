@@ -113,6 +113,7 @@ export default {
   width: 100%;
   th,td{
     text-align: center;
+    vertical-align: middle;
     padding:0.5rem 0;
   }
 }

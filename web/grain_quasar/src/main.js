@@ -20,6 +20,11 @@ import chuangan3d from 'components/common/chuangan3d';
 import chuanganpingmian from 'components/common/chuanganpingmian';
 import chuanganchart from 'components/common/chuanganchart';
 import chuanganline from 'components/common/chuanganLine';
+  import Highcharts from 'highcharts';
+  // 加载模块
+  require('highcharts/highcharts-3d')(Highcharts);
+  require('highcharts/highcharts-more')(Highcharts);
+  Vue.prototype.$Highcharts = Highcharts;
 
 Vue.use(Quasar); // Install Quasar Framework
 Vue.use(resource);

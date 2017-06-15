@@ -6,26 +6,30 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
-// 加载模块
-require('highcharts/highcharts-3d')(Highcharts);
+// import Highcharts from 'highcharts';
+// // 加载模块
+// require('highcharts/highcharts-3d')(Highcharts);
 
 export default {
   props: ['type'],
   computed: {
     minDate() {
-      let nowDate = new Date().getTime();
+      let nowDate = new Date();
       switch(Number(this.type)) {
         case 0:
-          return nowDate - 24*3600000;
+          const nowHours = nowDate.getHours();
+          const nowDay = nowDate.getDate();
+          nowDate.setHours(2, 0, 0, 0);
+          if (nowHours < 2) nowDate.setDate(nowDay - 1);
+          return nowDate.getTime();
         case 1:
-          return nowDate - 7*24*3600000;
+          return nowDate.getTime() - 7*24*3600000;
         case 2:
-          return nowDate - 30*24*3600000;
+          return nowDate.getTime() - 30*24*3600000;
         case 3:
-          return nowDate - 365*24*3600000;
+          return nowDate.getTime() - 365*24*3600000;
         default:
-          return nowDate - 24*3600000;
+          return nowDate.getTime() - 24*3600000;
       }
     },
   },
@@ -38,7 +42,7 @@ export default {
   methods: {
     getTemp(type) {
       // console.log(this.heapTempData.filter(item => item.Type === type),type)
-      const result = this.heapTempData.filter(item => item.Type === type && new Date(item.StampTime).getTime() < new Date().getTime() && new Date(item.StampTime).getTime() > this.minDate).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
+      const result = this.heapTempData.filter(item => item.Type === type && new Date(item.StampTime).getTime() < (this.minDate + 24 * 3600000) && new Date(item.StampTime).getTime() > this.minDate).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
         // console.log(item.StampTime)
         // return [Date.UTC.apply(this,item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val))), item.Temp];
         // console.log(new Date(item.StampTime).getTime())
@@ -66,7 +70,7 @@ export default {
       });
     },
     setChart() {
-      var chart = new Highcharts.Chart({
+      var chart = new this.$Highcharts.Chart({
         credits:{enabled:false},
           chart: {
             renderTo: this.$refs.chart,
@@ -90,7 +94,7 @@ export default {
                   year: '%Y'
               },
               min: this.minDate + 8*3600000,
-              max: new Date().getTime() + 8*3600000,
+              max: this.minDate + 32*3600000,
           },
           yAxis: {
               title: {

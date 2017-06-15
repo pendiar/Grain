@@ -108,7 +108,7 @@
         </div>
     
         
-        <router-link tag="div" class="item item-link rmargin" :to="{name:'LiangCang',params:{id:cang.Number}}">
+        <router-link tag="div" class="item item-link rmargin" :to="{name:'LiangCang',params:{id:cang.Number}, query: { name: cang.Name }}">
           <div class="item-content has-secondary">
             <span class="item-label">
               粮堆三温图 

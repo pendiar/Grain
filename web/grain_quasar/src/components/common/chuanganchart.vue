@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import Highcharts from 'highcharts';
-// 加载模块
-require('highcharts/highcharts-3d')(Highcharts);
+// import Highcharts from 'highcharts';
+// // 加载模块
+// require('highcharts/highcharts-3d')(Highcharts);
 
 export default {
   props: ['type'],
@@ -63,7 +63,7 @@ export default {
     },
     setChart() {
        var query=this.$route.query;
-      var chart = new Highcharts.Chart({
+      var chart = new this.$Highcharts.Chart({
         credits:{enabled:false},
           chart: {
               renderTo: this.$refs.chart,
@@ -185,7 +185,7 @@ export default {
 //     this.demoData = demoData;
 //   },
 //   mounted() {
-//     var chart = new Highcharts.Chart({
+//     var chart = new this.$Highcharts.Chart({
 //       credits:{enabled:false},
 //         chart: {
 //             renderTo: this.$el,

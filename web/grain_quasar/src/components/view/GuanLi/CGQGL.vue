@@ -2,7 +2,6 @@
   <div class="cgqgl">
     <!--<i v-for="name in icon">{{name}}</i>-->
     <!--<div class="layout-padding">-->
-      <div ref="polarChart" class="polarChart"></div>
       <div class="list">
         <div class="item two-lines">
           <div class="item-content has-secondary">
@@ -13,6 +12,7 @@
           </div>
           <i class="item-secondary" @click="search">search</i>
         </div>
+        <div ref="polarChart" class="polarChart"></div>
         <div class="item">
           <div class="item-primary">
             序号
@@ -39,9 +39,9 @@
 
 <script>
 // import icon from 'assets/icon.json'
-  import Highcharts from 'highcharts';
-  // 加载模块
-  require('highcharts/highcharts-more')(Highcharts);
+  // import Highcharts from 'highcharts';
+  // // 加载模块
+  // require('highcharts/highcharts-more')(Highcharts);
   import { Toast } from 'quasar';
 
   export default {
@@ -191,11 +191,11 @@
           },
           tooltip: {
             headerFormat: '<b>传感线:{point.HeapNumber}</b><br/>',
-            pointFormat: '序号: {point.Sort}<br/>线号: {point.LineCode}<br/>{point.x},{point.y}',
+            pointFormat: '序号: {point.Sort}<br/>线号: {point.LineCode}<br/>',
           },
         }
         // console.log(JSON.stringify(vm.LineList))
-        vm.polarChart = new Highcharts.Chart(option);
+        vm.polarChart = new vm.$Highcharts.Chart(option);
         vm.polarChart.reflow();
       },
       setData() {

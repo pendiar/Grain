@@ -3,10 +3,10 @@
   <div>
     <!-- your content -->
     <div class="layout-padding">
-      <p class="quote" v-if="isDesktop">
+      <!--<p class="quote" v-if="isDesktop">
         {{cang.name || cang.Number}}廒间
-        <!--<button class="primary small raised float-right" @click="addDuiwei"><i class="on-left">add</i> 添加堆位</button>-->
-      </p>
+        <button class="primary small raised float-right" @click="addDuiwei"><i class="on-left">add</i> 添加堆位</button>
+      </p>-->
       <!-- if you want automatic padding -->
       <div class="row wrap gutter">
         <cang-card v-for="cang in filterGrainReport" :key="cang.Number" :cang="cang" :update='update3d' :class="{disableClick: !$CheckRights(cang.Number)}"></cang-card>
