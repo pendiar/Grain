@@ -29,7 +29,7 @@ export default {
         // } else {
         //   color = "#0ce36b"
         }
-        return { x: sensor.Direction_Z, y: sensor.Direction_Y, z: sensor.Direction_X, temp, color, 
+        return { x: sensor.Direction_Y, y: sensor.Direction_Z, z: sensor.Direction_X, temp, color, 
         SensorId: sensor.SensorId, Collector: sensor.Collector, Label: sensor.Label, IsBad: sensor.IsBad };    
       });
     },
