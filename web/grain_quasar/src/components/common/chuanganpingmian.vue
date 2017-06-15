@@ -64,13 +64,13 @@ export default {
         // } else {
         //   color = "#195803"
         }
-        if (!data[sensor.Direction_Y]) {
-          data[sensor.Direction_Y] = [];
-          data[sensor.Direction_Y][sensor.Direction_Z] = [];
-        } else if (!data[sensor.Direction_Y][sensor.Direction_Z]) {
-          data[sensor.Direction_Y][sensor.Direction_Z] = [];
+        if (!data[sensor.Direction_Z]) {
+          data[sensor.Direction_Z] = [];
+          data[sensor.Direction_Z][sensor.Direction_Y] = [];
+        } else if (!data[sensor.Direction_Z][sensor.Direction_Y]) {
+          data[sensor.Direction_Z][sensor.Direction_Y] = [];
         }
-        data[sensor.Direction_Y][sensor.Direction_Z][sensor.Direction_X] = { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color };
+        data[sensor.Direction_Z][sensor.Direction_Y][sensor.Direction_X] = { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color };
       });
       // alert(JSON.stringify(data))
       return data;

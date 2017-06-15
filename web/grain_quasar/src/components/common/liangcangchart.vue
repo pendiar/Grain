@@ -37,8 +37,9 @@ export default {
   },
   methods: {
     getTemp(type) {
-      // console.log(this.heapTempData.filter(item => item.Type === type),type)
-      const result = this.heapTempData.filter(item => item.Type === type && new Date(item.StampTime).getTime() < new Date().getTime() && new Date(item.StampTime).getTime() > this.minDate).sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
+      // console.log(this.heapTempData.filter(item => item.Type === type),type);
+      const result = this.heapTempData.filter(item => (type === 1 ? (item.Type === 0 || item.Type === 1) : item.Type === type) && new Date(item.StampTime).getTime() < new Date().getTime() && new Date(item.StampTime).getTime() > this.minDate)
+      .sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
         // console.log(item.StampTime)
         // return [Date.UTC.apply(this,item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val))), item.Temp];
         // console.log(new Date(item.StampTime).getTime())
