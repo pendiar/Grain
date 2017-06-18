@@ -33,6 +33,15 @@ export default {
         SensorId: sensor.SensorId, Collector: sensor.Collector, Label: sensor.Label, IsBad: sensor.IsBad };    
       });
     },
+    maxX() {
+      let result = 2;
+      this.sensorList.forEach((sensor) => {
+        if (sensor.Direction_Y >= result) {
+          result = sensor.Direction_Y + 1;
+        }
+      });
+      return result;
+    }
   },
   data() {
     return {
@@ -138,7 +147,7 @@ export default {
           },
           min: 0,
           tickInterval: 1,
-          // max: 5,
+          max: this.maxX,
           gridLineWidth: 1,
           showFirstLabel: false,
         },
