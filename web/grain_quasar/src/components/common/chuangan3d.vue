@@ -36,8 +36,8 @@ export default {
     maxX() {
       let result = 2;
       this.sensorList.forEach((sensor) => {
-        if (sensor.Direction_Y >= result) {
-          result = sensor.Direction_Y + 1;
+        if (sensor.Direction_X >= result) {
+          result = sensor.Direction_X + 1;
         }
       });
       return result;

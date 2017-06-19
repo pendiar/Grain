@@ -8,7 +8,7 @@
               码层{{Number(y)+1}}：
             </div>
             <div class="item-value auto">
-              <div class="row" v-for="z in floor.slice(1)">
+              <div class="row" v-for="z in (floor || []).slice(1)">
                   <div class="chuangan-item text-center width-1of1" v-for="x in length-1" :style="{color:z&&z[x]&&z[x].color}">
                     {{z&&z[x]&&z[x].temp}}
                     <q-tooltip v-if="z&&z[x]">
@@ -72,6 +72,7 @@ export default {
         }
         data[sensor.Direction_Z][sensor.Direction_X][sensor.Direction_Y] = { x: sensor.Direction_X, y: sensor.Direction_Y, z: sensor.Direction_Z, temp, color };
       });
+      // console.log(data)
       // alert(JSON.stringify(data))
       return data;
     }
@@ -106,8 +107,11 @@ export default {
   }
   .item-value{
     border: 1px solid #636363;
-    border-bottom: 0;
+    // border-top: 0;
     padding-bottom: 5px;
+    &:last-child .chuangan-item{
+      border-bottom: 1px solid #636363;
+    }
   }
   .chuangan-item{
     padding: 3px 5px;
