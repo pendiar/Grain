@@ -29,7 +29,7 @@ export default {
         // } else {
         //   color = "#0ce36b"
         }
-        return { x: sensor.Direction_Y, y: sensor.Direction_Z, z: sensor.Direction_X, temp, color, 
+        return { x: sensor.Direction_X, y: sensor.Direction_Z, z: sensor.Direction_Y, temp, color, 
         SensorId: sensor.SensorId, Collector: sensor.Collector, Label: sensor.Label, IsBad: sensor.IsBad };    
       });
     },
@@ -134,7 +134,7 @@ export default {
           //   enabled: false,
           // },
           title: {
-            text: '传感线序号',
+            text: '排号',
           },
           min: 0,
           tickInterval: 1,
@@ -165,7 +165,7 @@ export default {
         tooltip: {
           formatter: function () {
              return ` 传感器序号:<b>${this.point.z} </b><br/>
-             线号:<b>${this.point.x} </b><br/>
+             排号:<b>${this.point.x} </b><br/>
              层号:<b>${this.point.y} </b><br/>
              温度:<b> ${this.point.IsBad ? '*' : this.point.temp || '-'}</b>`;      
             //  return ` x坐标: <b>${this.point.x} —[${this.point.SensorId}]</b><br/>

@@ -42,7 +42,7 @@ export default {
   methods: {
     getTemp(type) {
       // console.log(this.heapTempData.filter(item => item.Type === type),type);
-      const result = this.heapTempData.filter(item => (type === 1 ? (item.Type === 0 || item.Type === 1) : item.Type === type) && new Date(item.StampTime).getTime() < (this.minDate + 24 * 3600000) && new Date(item.StampTime).getTime() > this.minDate)
+      const result = this.heapTempData.filter(item => (type === 1 ? (item.Type === 0 || item.Type === 1) : item.Type === type) && new Date(item.StampTime).getTime() < (this.type === 0 ? (this.minDate + 24 * 3600000) : new Date().getTime()) && new Date(item.StampTime).getTime() > this.minDate)
       .sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
         // console.log(item.StampTime)
         // return [Date.UTC.apply(this,item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val))), item.Temp];
@@ -95,7 +95,7 @@ export default {
                   year: '%Y'
               },
               min: this.minDate + 8*3600000,
-              max: this.minDate + 32*3600000,
+              max: this.type === 0 ? (this.minDate + 32 * 3600000) : new Date().getTime() + 8*3600000,
           },
           yAxis: {
               title: {
