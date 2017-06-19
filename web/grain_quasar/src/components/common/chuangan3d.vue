@@ -143,7 +143,7 @@ export default {
           //   enabled: false,
           // },
           title: {
-            text: '排号',
+            text: '线号/排号',
           },
           min: 0,
           tickInterval: 1,
@@ -174,7 +174,7 @@ export default {
         tooltip: {
           formatter: function () {
              return ` 传感器序号:<b>${this.point.z} </b><br/>
-             排号:<b>${this.point.x} </b><br/>
+             线号/排号:<b>${this.point.x} </b><br/>
              层号:<b>${this.point.y} </b><br/>
              温度:<b> ${this.point.IsBad ? '*' : this.point.temp || '-'}</b>`;      
             //  return ` x坐标: <b>${this.point.x} —[${this.point.SensorId}]</b><br/>

@@ -119,12 +119,12 @@ export default {
               dateTimeLabelFormats: {
                   millisecond: '%H:%M:%S',
                   second: '%H:%M:%S',
-                  minute: '%H:%M',
-                  hour: '%H:%M',
-                  day: '%Y-%m-%d',
-                  week: '%m-%d',
-                  month: '%Y-%m',
-                  year: '%Y'
+                  minute: '%H:%M:%S',
+                  hour: '%H:%M:%S',
+                  day: '%Y-%m-%d %H:%M:%S',
+                  week: '%Y-%m-%d %H:%M:%S',
+                  month: '%Y-%m-%d %H:%M:%S',
+                  year: '%Y-%m-%d %H:%M:%S'
               }
           },
           legend: {
