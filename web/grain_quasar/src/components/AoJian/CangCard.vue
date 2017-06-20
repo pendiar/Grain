@@ -29,7 +29,7 @@
               </span>
               <span class="item-value">
                 <!--{{cang.MaxiTemperature}}°C-->
-                 {{cang.LastTime}}
+                 {{cang.LastTime.slice(0,-3)}}
               </span>
             </div>
           </div>
@@ -116,9 +116,9 @@
           </div>
           <i class="item-secondary">keyboard_arrow_right</i>
         </router-link>
-        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" :cnumber="cang.Number" :cang-name="cang.Name" v-if="$route.name==='YuanDuiWei'"></chuanganline>
+        <chuanganline :sensorList="cang.SensorList" :LineCount="cang.LineCount" :update="update" :cnumber="cang.Number" :cang-name="cang.Name" :lasttime="cang.LastTime" v-if="$route.name==='YuanDuiWei'"></chuanganline>
         <chuanganpingmian :sensorList="cang.SensorList" :cang-name="cang.Name" v-else-if="PM"></chuanganpingmian>
-        <chuangan3d :sensorList="cang.SensorList" :update="update" :cnumber="cang.Number" :cang-name="cang.Name" v-else></chuangan3d>
+        <chuangan3d :sensorList="cang.SensorList" :update="update" :cnumber="cang.Number" :cang-name="cang.Name" :lasttime="cang.LastTime" v-else></chuangan3d>
       </div>
     </div>
   </div>

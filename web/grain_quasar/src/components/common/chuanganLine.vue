@@ -27,7 +27,7 @@
 import { Platform } from 'quasar';
 
 export default {
-  props: ['sensorList', 'update', 'LineCount','cnumber', 'cangName'],
+  props: ['sensorList', 'update', 'LineCount','cnumber', 'cangName', 'lasttime'],
   computed: {
     getData() {
       const result = [];
@@ -35,7 +35,8 @@ export default {
       this.sensorList.forEach((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (sensor.IsBad) {
+        const IsBad = !sensor.LastDateTime || ((new Date(sensor.LastDateTime.replace('T', ' ').slice(0, -3)).getTime() + 24*3600000) < new Date(this.lasttime.slice(0, -3)).getTime()) || sensor.IsBad;
+        if (IsBad) {
           color = "#c3bcbc";
         } else if (temp < 30) {
           color = "#0ce36b";
@@ -118,7 +119,8 @@ export default {
       return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (sensor.IsBad) {
+        const IsBad = !sensor.LastDateTime || ((new Date(sensor.LastDateTime.replace('T', ' ').slice(0, -3)).getTime() + 24*3600000) < new Date(this.lasttime.slice(0, -3)).getTime()) || sensor.IsBad;
+        if (IsBad) {
           color = "#c3bcbc";
         }else if (temp < 30) {
           color = "#0ce36b";
@@ -153,6 +155,7 @@ export default {
           SensorId: sensor.SensorId,
           Collector: sensor.Collector,
           Label: sensor.Label,
+          IsBad,
         };
       });
     },
@@ -204,7 +207,7 @@ export default {
           reversed: true,
           title: {
             enabled: true,
-            text: 'Length'
+            text: '深度'
           },
           labels: {
             formatter: function () {
@@ -218,7 +221,7 @@ export default {
         },
         yAxis: {
           title: {
-            text: 'Labels'
+            text: '线号'
           },
           labels: {
             formatter: function () {
@@ -426,12 +429,13 @@ export default {
             series: {
               point: {
                 events: {
-                  click() {                   
+                  click() {     
+                    if (this.IsBad) return;              
                     if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
                       // vm.$refs.modal.close();
                       vm.$router.push({
                         name: 'ChuanGan',
-                        params:{ id: this.SensorId },
+                        params:{ id: this.GuidID },
                         query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label},
                       });
                     } else {

@@ -10,13 +10,14 @@
 import { Platform } from 'quasar';
 
 export default {
-  props: ['sensorList', 'update','cnumber', 'cangName'],
+  props: ['sensorList', 'update','cnumber', 'cangName', 'lasttime'],
   computed: {
     getData() {
       return this.sensorList.map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
-        if (sensor.IsBad) {
+        const IsBad = !sensor.LastDateTime || ((new Date(sensor.LastDateTime.replace('T', ' ').slice(0, -3)).getTime() + 24*3600000) < new Date(this.lasttime.slice(0, -3)).getTime()) || sensor.IsBad;
+        if (IsBad) {
           color = "#c3bcbc";
         } else if (temp < 30) {
           color = "#0ce36b";
@@ -30,7 +31,7 @@ export default {
         //   color = "#0ce36b"
         }
         return { x: sensor.Direction_X, y: sensor.Direction_Z, z: sensor.Direction_Y, temp, color, 
-        SensorId: sensor.SensorId, Collector: sensor.Collector, Label: sensor.Label, IsBad: sensor.IsBad };    
+        SensorId: sensor.SensorId, Collector: sensor.Collector, Label: sensor.Label, IsBad, };    
       });
     },
     maxX() {
@@ -106,11 +107,12 @@ export default {
             point: {
               events: {
                 click() {
+                  if (this.IsBad) return;
                   try {
                     if (Platform.is.desktop || vm.hovering.x === this.x && vm.hovering.y === this.y && vm.hovering.z === this.z) {
                       vm.$router.push({
                         name: 'ChuanGan',
-                        params:{ id: this.SensorId },
+                        params:{ id: this.GuidID },
                         query:{x: this.x, y: this.y, z: this.z,SensorId: this.SensorId, Collector:this.Collector,Label:this.Label, cnumber: vm.cnumber, cangName: vm.cangName},
                       });
                     } else {
