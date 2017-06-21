@@ -49,10 +49,10 @@ export default {
         // } else {
         //   color = "#0ce36b"
         }
-        if (sensor.Direction_Y in map) {
-          result[map[sensor.Direction_Y]].data.push({
-            x: sensor.Direction_X,
-            y: sensor.Direction_Y,
+        if (sensor.Direction_X in map) {
+          result[map[sensor.Direction_X]].data.push({
+            x: sensor.Direction_Y,
+            y: sensor.Direction_X,
             temp,
             color,
             SensorId: sensor.SensorId,
@@ -60,16 +60,16 @@ export default {
             Label: sensor.Label,
           });
         } else {
-          map[sensor.Direction_Y] = result.length;
+          map[sensor.Direction_X] = result.length;
           result.push({
-            name: sensor.Direction_Y,
+            name: sensor.Direction_X,
             marker: {
               symbol: 'square' // 点形状
             },
             color: "#90ed7d",
             data: [{
-              x: sensor.Direction_X,
-              y: sensor.Direction_Y,
+              x: sensor.Direction_Y,
+              y: sensor.Direction_X,
               temp,
               color,
               SensorId: sensor.SensorId,
@@ -80,7 +80,7 @@ export default {
         }
       });
       return result;
-      // return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
+      // return this.sensorList.filter(sensor => sensor.Direction_Y === this.x).map((sensor) => {
       //   const temp = sensor.RealTemp;
       //   let color = '';
       //   if (temp < 30) {
@@ -95,7 +95,7 @@ export default {
       //   let count = 0;
       //   let x, y;
       //   this.LineCount.some((num, index) => {
-      //     const idx = sensor.Direction_Y - count;
+      //     const idx = sensor.Direction_X - count;
       //     if (idx <= num) {
       //       x = parseInt(360 * idx / num);
       //       y = index + 1;
@@ -116,7 +116,7 @@ export default {
       // });
     },
     getPolarData() {
-      return this.sensorList.filter(sensor => sensor.Direction_X === this.x).map((sensor) => {
+      return this.sensorList.filter(sensor => sensor.Direction_Y === this.x).map((sensor) => {
         const temp = sensor.RealTemp;
         let color = '';
         const IsBad = !sensor.LastDateTime || ((new Date(sensor.LastDateTime.replace('T', ' ').slice(0, -3)).getTime() + 24*3600000) < new Date(this.lasttime.slice(0, -3)).getTime()) || sensor.IsBad;
@@ -136,7 +136,7 @@ export default {
         let count = 0;
         let x, y;
         this.LineCount.some((num, index) => {
-          const idx = sensor.Direction_Y - count;
+          const idx = sensor.Direction_X - count;
           if (idx <= num) {
             x = parseInt(360 * idx / num);
             y = index + 1;
@@ -151,11 +151,12 @@ export default {
           y,
           temp,
           color,
-          number: sensor.Direction_Y,
+          number: sensor.Direction_X,
           SensorId: sensor.SensorId,
           Collector: sensor.Collector,
           Label: sensor.Label,
           IsBad,
+          GuidID: sensor.GuidID,
         };
       });
     },

@@ -31,7 +31,7 @@ export default {
         //   color = "#0ce36b"
         }
         return { x: sensor.Direction_X, y: sensor.Direction_Z, z: sensor.Direction_Y, temp, color, 
-        SensorId: sensor.SensorId, Collector: sensor.Collector, Label: sensor.Label, IsBad, };    
+        SensorId: sensor.SensorId, Collector: sensor.Collector, Label: sensor.Label, IsBad, GuidID: sensor.GuidID };    
       });
     },
     maxX() {
