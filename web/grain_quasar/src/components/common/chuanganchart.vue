@@ -117,14 +117,14 @@ export default {
           tooltip: {
               valueSuffix: '°C',
               dateTimeLabelFormats: {
-                  millisecond: '%H:%M:%S',
-                  second: '%H:%M:%S',
-                  minute: '%H:%M:%S',
-                  hour: '%H:%M:%S',
-                  day: '%Y-%m-%d %H:%M:%S',
-                  week: '%Y-%m-%d %H:%M:%S',
-                  month: '%Y-%m-%d %H:%M:%S',
-                  year: '%Y-%m-%d %H:%M:%S'
+                  millisecond: '%Y-%m-%d %H:%M',
+                  second: '%Y-%m-%d %H:%M',
+                  minute: '%Y-%m-%d %H:%M',
+                  hour: '%Y-%m-%d %H:%M',
+                  day: '%Y-%m-%d %H:%M',
+                  week: '%Y-%m-%d %H:%M',
+                  month: '%Y-%m-%d %H:%M',
+                  year: '%Y-%m-%d %H:%M'
               }
           },
           legend: {

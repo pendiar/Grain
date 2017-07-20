@@ -17,11 +17,11 @@ export default {
       let nowDate = new Date();
       switch(Number(this.type)) {
         case 0:
-          const nowHours = nowDate.getHours();
-          const nowDay = nowDate.getDate();
-          nowDate.setHours(2, 0, 0, 0);
-          if (nowHours < 2) nowDate.setDate(nowDay - 1);
-          return nowDate.getTime();
+          // const nowHours = nowDate.getHours();
+          // const nowDay = nowDate.getDate();
+          // nowDate.setHours(2, 0, 0, 0);
+          // if (nowHours < 2) nowDate.setDate(nowDay - 1);
+          return nowDate.getTime() - 24*3600000;
         case 1:
           return nowDate.getTime() - 7*24*3600000;
         case 2:
@@ -42,7 +42,8 @@ export default {
   methods: {
     getTemp(type) {
       // console.log(this.heapTempData.filter(item => item.Type === type),type);
-      const result = this.heapTempData.filter(item => (type === 1 ? (item.Type === 0 || item.Type === 1) : item.Type === type) && new Date(item.StampTime).getTime() < (this.type === 0 ? (this.minDate + 24 * 3600000) : new Date().getTime()) && new Date(item.StampTime).getTime() > this.minDate)
+      // const result = this.heapTempData.filter(item => (type === 1 ? (item.Type === 0 || item.Type === 1) : item.Type === type) && new Date(item.StampTime).getTime() < (this.type === 0 ? (this.minDate + 24 * 3600000) : new Date().getTime()) && new Date(item.StampTime).getTime() > this.minDate)
+      const result = this.heapTempData.filter(item => (type === 1 ? (item.Type === 0 || item.Type === 1) : item.Type === type) && new Date(item.StampTime).getTime() < new Date().getTime() && new Date(item.StampTime).getTime() > this.minDate)
       .sort((a, b) => (new Date(a.StampTime) - new Date(b.StampTime))).map((item) => {
         // console.log(item.StampTime)
         // return [Date.UTC.apply(this,item.StampTime.replace(/:|\/|\s+/g,'-').split('-').map(val => Number(val))), item.Temp];
@@ -95,7 +96,8 @@ export default {
                   year: '%Y'
               },
               min: this.minDate + 8*3600000,
-              max: this.type === 0 ? (this.minDate + 32 * 3600000) : new Date().getTime() + 8*3600000,
+              max: new Date().getTime() + 8*3600000,
+              // max: this.type === 0 ? (this.minDate + 32 * 3600000) : new Date().getTime() + 8*3600000,
           },
           yAxis: {
               title: {
@@ -118,14 +120,14 @@ export default {
               valueSuffix: '°C',
               dateTimeLabelFormats: {
                   // millisecond: '%H:%M:%S.%L',
-                  millisecond: '%Y-%m-%d %H:%M:%S',
-                  second: '%Y-%m-%d %H:%M:%S',
-                  minute: '%Y-%m-%d %H:%M:%S',
-                  hour: '%Y-%m-%d %H:%M:%S',
-                  day: '%Y-%m-%d %H:%M:%S',
-                  week: '%Y-%m-%d %H:%M:%S',
-                  month: '%Y-%m-%d %H:%M:%S',
-                  year: '%Y-%m-%d %H:%M:%S'
+                  millisecond: '%Y-%m-%d %H:%M',
+                  second: '%Y-%m-%d %H:%M',
+                  minute: '%Y-%m-%d %H:%M',
+                  hour: '%Y-%m-%d %H:%M',
+                  day: '%Y-%m-%d %H:%M',
+                  week: '%Y-%m-%d %H:%M',
+                  month: '%Y-%m-%d %H:%M',
+                  year: '%Y-%m-%d %H:%M'
               }
               // dateTimeLabelFormats: {
               //     // millisecond: '%H:%M:%S.%L',
